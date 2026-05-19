@@ -3,12 +3,13 @@
 #include "core/Entity.hpp"
 
 #include <vector>
+#include <tuple>
 
 namespace parteeengine {
 
 class EntityManager {
   private:
-    EntityID nextID {};
+    EntityID nextID{};
 
     std::vector<EntityID> availableIDs;
     std::vector<EntityGeneration> currentGenerations;
