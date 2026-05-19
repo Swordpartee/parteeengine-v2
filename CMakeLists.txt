@@ -80,6 +80,9 @@ file(GLOB_RECURSE PARTEEE_SOURCES
     "${PARTEEE_SOURCE_DIR}/*.cxx"
 )
 
+# Exclude main.cpp from library
+list(FILTER PARTEEE_SOURCES EXCLUDE REGEX "main\\.cpp$")
+
 file(GLOB_RECURSE PARTEEE_HEADERS
     "${PARTEEE_INCLUDE_DIR}/*.hpp"
     "${PARTEEE_INCLUDE_DIR}/*.h"
@@ -128,8 +131,20 @@ target_include_directories(parteeeengine PRIVATE ${PARTEEE_INCLUDE_DIR})
 if(PARTEEE_BUILD_TESTS)
     enable_testing()
     message(STATUS "Building tests enabled")
-    # Add test directories here if they exist
-    # add_subdirectory(tests)
+    
+    # Fetch GTest from Google's repository
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+        DOWNLOAD_EXTRACT_TIMESTAMP ON
+    )
+    
+    # For Windows: prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
+    
+    add_subdirectory(test)
 endif()
 
 # ============================================================================
