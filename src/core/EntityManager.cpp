@@ -24,6 +24,9 @@ Entity EntityManager::generateEntity() {
 }
 
 void EntityManager::deleteEntity(const Entity entity) {
+    if (!isValidEntity(entity)) {
+        throw std::runtime_error("EntityManager: Attempted to delete invalid entity");
+    }
     currentGenerations[entity.id]++;
 
     if (currentGenerations[entity.id] ==
