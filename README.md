@@ -1,6 +1,6 @@
 # Partee Engine v2
 
-A hyper-customizable, high-performance C++ game engine built from scratch with a modern entity-component-system (ECS) architecture.
+A customizable, high-performance C++ game engine built from scratch with a modern entity-component-system (ECS) architecture.
 
 ## Features
 
