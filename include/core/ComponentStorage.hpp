@@ -10,8 +10,9 @@ struct ComponentStorageBase {
     virtual ~ComponentStorageBase() = default;
 };
 
-template <typename ComponentType> struct ComponentStorage {
-    std::unordered_map<EntityID, size_t> sparseMap;    
+template <typename ComponentType> struct ComponentStorage : public ComponentStorageBase {
+    std::unordered_map<Entity, size_t> sparseMap;    
+    std::vector<Entity> entityMap;
     std::vector<ComponentType> data;
 };
 
