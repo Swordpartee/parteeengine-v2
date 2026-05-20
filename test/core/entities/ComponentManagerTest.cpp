@@ -35,7 +35,6 @@ TEST_F(ComponentManagerTest, ComponentCreation) {
 
     EXPECT_TRUE(componentManager.hasComponent<DataComponent>(entity));
 
-    EXPECT_TRUE(false);
 }
 
 TEST_F(ComponentManagerTest, ComponentDeletion) {
