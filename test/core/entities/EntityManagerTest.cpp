@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "core/EntityManager.hpp"
+#include "core/entities/EntityManager.hpp"
 
 class EntityManagerTest : public ::testing::Test {
   protected:
