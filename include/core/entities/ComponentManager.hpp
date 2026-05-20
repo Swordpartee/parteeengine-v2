@@ -22,12 +22,12 @@ class ComponentManager {
 
   public:
     template <typename... ComponentTypes>
-    ComponentView<ComponentTypes...> viewComponent();
+    ComponentView<ComponentTypes...> viewComponents();
 
     template <typename ComponentType>
-    ComponentType &addComponent(const Entity, ComponentType);
+    void addComponent(const Entity, ComponentType);
 
-    template <typename ComponentType> ComponentType &addComponent(const Entity);
+    template <typename ComponentType> void addComponent(const Entity);
 
     template <typename ComponentType> void removeComponent(const Entity);
 
@@ -45,32 +45,47 @@ ComponentStorage<ComponentType> &ComponentManager::getStorage() {
     return static_cast<ComponentStorage<ComponentType> &>(*it->second);
 }
 
-// template <typename... ComponentTypes>
-// ComponentView<ComponentTypes...> ComponentManager::viewComponent() {
-
-// }
+template <typename... ComponentTypes>
+ComponentView<ComponentTypes...> ComponentManager::viewComponents() {
+    ComponentView<ComponentTypes...> result;
+    
+    // Handle empty case
+    if constexpr (sizeof...(ComponentTypes) == 0) {
+        return result;
+    }
+    
+    // Get the storage of the first component type to iterate through
+    auto &firstStorage = getStorage<std::tuple_element_t<0, std::tuple<ComponentTypes...>>>();
+    
+    // For each entity in the first component storage
+    for (const auto &entity : firstStorage.entityMap) {
+        // Check if entity has all component types
+        if ((hasComponent<ComponentTypes>(entity) && ...)) {
+            // Add tuple of entity + all components to result
+            result.emplace_back(entity, getComponent<ComponentTypes>(entity)...);
+        }
+    }
+    
+    return result;
+}
 
 template <typename ComponentType>
-ComponentType &ComponentManager::addComponent(const Entity entity,
-                                              ComponentType data) {
+void ComponentManager::addComponent(const Entity entity,
+                                    ComponentType data) {
     auto &storage = getStorage<ComponentType>();
 
     storage.data.emplace_back(data);
     storage.entityMap.emplace_back(entity);
     storage.sparseMap.emplace(entity, storage.data.size() - 1);
-
-    return storage.data.back();
 }
 
 template <typename ComponentType>
-ComponentType &ComponentManager::addComponent(const Entity entity) {
+void ComponentManager::addComponent(const Entity entity) {
     auto &storage = getStorage<ComponentType>();
 
     storage.data.emplace_back(ComponentType{});
     storage.entityMap.emplace_back(entity);
     storage.sparseMap.emplace(entity, storage.data.size() - 1);
-
-    return storage.data.back();
 }
 
 template <typename ComponentType>
@@ -83,7 +98,7 @@ void ComponentManager::removeComponent(const Entity entity) {
     }
 
     size_t index = it->second;
-    storage.sparseMap.emplace(storage.entityMap.back(), index);
+    storage.sparseMap[storage.entityMap.back()] = index;
     storage.sparseMap.erase(entity);
     std::swap(storage.data[index], storage.data.back());
     storage.data.pop_back();
