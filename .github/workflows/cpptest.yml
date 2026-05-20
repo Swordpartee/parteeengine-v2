@@ -1,4 +1,4 @@
-name: CTest Unit Tests
+name: cpp-tests
 
 on:
   pull_request:
