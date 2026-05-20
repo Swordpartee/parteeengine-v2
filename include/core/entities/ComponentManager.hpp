@@ -18,14 +18,9 @@ class ComponentManager {
         storages;
 
     template <typename ComponentType>
-    ComponentStorage<ComponentType> &createStorage();
-
-    template <typename ComponentType>
     ComponentStorage<ComponentType> &getStorage();
 
   public:
-    // template <typename... Types> CompoentView<Types> view();
-
     template <typename... ComponentTypes>
     ComponentView<ComponentTypes...> viewComponent();
 
@@ -42,21 +37,12 @@ class ComponentManager {
 };
 
 template <typename ComponentType>
-ComponentStorage<ComponentType> &ComponentManager::createStorage() {
-    auto storage = std::make_unique<ComponentStorage<ComponentType>>();
-    auto *rawPtr = storage.get();
-    storages.emplace(typeid(ComponentType), std::move(storage));
-    return *rawPtr;
-}
-
-template <typename ComponentType>
 ComponentStorage<ComponentType> &ComponentManager::getStorage() {
-    auto it = storages.find(typeid(ComponentType));
-    if (it == storages.end()) {
-        return createStorage<ComponentType>();
-    } else {
-        return static_cast<ComponentStorage<ComponentType> &>(*it->second);
-    }
+    auto [it, inserted] = storages.try_emplace(
+        typeid(ComponentType),
+        std::make_unique<ComponentStorage<ComponentType>>()
+    );
+    return static_cast<ComponentStorage<ComponentType> &>(*it->second);
 }
 
 // template <typename... ComponentTypes>
