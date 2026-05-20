@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "core/EntityManager.hpp"
-#include "core/ComponentManager.hpp"
+#include "core/entities/ComponentManager.hpp"
+#include "core/entities/EntityManager.hpp"
 
 class ComponentManagerTest : public ::testing::Test {
   protected:
@@ -52,7 +52,8 @@ TEST_F(ComponentManagerTest, ComponentData) {
     auto entity = entityManager.generateEntity();
     DataComponent data{42, 3.14f};
 
-    auto& retrieved = componentManager.addComponent<DataComponent>(entity, data);
+    auto &retrieved =
+        componentManager.addComponent<DataComponent>(entity, data);
 
     EXPECT_EQ(retrieved.value, 42);
     EXPECT_FLOAT_EQ(retrieved.data, 3.14f);
@@ -63,7 +64,7 @@ TEST_F(ComponentManagerTest, GetComponent) {
     DataComponent data{99, 2.71f};
 
     componentManager.addComponent<DataComponent>(entity, data);
-    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
+    auto &retrieved = componentManager.getComponent<DataComponent>(entity);
 
     EXPECT_EQ(retrieved.value, 99);
     EXPECT_FLOAT_EQ(retrieved.data, 2.71f);
@@ -72,24 +73,20 @@ TEST_F(ComponentManagerTest, GetComponent) {
 TEST_F(ComponentManagerTest, GetNonexistentCompoent) {
     auto entity = entityManager.generateEntity();
 
-    EXPECT_THROW(
-        componentManager.getComponent<DataComponent>(entity),
-        std::runtime_error
-    );
+    EXPECT_THROW(componentManager.getComponent<DataComponent>(entity),
+                 std::runtime_error);
 }
 
 TEST_F(ComponentManagerTest, RemoveNonexistentCompoent) {
     auto entity = entityManager.generateEntity();
 
-    EXPECT_THROW(
-        componentManager.removeComponent<DataComponent>(entity),
-        std::runtime_error
-    );
+    EXPECT_THROW(componentManager.removeComponent<DataComponent>(entity),
+                 std::runtime_error);
 }
 
 TEST_F(ComponentManagerTest, RemoveOneComponentLeavesOther) {
     auto entity = entityManager.generateEntity();
-    
+
     componentManager.addComponent<DataComponent>(entity);
     componentManager.addComponent<PositionComponent>(entity);
 
@@ -119,15 +116,15 @@ TEST_F(ComponentManagerTest, MultipleEntitiesWithComponents) {
 
 TEST_F(ComponentManagerTest, ComponentDataModification) {
     auto entity = entityManager.generateEntity();
-    
-    auto& comp = componentManager.addComponent<DataComponent>(entity);
+
+    auto &comp = componentManager.addComponent<DataComponent>(entity);
     EXPECT_EQ(comp.value, 0);
     EXPECT_FLOAT_EQ(comp.data, 0.0f);
 
     comp.value = 55;
     comp.data = 5.5f;
 
-    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
+    auto &retrieved = componentManager.getComponent<DataComponent>(entity);
     EXPECT_EQ(retrieved.value, 55);
     EXPECT_FLOAT_EQ(retrieved.data, 5.5f);
 }
@@ -162,9 +159,11 @@ TEST_F(ComponentManagerTest, ThreeComponentTypes) {
     EXPECT_TRUE(componentManager.hasComponent<PositionComponent>(entity));
     EXPECT_TRUE(componentManager.hasComponent<VelocityComponent>(entity));
 
-    auto& retrievedData = componentManager.getComponent<DataComponent>(entity);
-    auto& retrievedPos = componentManager.getComponent<PositionComponent>(entity);
-    auto& retrievedVel = componentManager.getComponent<VelocityComponent>(entity);
+    auto &retrievedData = componentManager.getComponent<DataComponent>(entity);
+    auto &retrievedPos =
+        componentManager.getComponent<PositionComponent>(entity);
+    auto &retrievedVel =
+        componentManager.getComponent<VelocityComponent>(entity);
 
     EXPECT_EQ(retrievedData.value, 42);
     EXPECT_FLOAT_EQ(retrievedPos.x, 1.0f);

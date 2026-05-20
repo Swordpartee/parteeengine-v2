@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/ComponentStorage.hpp"
-#include "core/Entity.hpp"
+#include "core/entities/ComponentStorage.hpp"
+#include "core/entities/Entity.hpp"
 
 #include <memory>
 #include <typeindex>
@@ -67,7 +67,7 @@ ComponentStorage<ComponentType> &ComponentManager::getStorage() {
 template <typename ComponentType>
 ComponentType &ComponentManager::addComponent(const Entity entity,
                                               ComponentType data) {
-    auto& storage = getStorage<ComponentType>();
+    auto &storage = getStorage<ComponentType>();
 
     storage.data.emplace_back(data);
     storage.entityMap.emplace_back(entity);
@@ -78,7 +78,7 @@ ComponentType &ComponentManager::addComponent(const Entity entity,
 
 template <typename ComponentType>
 ComponentType &ComponentManager::addComponent(const Entity entity) {
-    auto& storage = getStorage<ComponentType>();
+    auto &storage = getStorage<ComponentType>();
 
     storage.data.emplace_back(ComponentType{});
     storage.entityMap.emplace_back(entity);
@@ -89,7 +89,7 @@ ComponentType &ComponentManager::addComponent(const Entity entity) {
 
 template <typename ComponentType>
 void ComponentManager::removeComponent(const Entity entity) {
-    auto& storage = getStorage<ComponentType>();
+    auto &storage = getStorage<ComponentType>();
 
     auto it = storage.sparseMap.find(entity);
     if (it == storage.sparseMap.end()) {
@@ -107,7 +107,7 @@ void ComponentManager::removeComponent(const Entity entity) {
 
 template <typename ComponentType>
 ComponentType &ComponentManager::getComponent(const Entity entity) {
-    auto& storage = getStorage<ComponentType>();
+    auto &storage = getStorage<ComponentType>();
 
     auto it = storage.sparseMap.find(entity);
     if (it == storage.sparseMap.end()) {
@@ -118,7 +118,7 @@ ComponentType &ComponentManager::getComponent(const Entity entity) {
 
 template <typename ComponentType>
 bool ComponentManager::hasComponent(const Entity entity) {
-    auto& storage = getStorage<ComponentType>();
+    auto &storage = getStorage<ComponentType>();
 
     auto it = storage.sparseMap.find(entity);
     if (it == storage.sparseMap.end()) {

@@ -1,15 +1,16 @@
-#include "core/EntityManager.hpp"
+#include "core/entities/EntityManager.hpp"
 
-#include <stdexcept>
 #include <iostream>
 #include <limits>
+#include <stdexcept>
 
 namespace parteeengine {
 
 Entity EntityManager::generateEntity() {
     if (availableIDs.empty()) {
         if (nextID == std::numeric_limits<EntityID>::max()) {
-            throw std::runtime_error("EntityManager: Entity ID space exhausted");
+            throw std::runtime_error(
+                "EntityManager: Entity ID space exhausted");
         }
 
         currentGenerations.emplace_back(0);
@@ -25,7 +26,8 @@ Entity EntityManager::generateEntity() {
 
 void EntityManager::deleteEntity(const Entity entity) {
     if (!isValidEntity(entity)) {
-        throw std::runtime_error("EntityManager: Attempted to delete invalid entity");
+        throw std::runtime_error(
+            "EntityManager: Attempted to delete invalid entity");
     }
     currentGenerations[entity.id]++;
 
