@@ -13,7 +13,7 @@ class ComponentManagerTest : public ::testing::Test {
         float data = 0.0f;
     };
 
-    struct PositionComponent 
+    struct PositionComponent {
         float x = 0.0f;
         float y = 0.0f;
         float z = 0.0f;
