@@ -9,7 +9,7 @@ namespace parteeengine {
 
 class EntityManager {
   private:
-    EntityID nextID{};
+    EntityID nextID {};
 
     std::vector<EntityID> availableIDs;
     std::vector<EntityGeneration> currentGenerations;

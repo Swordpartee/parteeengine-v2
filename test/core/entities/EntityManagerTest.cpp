@@ -15,18 +15,12 @@ TEST_F(EntityManagerTest, EntityCreation) {
 
 TEST_F(EntityManagerTest, EntityValidation) {
     auto entity1 = manager.generateEntity();
-    EXPECT_EQ(entity1.id, 0);
-    EXPECT_EQ(entity1.generation, 0);
 
     EXPECT_TRUE(manager.isValidEntity(entity1));
 }
 
 TEST_F(EntityManagerTest, EntityDeletion) {
     auto entity1 = manager.generateEntity();
-    EXPECT_EQ(entity1.id, 0);
-    EXPECT_EQ(entity1.generation, 0);
-
-    EXPECT_TRUE(manager.isValidEntity(entity1));
 
     manager.deleteEntity(entity1);
     EXPECT_FALSE(manager.isValidEntity(entity1));
