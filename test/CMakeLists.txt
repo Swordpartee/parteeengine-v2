@@ -25,5 +25,5 @@ target_include_directories(parteeeengine_tests
 # Set C++ standard
 target_compile_features(parteeeengine_tests PRIVATE cxx_std_23)
 
-# Register the test executable
-add_test(NAME parteeeengine_tests COMMAND parteeeengine_tests)
+# Discover and register individual tests
+gtest_discover_tests(parteeeengine_tests)
