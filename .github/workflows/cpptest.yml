@@ -5,7 +5,7 @@ on:
     branches: [ main ] # Change to your target branch
 
 jobs:
-  test:
+  cpp-test:
     runs-on: ubuntu-latest
 
     steps:

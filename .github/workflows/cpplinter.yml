@@ -1,7 +1,7 @@
 name: cpp-linter
 on: [pull_request]
 jobs:
-  linter:
+  cpp-linter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
