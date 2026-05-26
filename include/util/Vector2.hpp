@@ -2,13 +2,13 @@
 
 namespace util
 {
-    class Vector3 {
+    class Vector2 {
     private:
        float x, y, z;
 
     public:
 
-    Vector3(float x, float y, float z = 0.f) : x(x), y(y), z(z) {}
+    Vector2(float x, float y) : x(x), y(y) {}
 
     }; 
 } // namespace util
