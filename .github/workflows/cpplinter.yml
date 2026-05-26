@@ -1,5 +1,11 @@
 name: cpp-linter
-on: [pull_request]
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   cpp-linter:
     runs-on: ubuntu-latest
