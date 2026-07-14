@@ -6,6 +6,7 @@
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <stdexcept>
 
 namespace parteeengine {
 
@@ -39,39 +40,39 @@ class ComponentManager {
 template <typename ComponentType>
 ComponentStorage<ComponentType> &ComponentManager::getStorage() {
     auto [it, inserted] = storages.try_emplace(
-        typeid(ComponentType),
-        std::make_unique<ComponentStorage<ComponentType>>()
-    );
+        std::type_index(typeid(ComponentType)),
+        std::make_unique<ComponentStorage<ComponentType>>());
     return static_cast<ComponentStorage<ComponentType> &>(*it->second);
 }
 
 template <typename... ComponentTypes>
 ComponentView<ComponentTypes...> ComponentManager::viewComponents() {
     ComponentView<ComponentTypes...> result;
-    
+
     // Handle empty case
     if constexpr (sizeof...(ComponentTypes) == 0) {
         return result;
     }
-    
+
     // Get the storage of the first component type to iterate through
-    auto &firstStorage = getStorage<std::tuple_element_t<0, std::tuple<ComponentTypes...>>>();
-    
+    auto &firstStorage =
+        getStorage<std::tuple_element_t<0, std::tuple<ComponentTypes...>>>();
+
     // For each entity in the first component storage
     for (const auto &entity : firstStorage.entityMap) {
         // Check if entity has all component types
         if ((hasComponent<ComponentTypes>(entity) && ...)) {
             // Add tuple of entity + all components to result
-            result.emplace_back(entity, getComponent<ComponentTypes>(entity)...);
+            result.emplace_back(entity,
+                                getComponent<ComponentTypes>(entity)...);
         }
     }
-    
+
     return result;
 }
 
 template <typename ComponentType>
-void ComponentManager::addComponent(const Entity entity,
-                                    ComponentType data) {
+void ComponentManager::addComponent(const Entity entity, ComponentType data) {
     auto &storage = getStorage<ComponentType>();
 
     storage.data.emplace_back(data);
