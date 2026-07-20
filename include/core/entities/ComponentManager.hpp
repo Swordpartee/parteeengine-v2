@@ -1,12 +1,12 @@
 #pragma once
 
-#include "core/entities/ComponentStorage.hpp"
-#include "core/entities/Entity.hpp"
-
 #include <memory>
+#include <stdexcept>
 #include <typeindex>
 #include <unordered_map>
-#include <stdexcept>
+
+#include "core/entities/ComponentStorage.hpp"
+#include "core/entities/Entity.hpp"
 
 namespace parteeengine {
 
@@ -58,7 +58,8 @@ const ComponentStorage<ComponentType> *ComponentManager::findStorage() const {
         return nullptr;
     }
 
-    return static_cast<const ComponentStorage<ComponentType> *>(it->second.get());
+    return static_cast<const ComponentStorage<ComponentType> *>(
+        it->second.get());
 }
 
 template <typename... ComponentTypes>
@@ -69,7 +70,8 @@ ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
         return result;
     }
 
-    using FirstComponent = std::tuple_element_t<0, std::tuple<ComponentTypes...>>;
+    using FirstComponent =
+        std::tuple_element_t<0, std::tuple<ComponentTypes...>>;
     const auto *firstStorage = findStorage<FirstComponent>();
     if (firstStorage == nullptr) {
         return result;
@@ -77,7 +79,8 @@ ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
 
     for (const auto &entity : firstStorage->entityMap) {
         if ((hasComponent<ComponentTypes>(entity) && ...)) {
-            result.emplace_back(entity, getComponent<ComponentTypes>(entity)...);
+            result.emplace_back(entity,
+                                getComponent<ComponentTypes>(entity)...);
         }
     }
 
