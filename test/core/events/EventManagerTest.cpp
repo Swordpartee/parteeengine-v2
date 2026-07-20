@@ -20,9 +20,8 @@ class EventManagerTest : public ::testing::Test {
 TEST_F(EventManagerTest, Subscribe) {
     bool called = false;
 
-    EventManager.subscribe<TestEvent>([&called](const TestEvent) {
-        called = true;
-    });
+    EventManager.subscribe<TestEvent>(
+        [&called](const TestEvent) { called = true; });
 
     EventManager.emit<TestEvent>({});
 
@@ -33,15 +32,12 @@ TEST_F(EventManagerTest, Subscribe) {
 TEST_F(EventManagerTest, MultipleSubscribers) {
     int callCount = 0;
 
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) {
-        callCount++;
-    });
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) {
-        callCount++;
-    });
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) {
-        callCount++;
-    });
+    EventManager.subscribe<TestEvent>(
+        [&callCount](const TestEvent) { callCount++; });
+    EventManager.subscribe<TestEvent>(
+        [&callCount](const TestEvent) { callCount++; });
+    EventManager.subscribe<TestEvent>(
+        [&callCount](const TestEvent) { callCount++; });
 
     EventManager.emit<TestEvent>({});
 
@@ -53,12 +49,12 @@ TEST_F(EventManagerTest, DifferentEventTypes) {
     bool testEventCalled = false;
     bool anotherEventCalled = false;
 
-    EventManager.subscribe<TestEvent>([&testEventCalled](const TestEvent) {
-        testEventCalled = true;
-    });
-    EventManager.subscribe<AnotherEvent>([&anotherEventCalled](const AnotherEvent) {
-        anotherEventCalled = true;
-    });
+    EventManager.subscribe<TestEvent>(
+        [&testEventCalled](const TestEvent) { testEventCalled = true; });
+    EventManager.subscribe<AnotherEvent>(
+        [&anotherEventCalled](const AnotherEvent) {
+            anotherEventCalled = true;
+        });
 
     EventManager.emit<TestEvent>({});
 
@@ -70,9 +66,10 @@ TEST_F(EventManagerTest, DifferentEventTypes) {
 TEST_F(EventManagerTest, EventWithData) {
     TestEventWithData receivedEvent = {0, ""};
 
-    EventManager.subscribe<TestEventWithData>([&receivedEvent](const TestEventWithData event) {
-        receivedEvent = event;
-    });
+    EventManager.subscribe<TestEventWithData>(
+        [&receivedEvent](const TestEventWithData event) {
+            receivedEvent = event;
+        });
 
     TestEventWithData emittedEvent = {42, "test message"};
     EventManager.emit<TestEventWithData>(emittedEvent);
@@ -85,9 +82,8 @@ TEST_F(EventManagerTest, EventWithData) {
 TEST_F(EventManagerTest, EmitMultipleTimes) {
     int callCount = 0;
 
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) {
-        callCount++;
-    });
+    EventManager.subscribe<TestEvent>(
+        [&callCount](const TestEvent) { callCount++; });
 
     EventManager.emit<TestEvent>({});
     EventManager.emit<TestEvent>({});
@@ -102,9 +98,8 @@ TEST_F(EventManagerTest, SubscribeAfterEmit) {
 
     EventManager.emit<TestEvent>({});
 
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) {
-        callCount++;
-    });
+    EventManager.subscribe<TestEvent>(
+        [&callCount](const TestEvent) { callCount++; });
 
     EventManager.emit<TestEvent>({});
 
@@ -116,12 +111,14 @@ TEST_F(EventManagerTest, MultipleEventTypesWithData) {
     TestEventWithData receivedTestEvent = {0, ""};
     AnotherEvent receivedAnotherEvent = {0.0};
 
-    EventManager.subscribe<TestEventWithData>([&receivedTestEvent](const TestEventWithData event) {
-        receivedTestEvent = event;
-    });
-    EventManager.subscribe<AnotherEvent>([&receivedAnotherEvent](const AnotherEvent event) {
-        receivedAnotherEvent = event;
-    });
+    EventManager.subscribe<TestEventWithData>(
+        [&receivedTestEvent](const TestEventWithData event) {
+            receivedTestEvent = event;
+        });
+    EventManager.subscribe<AnotherEvent>(
+        [&receivedAnotherEvent](const AnotherEvent event) {
+            receivedAnotherEvent = event;
+        });
 
     TestEventWithData testEvent = {99, "multi-event test"};
     AnotherEvent anotherEvent = {3.14159};
@@ -145,15 +142,12 @@ TEST_F(EventManagerTest, EmitWithNoSubscribers) {
 TEST_F(EventManagerTest, MultipleSubscribersReceiveSameData) {
     int value1 = 0, value2 = 0, value3 = 0;
 
-    EventManager.subscribe<TestEventWithData>([&value1](const TestEventWithData event) {
-        value1 = event.value;
-    });
-    EventManager.subscribe<TestEventWithData>([&value2](const TestEventWithData event) {
-        value2 = event.value;
-    });
-    EventManager.subscribe<TestEventWithData>([&value3](const TestEventWithData event) {
-        value3 = event.value;
-    });
+    EventManager.subscribe<TestEventWithData>(
+        [&value1](const TestEventWithData event) { value1 = event.value; });
+    EventManager.subscribe<TestEventWithData>(
+        [&value2](const TestEventWithData event) { value2 = event.value; });
+    EventManager.subscribe<TestEventWithData>(
+        [&value3](const TestEventWithData event) { value3 = event.value; });
 
     EventManager.emit<TestEventWithData>({123, "shared data"});
 

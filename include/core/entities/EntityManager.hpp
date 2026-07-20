@@ -1,15 +1,15 @@
 #pragma once
 
-#include "core/entities/Entity.hpp"
-
 #include <tuple>
 #include <vector>
+
+#include "core/entities/Entity.hpp"
 
 namespace parteeengine {
 
 class EntityManager {
   private:
-    EntityID nextID {};
+    EntityID nextID{};
 
     std::vector<EntityID> availableIDs;
     std::vector<EntityGeneration> currentGenerations;

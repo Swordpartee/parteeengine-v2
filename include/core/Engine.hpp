@@ -21,25 +21,31 @@ class Engine {
         return entityManager.isValidEntity(entity);
     }
 
-    void deleteEntity(const Entity entity) { entityManager.deleteEntity(entity); }
+    void deleteEntity(const Entity entity) {
+        entityManager.deleteEntity(entity);
+    }
 
     template <typename ComponentType> void addComponent(const Entity entity) {
         componentManager.addComponent<ComponentType>(entity);
     }
 
-    template <typename ComponentType> void addComponent(const Entity entity, ComponentType data) {
+    template <typename ComponentType>
+    void addComponent(const Entity entity, ComponentType data) {
         componentManager.addComponent<ComponentType>(entity, data);
     }
 
-    template <typename ComponentType> void removeComponent(const Entity entity) {
+    template <typename ComponentType>
+    void removeComponent(const Entity entity) {
         componentManager.removeComponent<ComponentType>(entity);
     }
 
-    template <typename ComponentType> ComponentType &getComponent(const Entity entity) {
+    template <typename ComponentType>
+    ComponentType &getComponent(const Entity entity) {
         return componentManager.getComponent<ComponentType>(entity);
     }
 
-    template <typename ComponentType> bool hasComponent(const Entity entity) const {
+    template <typename ComponentType>
+    bool hasComponent(const Entity entity) const {
         return componentManager.hasComponent<ComponentType>(entity);
     }
 
@@ -60,7 +66,8 @@ class Engine {
         moduleManager.addModule<ModuleType>(module);
     }
 
-    template <typename ModuleType> void replaceModule(const ModuleType &module) {
+    template <typename ModuleType>
+    void replaceModule(const ModuleType &module) {
         moduleManager.replaceModule<ModuleType>(module);
     }
 
