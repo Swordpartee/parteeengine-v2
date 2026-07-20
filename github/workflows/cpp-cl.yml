@@ -16,10 +16,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake g++ make
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build g++
+
+      - name: Cache CMake build
+        uses: actions/cache@v4
+        with:
+          path: build
+          key: ${{ runner.os }}-cmake-${{ hashFiles('CMakeLists.txt', '**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: |
+            ${{ runner.os }}-cmake-
 
       - name: Configure
-        run: cmake -S . -B build
+        run: cmake -S . -B build -G Ninja
 
       - name: Build
         run: cmake --build build
@@ -34,10 +42,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake g++ make
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build g++
+
+      - name: Cache CMake build
+        uses: actions/cache@v4
+        with:
+          path: build
+          key: ${{ runner.os }}-cmake-${{ hashFiles('CMakeLists.txt', '**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: |
+            ${{ runner.os }}-cmake-
 
       - name: Configure
-        run: cmake -S . -B build
+        run: cmake -S . -B build -G Ninja
 
       - name: Build
         run: cmake --build build
