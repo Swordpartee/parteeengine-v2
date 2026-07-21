@@ -4,8 +4,6 @@
 
 namespace parteeengine::rendering {
 
-// struct NativeWindowHandle;
-
 #if defined(PLATFORM_WINDOWS)
 
 using NativeWindowHandle = HWND;

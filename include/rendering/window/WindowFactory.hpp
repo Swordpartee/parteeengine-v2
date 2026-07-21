@@ -1,7 +1,7 @@
 #pragma once
 
 #include "rendering/window/WindowConfig.hpp"
-#include "rendering/window/WindowHandle.hpp"
+#include "rendering/window/NativeWindowUtil.hpp"
 
 namespace parteeengine::rendering {
 

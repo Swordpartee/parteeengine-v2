@@ -47,8 +47,8 @@ const NativeWindowHandle createWindow(WindowConfig config) {
                                        WS_OVERLAPPEDWINDOW,  // Window style
 
                                        // Size and position
-                                       config.width, config.height,
                                        CW_USEDEFAULT, CW_USEDEFAULT,
+                                       config.width, config.height,
 
                                        NULL, // Parent window
                                        NULL, // Menu
