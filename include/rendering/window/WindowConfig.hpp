@@ -1,7 +1,5 @@
 #pragma once
 
-#include "util/Color.hpp"
-
 #include <string>
 
 namespace parteeengine::rendering {

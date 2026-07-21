@@ -1,20 +1,15 @@
-#include "rendering/window/WindowFactory.hpp"
-#include "util/OSUtil.hpp"
-
-#include <iostream>
+#include "core/Engine.hpp"
+#include "rendering/window/WindowManagerModule.hpp"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
 
-    auto window = parteeengine::rendering::createWindow({800, 600, "sample window"});
+    parteeengine::Engine engine;
 
-    ShowWindow(window, SW_SHOW);
+    engine.addModule<parteeengine::rendering::WindowManagerModule>();
 
-    MSG msg = {};
-    while (GetMessage(&msg, NULL, 0, 0) > 0) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
+    engine.getModule<parteeengine::rendering::WindowManagerModule>().createWindow({800, 600, "sample window"});
+
+    engine.run();
 
     return 0;
 }

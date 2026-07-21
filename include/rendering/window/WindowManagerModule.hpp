@@ -1,21 +1,22 @@
 #pragma once
 
 #include "core/modules/ModuleBase.hpp"
+#include "rendering/window/NativeWindowUtil.hpp"
 #include "rendering/window/WindowConfig.hpp"
+#include "rendering/window/Window.hpp"
 
 #include <vector>
 
 namespace parteeengine::rendering {
 
-    class WindowManagerModule {
-        private:
-            std::vector<Window> windows;
+class WindowManagerModule : public ModuleBase {
+  private:
+    std::vector<NativeWindowHandle> handles;
 
-        public:
+  public:
+    Window& createWindow(WindowConfig config);
 
-            Window& createWindow(WindowConfig config);
-
-
-    };
+    void update();
+};
 
 } // namespace parteeengine::rendering

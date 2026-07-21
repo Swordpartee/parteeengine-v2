@@ -4,6 +4,8 @@
 #include "core/entities/EntityManager.hpp"
 #include "core/events/EventManager.hpp"
 #include "core/modules/ModuleManager.hpp"
+#include "rendering/window/WindowManagerModule.hpp"
+
 
 namespace parteeengine {
 
@@ -60,6 +62,12 @@ class Engine {
     template <typename ModuleType> void removeModule() { moduleManager.removeModule<ModuleType>(); }
 
     template <typename ModuleType> ModuleType& getModule() { return moduleManager.getModule<ModuleType>(); }
+    
+    void run() {
+        while(true) {
+            moduleManager.getModule<rendering::WindowManagerModule>().update();
+        }
+    }
 };
 
 } // namespace parteeengine

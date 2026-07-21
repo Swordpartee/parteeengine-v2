@@ -1,5 +1,6 @@
 #pragma once
 
+#include "rendering/window/NativeWindowUtil.hpp"
 #include "util/OSUtil.hpp"
 
 namespace parteeengine::rendering {
