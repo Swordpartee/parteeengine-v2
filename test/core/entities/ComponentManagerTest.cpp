@@ -1,7 +1,8 @@
-#include <gtest/gtest.h>
-
 #include "core/entities/ComponentManager.hpp"
+
 #include "core/entities/EntityManager.hpp"
+
+#include <gtest/gtest.h>
 
 class ComponentManagerTest : public ::testing::Test {
   protected:
@@ -73,15 +74,13 @@ TEST_F(ComponentManagerTest, GetComponent) {
 TEST_F(ComponentManagerTest, GetNonexistentCompoent) {
     auto entity = entityManager.generateEntity();
 
-    EXPECT_THROW(componentManager.getComponent<DataComponent>(entity),
-                 std::runtime_error);
+    EXPECT_THROW(componentManager.getComponent<DataComponent>(entity), std::runtime_error);
 }
 
 TEST_F(ComponentManagerTest, RemoveNonexistentCompoent) {
     auto entity = entityManager.generateEntity();
 
-    EXPECT_THROW(componentManager.removeComponent<DataComponent>(entity),
-                 std::runtime_error);
+    EXPECT_THROW(componentManager.removeComponent<DataComponent>(entity), std::runtime_error);
 }
 
 TEST_F(ComponentManagerTest, RemoveOneComponentLeavesOther) {
@@ -161,10 +160,8 @@ TEST_F(ComponentManagerTest, ThreeComponentTypes) {
     EXPECT_TRUE(componentManager.hasComponent<VelocityComponent>(entity));
 
     auto &retrievedData = componentManager.getComponent<DataComponent>(entity);
-    auto &retrievedPos =
-        componentManager.getComponent<PositionComponent>(entity);
-    auto &retrievedVel =
-        componentManager.getComponent<VelocityComponent>(entity);
+    auto &retrievedPos = componentManager.getComponent<PositionComponent>(entity);
+    auto &retrievedVel = componentManager.getComponent<VelocityComponent>(entity);
 
     EXPECT_EQ(retrievedData.value, 42);
     EXPECT_FLOAT_EQ(retrievedPos.x, 1.0f);
@@ -194,15 +191,12 @@ TEST_F(ComponentManagerTest, ViewMultipleComponents) {
     auto entity2 = entityManager.generateEntity();
 
     componentManager.addComponent<DataComponent>(entity1, {10, 1.0f});
-    componentManager.addComponent<PositionComponent>(entity1,
-                                                     {1.0f, 2.0f, 3.0f});
+    componentManager.addComponent<PositionComponent>(entity1, {1.0f, 2.0f, 3.0f});
 
     componentManager.addComponent<DataComponent>(entity2, {20, 2.0f});
-    componentManager.addComponent<PositionComponent>(entity2,
-                                                     {4.0f, 5.0f, 6.0f});
+    componentManager.addComponent<PositionComponent>(entity2, {4.0f, 5.0f, 6.0f});
 
-    auto view =
-        componentManager.viewComponents<DataComponent, PositionComponent>();
+    auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
 
     EXPECT_EQ(view.size(), 2);
     EXPECT_EQ(std::get<1>(view[0]).value, 10);
@@ -218,19 +212,16 @@ TEST_F(ComponentManagerTest, ViewFiltersEntitiesWithoutAllComponents) {
 
     // entity1 has both components
     componentManager.addComponent<DataComponent>(entity1, {1, 1.0f});
-    componentManager.addComponent<PositionComponent>(entity1,
-                                                     {1.0f, 2.0f, 3.0f});
+    componentManager.addComponent<PositionComponent>(entity1, {1.0f, 2.0f, 3.0f});
 
     // entity2 has only DataComponent
     componentManager.addComponent<DataComponent>(entity2, {2, 2.0f});
 
     // entity3 has both components
     componentManager.addComponent<DataComponent>(entity3, {3, 3.0f});
-    componentManager.addComponent<PositionComponent>(entity3,
-                                                     {4.0f, 5.0f, 6.0f});
+    componentManager.addComponent<PositionComponent>(entity3, {4.0f, 5.0f, 6.0f});
 
-    auto view =
-        componentManager.viewComponents<DataComponent, PositionComponent>();
+    auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
 
     EXPECT_EQ(view.size(), 2);
     EXPECT_EQ(std::get<1>(view[0]).value, 1);
@@ -242,8 +233,7 @@ TEST_F(ComponentManagerTest, ViewEmptyWhenNoEntitiesMatch) {
 
     componentManager.addComponent<DataComponent>(entity1, {1, 1.0f});
 
-    auto view =
-        componentManager.viewComponents<DataComponent, PositionComponent>();
+    auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
 
     EXPECT_EQ(view.size(), 0);
 }
@@ -253,20 +243,14 @@ TEST_F(ComponentManagerTest, ViewThreeComponentTypes) {
     auto entity2 = entityManager.generateEntity();
 
     componentManager.addComponent<DataComponent>(entity1, {100, 1.0f});
-    componentManager.addComponent<PositionComponent>(entity1,
-                                                     {1.0f, 2.0f, 3.0f});
-    componentManager.addComponent<VelocityComponent>(entity1,
-                                                     {0.1f, 0.2f, 0.3f});
+    componentManager.addComponent<PositionComponent>(entity1, {1.0f, 2.0f, 3.0f});
+    componentManager.addComponent<VelocityComponent>(entity1, {0.1f, 0.2f, 0.3f});
 
     componentManager.addComponent<DataComponent>(entity2, {200, 2.0f});
-    componentManager.addComponent<PositionComponent>(entity2,
-                                                     {4.0f, 5.0f, 6.0f});
-    componentManager.addComponent<VelocityComponent>(entity2,
-                                                     {0.4f, 0.5f, 0.6f});
+    componentManager.addComponent<PositionComponent>(entity2, {4.0f, 5.0f, 6.0f});
+    componentManager.addComponent<VelocityComponent>(entity2, {0.4f, 0.5f, 0.6f});
 
-    auto view =
-        componentManager.viewComponents<DataComponent, PositionComponent,
-                                        VelocityComponent>();
+    auto view = componentManager.viewComponents<DataComponent, PositionComponent, VelocityComponent>();
 
     EXPECT_EQ(view.size(), 2);
     EXPECT_EQ(std::get<1>(view[0]).value, 100);
@@ -279,21 +263,17 @@ TEST_F(ComponentManagerTest, ViewAfterRemovingComponent) {
     auto entity2 = entityManager.generateEntity();
 
     componentManager.addComponent<DataComponent>(entity1, {1, 1.0f});
-    componentManager.addComponent<PositionComponent>(entity1,
-                                                     {1.0f, 2.0f, 3.0f});
+    componentManager.addComponent<PositionComponent>(entity1, {1.0f, 2.0f, 3.0f});
 
     componentManager.addComponent<DataComponent>(entity2, {2, 2.0f});
-    componentManager.addComponent<PositionComponent>(entity2,
-                                                     {4.0f, 5.0f, 6.0f});
+    componentManager.addComponent<PositionComponent>(entity2, {4.0f, 5.0f, 6.0f});
 
-    auto view1 =
-        componentManager.viewComponents<DataComponent, PositionComponent>();
+    auto view1 = componentManager.viewComponents<DataComponent, PositionComponent>();
     EXPECT_EQ(view1.size(), 2);
 
     componentManager.removeComponent<PositionComponent>(entity1);
 
-    auto view2 =
-        componentManager.viewComponents<DataComponent, PositionComponent>();
+    auto view2 = componentManager.viewComponents<DataComponent, PositionComponent>();
     EXPECT_EQ(view2.size(), 1);
     EXPECT_EQ(std::get<1>(view2[0]).value, 2);
 }
@@ -303,12 +283,10 @@ TEST_F(ComponentManagerTest, ViewConsistencyWithModifications) {
     auto entity2 = entityManager.generateEntity();
 
     componentManager.addComponent<DataComponent>(entity1, {1, 1.0f});
-    componentManager.addComponent<PositionComponent>(entity1,
-                                                     {1.0f, 2.0f, 3.0f});
+    componentManager.addComponent<PositionComponent>(entity1, {1.0f, 2.0f, 3.0f});
 
     componentManager.addComponent<DataComponent>(entity2, {2, 2.0f});
-    componentManager.addComponent<PositionComponent>(entity2,
-                                                     {4.0f, 5.0f, 6.0f});
+    componentManager.addComponent<PositionComponent>(entity2, {4.0f, 5.0f, 6.0f});
 
     // Modify component through getComponent (after all additions to avoid
     // invalidating references)
@@ -318,7 +296,6 @@ TEST_F(ComponentManagerTest, ViewConsistencyWithModifications) {
     EXPECT_EQ(componentManager.getComponent<DataComponent>(entity1).value, 999);
 
     // Get a fresh view after modification
-    auto view =
-        componentManager.viewComponents<DataComponent, PositionComponent>();
+    auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
     EXPECT_EQ(std::get<1>(view[0]).value, 999);
 }

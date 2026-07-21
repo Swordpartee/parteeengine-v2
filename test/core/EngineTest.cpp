@@ -1,8 +1,9 @@
 
-#include <gtest/gtest.h>
-
 #include "core/Engine.hpp"
+
 #include "core/modules/ModuleBase.hpp"
+
+#include <gtest/gtest.h>
 
 namespace parteeengine {
 namespace {
