@@ -53,7 +53,7 @@ TEST_F(ComponentManagerTest, ComponentData) {
     DataComponent data{42, 3.14f};
 
     componentManager.addComponent<DataComponent>(entity, data);
-    auto &retrieved = componentManager.getComponent<DataComponent>(entity);
+    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
 
     EXPECT_EQ(retrieved.value, 42);
     EXPECT_FLOAT_EQ(retrieved.data, 3.14f);
@@ -64,7 +64,7 @@ TEST_F(ComponentManagerTest, GetComponent) {
     DataComponent data{99, 2.71f};
 
     componentManager.addComponent<DataComponent>(entity, data);
-    auto &retrieved = componentManager.getComponent<DataComponent>(entity);
+    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
 
     EXPECT_EQ(retrieved.value, 99);
     EXPECT_FLOAT_EQ(retrieved.data, 2.71f);
@@ -118,14 +118,14 @@ TEST_F(ComponentManagerTest, ComponentDataModification) {
     auto entity = entityManager.generateEntity();
 
     componentManager.addComponent<DataComponent>(entity);
-    auto &comp = componentManager.getComponent<DataComponent>(entity);
+    auto& comp = componentManager.getComponent<DataComponent>(entity);
     EXPECT_EQ(comp.value, 0);
     EXPECT_FLOAT_EQ(comp.data, 0.0f);
 
     comp.value = 55;
     comp.data = 5.5f;
 
-    auto &retrieved = componentManager.getComponent<DataComponent>(entity);
+    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
     EXPECT_EQ(retrieved.value, 55);
     EXPECT_FLOAT_EQ(retrieved.data, 5.5f);
 }
@@ -160,10 +160,10 @@ TEST_F(ComponentManagerTest, ThreeComponentTypes) {
     EXPECT_TRUE(componentManager.hasComponent<PositionComponent>(entity));
     EXPECT_TRUE(componentManager.hasComponent<VelocityComponent>(entity));
 
-    auto &retrievedData = componentManager.getComponent<DataComponent>(entity);
-    auto &retrievedPos =
+    auto& retrievedData = componentManager.getComponent<DataComponent>(entity);
+    auto& retrievedPos =
         componentManager.getComponent<PositionComponent>(entity);
-    auto &retrievedVel =
+    auto& retrievedVel =
         componentManager.getComponent<VelocityComponent>(entity);
 
     EXPECT_EQ(retrievedData.value, 42);

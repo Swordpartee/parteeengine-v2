@@ -30,7 +30,7 @@ class ModuleManagerTest : public ::testing::Test {
 TEST_F(ModuleManagerTest, AddModuleDefaultConstructsModule) {
     moduleManager.addModule<TestModuleA>();
 
-    auto &module = moduleManager.getModule<TestModuleA>();
+    auto& module = moduleManager.getModule<TestModuleA>();
     EXPECT_EQ(module.value, 0);
 }
 
@@ -38,7 +38,7 @@ TEST_F(ModuleManagerTest, AddModuleWithValueStoresCopy) {
     TestModuleA input{42};
     moduleManager.addModule<TestModuleA>(input);
 
-    auto &module = moduleManager.getModule<TestModuleA>();
+    auto& module = moduleManager.getModule<TestModuleA>();
     EXPECT_EQ(module.value, 42);
 }
 
@@ -47,7 +47,7 @@ TEST_F(ModuleManagerTest, AddModuleDuplicateDoesNotOverwriteExisting) {
     moduleManager.addModule<TestModuleA>(
         TestModuleA{99}); // try_emplace should ignore
 
-    auto &module = moduleManager.getModule<TestModuleA>();
+    auto& module = moduleManager.getModule<TestModuleA>();
     EXPECT_EQ(module.value, 10);
 }
 
@@ -55,14 +55,14 @@ TEST_F(ModuleManagerTest, ReplaceModuleOverwritesExisting) {
     moduleManager.addModule<TestModuleA>(TestModuleA{10});
     moduleManager.replaceModule<TestModuleA>(TestModuleA{55});
 
-    auto &module = moduleManager.getModule<TestModuleA>();
+    auto& module = moduleManager.getModule<TestModuleA>();
     EXPECT_EQ(module.value, 55);
 }
 
 TEST_F(ModuleManagerTest, ReplaceModuleInsertsWhenMissing) {
     moduleManager.replaceModule<TestModuleA>(TestModuleA{77});
 
-    auto &module = moduleManager.getModule<TestModuleA>();
+    auto& module = moduleManager.getModule<TestModuleA>();
     EXPECT_EQ(module.value, 77);
 }
 
@@ -86,10 +86,10 @@ TEST_F(ModuleManagerTest, GetModuleWhenMissingThrowsRuntimeError) {
 TEST_F(ModuleManagerTest, GetModuleReturnsReferenceToStoredInstance) {
     moduleManager.addModule<TestModuleA>(TestModuleA{1});
 
-    auto &module = moduleManager.getModule<TestModuleA>();
+    auto& module = moduleManager.getModule<TestModuleA>();
     module.value = 123;
 
-    auto &moduleAgain = moduleManager.getModule<TestModuleA>();
+    auto& moduleAgain = moduleManager.getModule<TestModuleA>();
     EXPECT_EQ(moduleAgain.value, 123);
 }
 

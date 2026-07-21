@@ -45,7 +45,7 @@ TEST(EngineTest, FacadeRoutesEventsAndModules) {
     EXPECT_EQ(received, 7);
 
     engine.addModule<TestModule>();
-    auto &module = engine.getModule<TestModule>();
+    auto& module = engine.getModule<TestModule>();
     module.value = 11;
 
     EXPECT_EQ(module.value, 11);

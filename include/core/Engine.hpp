@@ -40,7 +40,7 @@ class Engine {
     }
 
     template <typename ComponentType>
-    ComponentType &getComponent(const Entity entity) {
+    ComponentType& getComponent(const Entity entity) {
         return componentManager.getComponent<ComponentType>(entity);
     }
 
@@ -62,12 +62,12 @@ class Engine {
         moduleManager.addModule<ModuleType>();
     }
 
-    template <typename ModuleType> void addModule(const ModuleType &module) {
+    template <typename ModuleType> void addModule(const ModuleType& module) {
         moduleManager.addModule<ModuleType>(module);
     }
 
     template <typename ModuleType>
-    void replaceModule(const ModuleType &module) {
+    void replaceModule(const ModuleType& module) {
         moduleManager.replaceModule<ModuleType>(module);
     }
 
@@ -75,7 +75,7 @@ class Engine {
         moduleManager.removeModule<ModuleType>();
     }
 
-    template <typename ModuleType> ModuleType &getModule() {
+    template <typename ModuleType> ModuleType& getModule() {
         return moduleManager.getModule<ModuleType>();
     }
 };

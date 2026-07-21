@@ -20,7 +20,7 @@ class EventManager {
         subscriberMap;
 
     template <typename EventType>
-    std::vector<detail::Subscriber> &getSubscribers() const;
+    std::vector<detail::Subscriber>& getSubscribers() const;
 
   public:
     template <typename EventType>
@@ -30,7 +30,7 @@ class EventManager {
 };
 
 template <typename EventType>
-std::vector<detail::Subscriber> &EventManager::getSubscribers() const {
+std::vector<detail::Subscriber>& EventManager::getSubscribers() const {
     return subscriberMap.try_emplace(typeid(EventType)).first->second;
 }
 

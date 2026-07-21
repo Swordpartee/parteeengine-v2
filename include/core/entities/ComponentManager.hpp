@@ -19,10 +19,10 @@ class ComponentManager {
         storages;
 
     template <typename ComponentType>
-    ComponentStorage<ComponentType> &getOrCreateStorage();
+    ComponentStorage<ComponentType>& getOrCreateStorage();
 
     template <typename ComponentType>
-    const ComponentStorage<ComponentType> *findStorage() const;
+    const ComponentStorage<ComponentType>* findStorage() const;
 
   public:
     template <typename... ComponentTypes>
@@ -35,30 +35,30 @@ class ComponentManager {
 
     template <typename ComponentType> void removeComponent(const Entity);
 
-    template <typename ComponentType> ComponentType &getComponent(const Entity);
+    template <typename ComponentType> ComponentType& getComponent(const Entity);
 
     template <typename ComponentType>
-    ComponentType const &getComponent(const Entity) const;
+    ComponentType const& getComponent(const Entity) const;
 
     template <typename ComponentType> bool hasComponent(const Entity) const;
 };
 
 template <typename ComponentType>
-ComponentStorage<ComponentType> &ComponentManager::getOrCreateStorage() {
+ComponentStorage<ComponentType>& ComponentManager::getOrCreateStorage() {
     auto [it, inserted] = storages.try_emplace(
         std::type_index(typeid(ComponentType)),
         std::make_unique<ComponentStorage<ComponentType>>());
-    return static_cast<ComponentStorage<ComponentType> &>(*it->second);
+    return static_cast<ComponentStorage<ComponentType>&>(*it->second);
 }
 
 template <typename ComponentType>
-const ComponentStorage<ComponentType> *ComponentManager::findStorage() const {
+const ComponentStorage<ComponentType>* ComponentManager::findStorage() const {
     auto it = storages.find(std::type_index(typeid(ComponentType)));
     if (it == storages.end()) {
         return nullptr;
     }
 
-    return static_cast<const ComponentStorage<ComponentType> *>(
+    return static_cast<const ComponentStorage<ComponentType>*>(
         it->second.get());
 }
 
@@ -72,12 +72,12 @@ ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
 
     using FirstComponent =
         std::tuple_element_t<0, std::tuple<ComponentTypes...>>;
-    const auto *firstStorage = findStorage<FirstComponent>();
+    const auto* firstStorage = findStorage<FirstComponent>();
     if (firstStorage == nullptr) {
         return result;
     }
 
-    for (const auto &entity : firstStorage->entityMap) {
+    for (const auto& entity : firstStorage->entityMap) {
         if ((hasComponent<ComponentTypes>(entity) && ...)) {
             result.emplace_back(entity,
                                 getComponent<ComponentTypes>(entity)...);
@@ -89,7 +89,7 @@ ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
 
 template <typename ComponentType>
 void ComponentManager::addComponent(const Entity entity, ComponentType data) {
-    auto &storage = getOrCreateStorage<ComponentType>();
+    auto& storage = getOrCreateStorage<ComponentType>();
 
     storage.data.emplace_back(data);
     storage.entityMap.emplace_back(entity);
@@ -98,7 +98,7 @@ void ComponentManager::addComponent(const Entity entity, ComponentType data) {
 
 template <typename ComponentType>
 void ComponentManager::addComponent(const Entity entity) {
-    auto &storage = getOrCreateStorage<ComponentType>();
+    auto& storage = getOrCreateStorage<ComponentType>();
 
     storage.data.emplace_back(ComponentType{});
     storage.entityMap.emplace_back(entity);
@@ -107,7 +107,7 @@ void ComponentManager::addComponent(const Entity entity) {
 
 template <typename ComponentType>
 void ComponentManager::removeComponent(const Entity entity) {
-    auto &storage = getOrCreateStorage<ComponentType>();
+    auto& storage = getOrCreateStorage<ComponentType>();
 
     auto it = storage.sparseMap.find(entity);
     if (it == storage.sparseMap.end()) {
@@ -124,8 +124,8 @@ void ComponentManager::removeComponent(const Entity entity) {
 }
 
 template <typename ComponentType>
-ComponentType &ComponentManager::getComponent(const Entity entity) {
-    auto &storage = getOrCreateStorage<ComponentType>();
+ComponentType& ComponentManager::getComponent(const Entity entity) {
+    auto& storage = getOrCreateStorage<ComponentType>();
 
     auto it = storage.sparseMap.find(entity);
     if (it == storage.sparseMap.end()) {
@@ -135,8 +135,8 @@ ComponentType &ComponentManager::getComponent(const Entity entity) {
 }
 
 template <typename ComponentType>
-ComponentType const &ComponentManager::getComponent(const Entity entity) const {
-    const auto *storage = findStorage<ComponentType>();
+ComponentType const& ComponentManager::getComponent(const Entity entity) const {
+    const auto* storage = findStorage<ComponentType>();
 
     if (storage == nullptr) {
         throw std::runtime_error("Entity does not have component");
@@ -151,7 +151,7 @@ ComponentType const &ComponentManager::getComponent(const Entity entity) const {
 
 template <typename ComponentType>
 bool ComponentManager::hasComponent(const Entity entity) const {
-    const auto *storage = findStorage<ComponentType>();
+    const auto* storage = findStorage<ComponentType>();
     if (storage == nullptr) {
         return false;
     }
