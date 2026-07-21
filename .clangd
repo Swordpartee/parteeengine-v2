@@ -1,0 +1,6 @@
+CompileFlags:
+  Add: [
+    --driver-mode=cl,       # Forces clangd to look for MSVC-style flags
+    -cl-defaults,           # Enables MSVC compatibility mode
+    /std:c++latest          # Tells the MSVC parser to use C++23/latest
+  ]

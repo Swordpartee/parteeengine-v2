@@ -9,8 +9,7 @@ namespace parteeengine {
 Entity EntityManager::generateEntity() {
     if (availableIDs.empty()) {
         if (nextID == std::numeric_limits<EntityID>::max()) {
-            throw std::runtime_error(
-                "EntityManager: Entity ID space exhausted");
+            throw std::runtime_error("EntityManager: Entity ID space exhausted");
         }
 
         currentGenerations.emplace_back(0);
@@ -26,13 +25,11 @@ Entity EntityManager::generateEntity() {
 
 void EntityManager::deleteEntity(const Entity entity) {
     if (!isValidEntity(entity)) {
-        throw std::runtime_error(
-            "EntityManager: Attempted to delete invalid entity");
+        throw std::runtime_error("EntityManager: Attempted to delete invalid entity");
     }
     currentGenerations[entity.id]++;
 
-    if (currentGenerations[entity.id] ==
-        std::numeric_limits<EntityGeneration>::max()) {
+    if (currentGenerations[entity.id] == std::numeric_limits<EntityGeneration>::max()) {
         return;
     }
 
@@ -40,8 +37,7 @@ void EntityManager::deleteEntity(const Entity entity) {
 }
 
 bool EntityManager::isValidEntity(const Entity entity) const {
-    return entity.id < nextID &&
-           entity.generation == currentGenerations[entity.id];
+    return entity.id < nextID && entity.generation == currentGenerations[entity.id];
 }
 
 } // namespace parteeengine

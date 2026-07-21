@@ -1,9 +1,9 @@
 #pragma once
 
+#include "core/entities/Entity.hpp"
+
 #include <tuple>
 #include <vector>
-
-#include "core/entities/Entity.hpp"
 
 namespace parteeengine {
 
