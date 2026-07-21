@@ -33,6 +33,7 @@ Thumbs.db
 
 # Logs
 *.log
+.cache
 
 # Node files
 node_modules/

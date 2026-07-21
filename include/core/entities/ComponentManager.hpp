@@ -1,35 +1,29 @@
 #pragma once
 
+#include "core/entities/ComponentStorage.hpp"
+#include "core/entities/Entity.hpp"
+
 #include <memory>
 #include <stdexcept>
 #include <typeindex>
 #include <unordered_map>
 
-#include "core/entities/ComponentStorage.hpp"
-#include "core/entities/Entity.hpp"
-
 namespace parteeengine {
 
-template <typename... ComponentTypes>
-using ComponentView = std::vector<std::tuple<Entity, ComponentTypes...>>;
+template <typename... ComponentTypes> using ComponentView = std::vector<std::tuple<Entity, ComponentTypes...>>;
 
 class ComponentManager {
   private:
-    std::unordered_map<std::type_index, std::unique_ptr<ComponentStorageBase>>
-        storages;
+    std::unordered_map<std::type_index, std::unique_ptr<ComponentStorageBase>> storages;
 
-    template <typename ComponentType>
-    ComponentStorage<ComponentType> &getOrCreateStorage();
+    template <typename ComponentType> ComponentStorage<ComponentType> &getOrCreateStorage();
 
-    template <typename ComponentType>
-    const ComponentStorage<ComponentType> *findStorage() const;
+    template <typename ComponentType> const ComponentStorage<ComponentType> *findStorage() const;
 
   public:
-    template <typename... ComponentTypes>
-    ComponentView<ComponentTypes...> viewComponents() const;
+    template <typename... ComponentTypes> ComponentView<ComponentTypes...> viewComponents() const;
 
-    template <typename ComponentType>
-    void addComponent(const Entity, ComponentType);
+    template <typename ComponentType> void addComponent(const Entity, ComponentType);
 
     template <typename ComponentType> void addComponent(const Entity);
 
@@ -37,41 +31,34 @@ class ComponentManager {
 
     template <typename ComponentType> ComponentType &getComponent(const Entity);
 
-    template <typename ComponentType>
-    ComponentType const &getComponent(const Entity) const;
+    template <typename ComponentType> ComponentType const &getComponent(const Entity) const;
 
     template <typename ComponentType> bool hasComponent(const Entity) const;
 };
 
-template <typename ComponentType>
-ComponentStorage<ComponentType> &ComponentManager::getOrCreateStorage() {
-    auto [it, inserted] = storages.try_emplace(
-        std::type_index(typeid(ComponentType)),
-        std::make_unique<ComponentStorage<ComponentType>>());
+template <typename ComponentType> ComponentStorage<ComponentType> &ComponentManager::getOrCreateStorage() {
+    auto [it, inserted] = storages.try_emplace(std::type_index(typeid(ComponentType)),
+                                               std::make_unique<ComponentStorage<ComponentType>>());
     return static_cast<ComponentStorage<ComponentType> &>(*it->second);
 }
 
-template <typename ComponentType>
-const ComponentStorage<ComponentType> *ComponentManager::findStorage() const {
+template <typename ComponentType> const ComponentStorage<ComponentType> *ComponentManager::findStorage() const {
     auto it = storages.find(std::type_index(typeid(ComponentType)));
     if (it == storages.end()) {
         return nullptr;
     }
 
-    return static_cast<const ComponentStorage<ComponentType> *>(
-        it->second.get());
+    return static_cast<const ComponentStorage<ComponentType> *>(it->second.get());
 }
 
-template <typename... ComponentTypes>
-ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
+template <typename... ComponentTypes> ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
     ComponentView<ComponentTypes...> result;
 
     if constexpr (sizeof...(ComponentTypes) == 0) {
         return result;
     }
 
-    using FirstComponent =
-        std::tuple_element_t<0, std::tuple<ComponentTypes...>>;
+    using FirstComponent = std::tuple_element_t<0, std::tuple<ComponentTypes...>>;
     const auto *firstStorage = findStorage<FirstComponent>();
     if (firstStorage == nullptr) {
         return result;
@@ -79,16 +66,14 @@ ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
 
     for (const auto &entity : firstStorage->entityMap) {
         if ((hasComponent<ComponentTypes>(entity) && ...)) {
-            result.emplace_back(entity,
-                                getComponent<ComponentTypes>(entity)...);
+            result.emplace_back(entity, getComponent<ComponentTypes>(entity)...);
         }
     }
 
     return result;
 }
 
-template <typename ComponentType>
-void ComponentManager::addComponent(const Entity entity, ComponentType data) {
+template <typename ComponentType> void ComponentManager::addComponent(const Entity entity, ComponentType data) {
     auto &storage = getOrCreateStorage<ComponentType>();
 
     storage.data.emplace_back(data);
@@ -96,8 +81,7 @@ void ComponentManager::addComponent(const Entity entity, ComponentType data) {
     storage.sparseMap.emplace(entity, storage.data.size() - 1);
 }
 
-template <typename ComponentType>
-void ComponentManager::addComponent(const Entity entity) {
+template <typename ComponentType> void ComponentManager::addComponent(const Entity entity) {
     auto &storage = getOrCreateStorage<ComponentType>();
 
     storage.data.emplace_back(ComponentType{});
@@ -105,8 +89,7 @@ void ComponentManager::addComponent(const Entity entity) {
     storage.sparseMap.emplace(entity, storage.data.size() - 1);
 }
 
-template <typename ComponentType>
-void ComponentManager::removeComponent(const Entity entity) {
+template <typename ComponentType> void ComponentManager::removeComponent(const Entity entity) {
     auto &storage = getOrCreateStorage<ComponentType>();
 
     auto it = storage.sparseMap.find(entity);
@@ -123,8 +106,7 @@ void ComponentManager::removeComponent(const Entity entity) {
     storage.entityMap.pop_back();
 }
 
-template <typename ComponentType>
-ComponentType &ComponentManager::getComponent(const Entity entity) {
+template <typename ComponentType> ComponentType &ComponentManager::getComponent(const Entity entity) {
     auto &storage = getOrCreateStorage<ComponentType>();
 
     auto it = storage.sparseMap.find(entity);
@@ -134,8 +116,7 @@ ComponentType &ComponentManager::getComponent(const Entity entity) {
     return storage.data[it->second];
 }
 
-template <typename ComponentType>
-ComponentType const &ComponentManager::getComponent(const Entity entity) const {
+template <typename ComponentType> ComponentType const &ComponentManager::getComponent(const Entity entity) const {
     const auto *storage = findStorage<ComponentType>();
 
     if (storage == nullptr) {
@@ -149,8 +130,7 @@ ComponentType const &ComponentManager::getComponent(const Entity entity) const {
     return storage->data[it->second];
 }
 
-template <typename ComponentType>
-bool ComponentManager::hasComponent(const Entity entity) const {
+template <typename ComponentType> bool ComponentManager::hasComponent(const Entity entity) const {
     const auto *storage = findStorage<ComponentType>();
     if (storage == nullptr) {
         return false;

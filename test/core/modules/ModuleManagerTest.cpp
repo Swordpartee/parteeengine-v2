@@ -1,10 +1,10 @@
-#include <gtest/gtest.h>
-
-#include <stdexcept>
-#include <string>
+#include "core/modules/ModuleManager.hpp"
 
 #include "core/modules/ModuleBase.hpp"
-#include "core/modules/ModuleManager.hpp"
+
+#include <gtest/gtest.h>
+#include <stdexcept>
+#include <string>
 
 namespace {
 
@@ -44,8 +44,7 @@ TEST_F(ModuleManagerTest, AddModuleWithValueStoresCopy) {
 
 TEST_F(ModuleManagerTest, AddModuleDuplicateDoesNotOverwriteExisting) {
     moduleManager.addModule<TestModuleA>(TestModuleA{10});
-    moduleManager.addModule<TestModuleA>(
-        TestModuleA{99}); // try_emplace should ignore
+    moduleManager.addModule<TestModuleA>(TestModuleA{99}); // try_emplace should ignore
 
     auto &module = moduleManager.getModule<TestModuleA>();
     EXPECT_EQ(module.value, 10);
@@ -70,8 +69,7 @@ TEST_F(ModuleManagerTest, RemoveModuleRemovesExisting) {
     moduleManager.addModule<TestModuleA>(TestModuleA{5});
     moduleManager.removeModule<TestModuleA>();
 
-    EXPECT_THROW((void)moduleManager.getModule<TestModuleA>(),
-                 std::runtime_error);
+    EXPECT_THROW((void)moduleManager.getModule<TestModuleA>(), std::runtime_error);
 }
 
 TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) {
@@ -79,8 +77,7 @@ TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) {
 }
 
 TEST_F(ModuleManagerTest, GetModuleWhenMissingThrowsRuntimeError) {
-    EXPECT_THROW((void)moduleManager.getModule<TestModuleA>(),
-                 std::runtime_error);
+    EXPECT_THROW((void)moduleManager.getModule<TestModuleA>(), std::runtime_error);
 }
 
 TEST_F(ModuleManagerTest, GetModuleReturnsReferenceToStoredInstance) {
