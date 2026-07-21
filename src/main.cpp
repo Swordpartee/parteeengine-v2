@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "rendering/window/WindowFactory.hpp"
+#include "util/OSUtil.hpp"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -10,7 +11,10 @@ int main() {
 
     ShowWindow(window, SW_SHOW);
 
-    while (true) {
+    MSG msg = {};
+    while (GetMessage(&msg, NULL, 0, 0) > 0) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
     }
 
     return 0;

@@ -1,7 +1,5 @@
 #pragma once
 
-namespace parteeengine {
-
 #if defined(_WIN32)
 
 #define PLATFORM_WINDOWS 1
@@ -21,5 +19,3 @@ namespace parteeengine {
 #error "Unknown Operating System"
 
 #endif
-
-} // namespace parteeengine
