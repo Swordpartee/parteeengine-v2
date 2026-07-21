@@ -33,7 +33,7 @@ class Engine {
         componentManager.removeComponent<ComponentType>(entity);
     }
 
-    template <typename ComponentType> ComponentType &getComponent(const Entity entity) {
+    template <typename ComponentType> ComponentType& getComponent(const Entity entity) {
         return componentManager.getComponent<ComponentType>(entity);
     }
 
@@ -53,13 +53,13 @@ class Engine {
         moduleManager.addModule<ModuleType>(module);
     }
 
-    template <typename ModuleType> void replaceModule(const ModuleType &module) {
+    template <typename ModuleType> void replaceModule(const ModuleType& module) {
         moduleManager.replaceModule<ModuleType>(module);
     }
 
     template <typename ModuleType> void removeModule() { moduleManager.removeModule<ModuleType>(); }
 
-    template <typename ModuleType> ModuleType &getModule() { return moduleManager.getModule<ModuleType>(); }
+    template <typename ModuleType> ModuleType& getModule() { return moduleManager.getModule<ModuleType>(); }
 };
 
 } // namespace parteeengine

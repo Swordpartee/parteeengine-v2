@@ -159,9 +159,9 @@ TEST_F(ComponentManagerTest, ThreeComponentTypes) {
     EXPECT_TRUE(componentManager.hasComponent<PositionComponent>(entity));
     EXPECT_TRUE(componentManager.hasComponent<VelocityComponent>(entity));
 
-    auto &retrievedData = componentManager.getComponent<DataComponent>(entity);
-    auto &retrievedPos = componentManager.getComponent<PositionComponent>(entity);
-    auto &retrievedVel = componentManager.getComponent<VelocityComponent>(entity);
+    auto& retrievedData = componentManager.getComponent<DataComponent>(entity);
+    auto& retrievedPos = componentManager.getComponent<PositionComponent>(entity);
+    auto& retrievedVel = componentManager.getComponent<VelocityComponent>(entity);
 
     EXPECT_EQ(retrievedData.value, 42);
     EXPECT_FLOAT_EQ(retrievedPos.x, 1.0f);

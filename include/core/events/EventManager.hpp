@@ -3,8 +3,9 @@
 #include <any>
 #include <functional>
 #include <typeindex>
-#include <unordered_map>
 #include <vector>
+
+#include <unordered_map>
 
 namespace parteeengine {
 
@@ -17,7 +18,7 @@ class EventManager {
   private:
     mutable std::unordered_map<std::type_index, std::vector<detail::Subscriber>> subscriberMap;
 
-    template <typename EventType> std::vector<detail::Subscriber> &getSubscribers() const;
+    template <typename EventType> std::vector<detail::Subscriber>& getSubscribers() const;
 
   public:
     template <typename EventType> void subscribe(const detail::TypedSubscriber<EventType>);
@@ -25,7 +26,7 @@ class EventManager {
     template <typename EventType> void emit(const EventType) const;
 };
 
-template <typename EventType> std::vector<detail::Subscriber> &EventManager::getSubscribers() const {
+template <typename EventType> std::vector<detail::Subscriber>& EventManager::getSubscribers() const {
     return subscriberMap.try_emplace(typeid(EventType)).first->second;
 }
 
