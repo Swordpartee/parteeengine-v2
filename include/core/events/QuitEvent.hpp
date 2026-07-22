@@ -1,5 +1,5 @@
-#pragma  once
+#pragma once
 
 namespace parteeengine {
-    struct QuitEvent {};
-}
+struct QuitEvent {};
+} // namespace parteeengine

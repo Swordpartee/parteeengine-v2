@@ -20,7 +20,7 @@ class EventManagerTest : public ::testing::Test {
     };
 };
 
-}
+} // namespace
 
 // Basic subscription and emission test
 TEST_F(EventManagerTest, Subscribe) {

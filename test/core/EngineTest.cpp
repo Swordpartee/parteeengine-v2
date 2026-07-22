@@ -16,18 +16,14 @@ class TestModule : public ModuleBase {
     bool initalized = false;
     int updated = 0;
 
-    void init(const ModuleInput&) {
-        initalized = true;
-    }
+    void init(const ModuleInput&) { initalized = true; }
 
-    void update(const ModuleInput&) {
-        updated++;
-    }
+    void update(const ModuleInput&) { updated++; }
 };
 
 class QuitModule : public ModuleBase {
-    public:
-        int timer = 0;
+  public:
+    int timer = 0;
 
     void update(const ModuleInput& input) {
         timer++;
@@ -39,7 +35,7 @@ class QuitModule : public ModuleBase {
 };
 
 class SystemModule : public ModuleBase {
-public:
+  public:
     bool entityCreatedAndVerified = false;
     bool componentAddedAndVerified = false;
     bool componentRemovedAndVerified = false;
@@ -53,7 +49,7 @@ public:
 
         // 2. Test Component Addition and Access via ModuleInput
         input.componentManager.addComponent(entity, 100);
-        if (input.componentManager.hasComponent<int>(entity) && 
+        if (input.componentManager.hasComponent<int>(entity) &&
             input.componentManager.getComponent<int>(entity) == 100) {
             componentAddedAndVerified = true;
         }
@@ -67,8 +63,8 @@ public:
 };
 
 class EngineTest : public ::testing::Test {
-    protected:
-        Engine engine;
+  protected:
+    Engine engine;
 };
 
 } // namespace
@@ -109,14 +105,11 @@ TEST_F(EngineTest, EngineRoutesEventsAndModules) {
 TEST_F(EngineTest, EngineExitAndEventManager) {
     engine.addModule<QuitModule>();
 
-    auto future = std::async(std::launch::async, [&]() {
-        engine.run();
-    });
+    auto future = std::async(std::launch::async, [&]() { engine.run(); });
 
     auto status = future.wait_for(std::chrono::milliseconds(100));
 
     EXPECT_NE(status, std::future_status::timeout) << "Test timed out! Possible infinite loop.";
-
 }
 
 TEST_F(EngineTest, ModuleInitAndUpdate) {

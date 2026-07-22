@@ -27,7 +27,7 @@ class ModuleManagerTest : public ::testing::Test {
     ModuleManager moduleManager;
 };
 
-}
+} // namespace
 
 TEST_F(ModuleManagerTest, AddModuleDefaultConstructsModule) {
     moduleManager.addModule<TestModuleA>();

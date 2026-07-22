@@ -8,7 +8,7 @@ namespace parteeengine {
 
 namespace {
 
-    class ComponentManagerTest : public ::testing::Test {
+class ComponentManagerTest : public ::testing::Test {
   protected:
     EntityManager entityManager;
     ComponentManager componentManager;
@@ -31,7 +31,7 @@ namespace {
     };
 };
 
-}
+} // namespace
 
 TEST_F(ComponentManagerTest, ComponentCreation) {
     auto entity = entityManager.generateEntity();

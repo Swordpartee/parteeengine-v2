@@ -11,7 +11,7 @@ class EntityManagerTest : public ::testing::Test {
     EntityManager manager;
 };
 
-}
+} // namespace
 
 TEST_F(EntityManagerTest, EntityCreation) {
     auto entity1 = manager.generateEntity();
