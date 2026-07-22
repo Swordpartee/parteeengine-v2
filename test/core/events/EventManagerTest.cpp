@@ -18,7 +18,7 @@ class EventManagerTest : public ::testing::Test {
     struct AnotherEvent {
         double data;
     };
-}
+};
 
 }
 
