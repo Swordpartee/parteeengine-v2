@@ -1,13 +1,20 @@
 #include "core/Engine.hpp"
 
 #include "core/modules/ModuleBase.hpp"
+#include "core/events/QuitEvent.hpp"
+
 
 namespace parteeengine {
 
 void Engine::run() {
+    running = true;
+    eventManager.subscribe<QuitEvent>([this] (const QuitEvent&) {
+        this->running = false;
+    });
+
     moduleManager.init(buildModuleInput());
 
-    while (true) {
+    while (running) {
         moduleManager.update(buildModuleInput());
     }
 };

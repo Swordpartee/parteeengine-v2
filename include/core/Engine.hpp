@@ -14,6 +14,8 @@ class Engine {
     ComponentManager componentManager;
     EventManager eventManager;
 
+    bool running = false;
+
   public:
     void run();
 
