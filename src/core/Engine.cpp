@@ -4,22 +4,20 @@
 
 namespace parteeengine {
 
-    void Engine::run() {
-        moduleManager.init(buildModuleInput());
+void Engine::run() {
+    moduleManager.init(buildModuleInput());
 
-        while (true) {
-            moduleManager.update(buildModuleInput());
-        }
-    };
-
-    ModuleInput Engine::buildModuleInput() {
-        return {entityManager, componentManager, eventManager};
+    while (true) {
+        moduleManager.update(buildModuleInput());
     }
-    
-    Entity Engine::createEntity() { return entityManager.generateEntity(); }
+};
 
-    bool Engine::isValidEntity(const Entity entity) const { return entityManager.isValidEntity(entity); }
+ModuleInput Engine::buildModuleInput() { return {entityManager, componentManager, eventManager}; }
 
-    void Engine::deleteEntity(const Entity entity) { entityManager.deleteEntity(entity); }
+Entity Engine::createEntity() { return entityManager.generateEntity(); }
+
+bool Engine::isValidEntity(const Entity entity) const { return entityManager.isValidEntity(entity); }
+
+void Engine::deleteEntity(const Entity entity) { entityManager.deleteEntity(entity); }
 
 } // namespace parteeengine

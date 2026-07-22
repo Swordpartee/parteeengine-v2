@@ -13,7 +13,6 @@ struct TestModuleA : public parteeengine::ModuleBase {
 
     TestModuleA() {}
     TestModuleA(int n) : value(n) {}
-
 };
 
 struct TestModuleB : public parteeengine::ModuleBase {

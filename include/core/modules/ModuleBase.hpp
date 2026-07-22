@@ -15,9 +15,9 @@ struct ModuleInput {
 };
 
 class ModuleBase {
-public:
-    virtual void init(ModuleInput) {};
-    virtual void update(ModuleInput) {};
+  public:
+    virtual void init(ModuleInput){};
+    virtual void update(ModuleInput){};
 
     virtual ~ModuleBase() = default;
 };

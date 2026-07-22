@@ -19,9 +19,9 @@ class ModuleManager {
     std::unordered_map<std::type_index, std::unique_ptr<ModuleBase>> modules;
 
   public:
-    void init(ModuleInput); 
+    void init(ModuleInput);
 
-    void update(ModuleInput); 
+    void update(ModuleInput);
 
     template <is_module ModuleType>
     void addModule();
