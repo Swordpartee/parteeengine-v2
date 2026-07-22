@@ -6,16 +6,17 @@
 #include <stdexcept>
 #include <string>
 
+namespace parteeengine {
 namespace {
 
-struct TestModuleA : public parteeengine::ModuleBase {
+struct TestModuleA : public ModuleBase {
     int value{0};
 
     TestModuleA() {}
     TestModuleA(int n) : value(n) {}
 };
 
-struct TestModuleB : public parteeengine::ModuleBase {
+struct TestModuleB : public ModuleBase {
     std::string name{"default"};
 
     TestModuleB(std::string n) : name(std::move(n)) {}
@@ -23,8 +24,10 @@ struct TestModuleB : public parteeengine::ModuleBase {
 
 class ModuleManagerTest : public ::testing::Test {
   protected:
-    parteeengine::ModuleManager moduleManager;
+    ModuleManager moduleManager;
 };
+
+}
 
 TEST_F(ModuleManagerTest, AddModuleDefaultConstructsModule) {
     moduleManager.addModule<TestModuleA>();
@@ -97,4 +100,4 @@ TEST_F(ModuleManagerTest, DifferentModuleTypesAreStoredIndependently) {
     EXPECT_EQ(moduleManager.getModule<TestModuleB>().name, "audio");
 }
 
-} // namespace
+} // namespace parteeengine

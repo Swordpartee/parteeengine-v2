@@ -2,9 +2,13 @@
 
 #include <gtest/gtest.h>
 
+namespace parteeengine {
+
+namespace {
+
 class EventManagerTest : public ::testing::Test {
   protected:
-    parteeengine::EventManager EventManager;
+    EventManager EventManager;
 
     struct TestEvent {};
     struct TestEventWithData {
@@ -14,7 +18,9 @@ class EventManagerTest : public ::testing::Test {
     struct AnotherEvent {
         double data;
     };
-};
+}
+
+}
 
 // Basic subscription and emission test
 TEST_F(EventManagerTest, Subscribe) {
@@ -136,3 +142,5 @@ TEST_F(EventManagerTest, MultipleSubscribersReceiveSameData) {
     EXPECT_EQ(value2, 123);
     EXPECT_EQ(value3, 123);
 }
+
+} // namespace parteeengine

@@ -13,6 +13,10 @@ class TestModule : public ModuleBase {
     int value = 0;
 };
 
+class QuitModule : public ModuleBase {
+
+};
+
 } // namespace
 
 TEST(EngineTest, FacadeRoutesEntityAndComponentOperations) {
