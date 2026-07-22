@@ -11,15 +11,15 @@ namespace {
 struct TestModuleA : public parteeengine::ModuleBase {
     int value{0};
 
-    TestModuleA() = default;
-    explicit TestModuleA(int v) : value(v) {}
+    TestModuleA() {}
+    TestModuleA(int n) : value(n) {}
+
 };
 
 struct TestModuleB : public parteeengine::ModuleBase {
     std::string name{"default"};
 
-    TestModuleB() = default;
-    explicit TestModuleB(std::string n) : name(std::move(n)) {}
+    TestModuleB(std::string n) : name(std::move(n)) {}
 };
 
 class ModuleManagerTest : public ::testing::Test {
