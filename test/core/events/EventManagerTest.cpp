@@ -8,7 +8,7 @@ namespace {
 
 class EventManagerTest : public ::testing::Test {
   protected:
-    EventManager EventManager;
+    EventManager eventManager;
 
     struct TestEvent {};
     struct TestEventWithData {
