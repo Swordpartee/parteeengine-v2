@@ -4,10 +4,14 @@
 
 #include <gtest/gtest.h>
 
+namespace parteeengine {
+
+namespace {
+
 class ComponentManagerTest : public ::testing::Test {
   protected:
-    parteeengine::EntityManager entityManager;
-    parteeengine::ComponentManager componentManager;
+    EntityManager entityManager;
+    ComponentManager componentManager;
 
     struct DataComponent {
         int value = 0;
@@ -26,6 +30,8 @@ class ComponentManagerTest : public ::testing::Test {
         float vz = 0.0f;
     };
 };
+
+} // namespace
 
 TEST_F(ComponentManagerTest, ComponentCreation) {
     auto entity = entityManager.generateEntity();
@@ -299,3 +305,5 @@ TEST_F(ComponentManagerTest, ViewConsistencyWithModifications) {
     auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
     EXPECT_EQ(std::get<1>(view[0]).value, 999);
 }
+
+} // namespace parteeengine

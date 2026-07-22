@@ -12,7 +12,7 @@ namespace parteeengine {
 namespace detail {
 using Subscriber = std::function<void(const std::any)>;
 template <typename EventType>
-using TypedSubscriber = std::function<void(const EventType)>;
+using TypedSubscriber = std::function<void(const EventType&)>;
 } // namespace detail
 
 class EventManager {

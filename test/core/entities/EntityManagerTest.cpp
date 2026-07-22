@@ -2,10 +2,16 @@
 
 #include <gtest/gtest.h>
 
+namespace parteeengine {
+
+namespace {
+
 class EntityManagerTest : public ::testing::Test {
   protected:
-    parteeengine::EntityManager manager;
+    EntityManager manager;
 };
+
+} // namespace
 
 TEST_F(EntityManagerTest, EntityCreation) {
     auto entity1 = manager.generateEntity();
@@ -37,7 +43,7 @@ TEST_F(EntityManagerTest, DeleteInvalidEntity) {
 }
 
 TEST_F(EntityManagerTest, DeleteNonExistentEntity) {
-    parteeengine::Entity nonExistentEntity;
+    Entity nonExistentEntity;
     nonExistentEntity.id = 999;
     nonExistentEntity.generation = 0;
 
@@ -63,3 +69,5 @@ TEST_F(EntityManagerTest, IDReuseAfterDeletion) {
     // New entity should be valid
     EXPECT_TRUE(manager.isValidEntity(entity2));
 }
+
+} // namespace parteeengine
