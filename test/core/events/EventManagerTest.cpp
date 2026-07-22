@@ -26,9 +26,9 @@ class EventManagerTest : public ::testing::Test {
 TEST_F(EventManagerTest, Subscribe) {
     bool called = false;
 
-    EventManager.subscribe<TestEvent>([&called](const TestEvent) { called = true; });
+    eventManager.subscribe<TestEvent>([&called](const TestEvent) { called = true; });
 
-    EventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
 
     EXPECT_TRUE(called);
 }
@@ -37,11 +37,11 @@ TEST_F(EventManagerTest, Subscribe) {
 TEST_F(EventManagerTest, MultipleSubscribers) {
     int callCount = 0;
 
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
+    eventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
+    eventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
+    eventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
 
-    EventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
 
     EXPECT_EQ(callCount, 3);
 }
@@ -51,10 +51,10 @@ TEST_F(EventManagerTest, DifferentEventTypes) {
     bool testEventCalled = false;
     bool anotherEventCalled = false;
 
-    EventManager.subscribe<TestEvent>([&testEventCalled](const TestEvent) { testEventCalled = true; });
-    EventManager.subscribe<AnotherEvent>([&anotherEventCalled](const AnotherEvent) { anotherEventCalled = true; });
+    eventManager.subscribe<TestEvent>([&testEventCalled](const TestEvent) { testEventCalled = true; });
+    eventManager.subscribe<AnotherEvent>([&anotherEventCalled](const AnotherEvent) { anotherEventCalled = true; });
 
-    EventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
 
     EXPECT_TRUE(testEventCalled);
     EXPECT_FALSE(anotherEventCalled);
@@ -64,11 +64,11 @@ TEST_F(EventManagerTest, DifferentEventTypes) {
 TEST_F(EventManagerTest, EventWithData) {
     TestEventWithData receivedEvent = {0, ""};
 
-    EventManager.subscribe<TestEventWithData>(
+    eventManager.subscribe<TestEventWithData>(
         [&receivedEvent](const TestEventWithData event) { receivedEvent = event; });
 
     TestEventWithData emittedEvent = {42, "test message"};
-    EventManager.emit<TestEventWithData>(emittedEvent);
+    eventManager.emit<TestEventWithData>(emittedEvent);
 
     EXPECT_EQ(receivedEvent.value, 42);
     EXPECT_EQ(receivedEvent.message, "test message");
@@ -78,11 +78,11 @@ TEST_F(EventManagerTest, EventWithData) {
 TEST_F(EventManagerTest, EmitMultipleTimes) {
     int callCount = 0;
 
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
+    eventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
 
-    EventManager.emit<TestEvent>({});
-    EventManager.emit<TestEvent>({});
-    EventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
 
     EXPECT_EQ(callCount, 3);
 }
@@ -91,11 +91,11 @@ TEST_F(EventManagerTest, EmitMultipleTimes) {
 TEST_F(EventManagerTest, SubscribeAfterEmit) {
     int callCount = 0;
 
-    EventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
 
-    EventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
+    eventManager.subscribe<TestEvent>([&callCount](const TestEvent) { callCount++; });
 
-    EventManager.emit<TestEvent>({});
+    eventManager.emit<TestEvent>({});
 
     EXPECT_EQ(callCount, 1);
 }
@@ -105,16 +105,16 @@ TEST_F(EventManagerTest, MultipleEventTypesWithData) {
     TestEventWithData receivedTestEvent = {0, ""};
     AnotherEvent receivedAnotherEvent = {0.0};
 
-    EventManager.subscribe<TestEventWithData>(
+    eventManager.subscribe<TestEventWithData>(
         [&receivedTestEvent](const TestEventWithData event) { receivedTestEvent = event; });
-    EventManager.subscribe<AnotherEvent>(
+    eventManager.subscribe<AnotherEvent>(
         [&receivedAnotherEvent](const AnotherEvent event) { receivedAnotherEvent = event; });
 
     TestEventWithData testEvent = {99, "multi-event test"};
     AnotherEvent anotherEvent = {3.14159};
 
-    EventManager.emit<TestEventWithData>(testEvent);
-    EventManager.emit<AnotherEvent>(anotherEvent);
+    eventManager.emit<TestEventWithData>(testEvent);
+    eventManager.emit<AnotherEvent>(anotherEvent);
 
     EXPECT_EQ(receivedTestEvent.value, 99);
     EXPECT_EQ(receivedTestEvent.message, "multi-event test");
@@ -124,19 +124,19 @@ TEST_F(EventManagerTest, MultipleEventTypesWithData) {
 // Emitting with no subscribers doesn't cause issues
 TEST_F(EventManagerTest, EmitWithNoSubscribers) {
     // Should not throw or crash
-    EXPECT_NO_THROW(EventManager.emit<TestEvent>({}));
-    EXPECT_NO_THROW(EventManager.emit<TestEventWithData>({0, ""}));
+    EXPECT_NO_THROW(eventManager.emit<TestEvent>({}));
+    EXPECT_NO_THROW(eventManager.emit<TestEventWithData>({0, ""}));
 }
 
 // Multiple subscribers receive the same event data
 TEST_F(EventManagerTest, MultipleSubscribersReceiveSameData) {
     int value1 = 0, value2 = 0, value3 = 0;
 
-    EventManager.subscribe<TestEventWithData>([&value1](const TestEventWithData event) { value1 = event.value; });
-    EventManager.subscribe<TestEventWithData>([&value2](const TestEventWithData event) { value2 = event.value; });
-    EventManager.subscribe<TestEventWithData>([&value3](const TestEventWithData event) { value3 = event.value; });
+    eventManager.subscribe<TestEventWithData>([&value1](const TestEventWithData event) { value1 = event.value; });
+    eventManager.subscribe<TestEventWithData>([&value2](const TestEventWithData event) { value2 = event.value; });
+    eventManager.subscribe<TestEventWithData>([&value3](const TestEventWithData event) { value3 = event.value; });
 
-    EventManager.emit<TestEventWithData>({123, "shared data"});
+    eventManager.emit<TestEventWithData>({123, "shared data"});
 
     EXPECT_EQ(value1, 123);
     EXPECT_EQ(value2, 123);
