@@ -5,4 +5,27 @@ ColumnLimit: 120
 IndentWidth: 4
 UseTab: Never
 
+PointerAlignment: Left
+
+AlwaysBreakTemplateDeclarations: Yes
+
 IncludeBlocks: Regroup
+
+# Define your include groups and add a dummy group at the bottom
+IncludeCategories:
+  # 1. Main header corresponding to this source file
+  - Regex:           '^"(.*)\.(h|hpp|hh)"$'
+    Priority:        1
+    SortPriority:    0
+  # 2. System/Standard library headers
+  - Regex:           '^<[[:alnum:].>/]+>'
+    Priority:        2
+    SortPriority:    0
+  # 3. Project-specific or third-party headers
+  - Regex:           '.*'
+    Priority:        3
+    SortPriority:    0
+  # 4. The Magic Trick: Force an empty line after the final include
+  - Regex:           '$'
+    Priority:        4
+    SortPriority:    0
