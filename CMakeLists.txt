@@ -73,19 +73,26 @@ endif()
 set(PARTEEE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(PARTEEE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-# Collect source files
-file(GLOB_RECURSE PARTEEE_SOURCES
-    "${PARTEEE_SOURCE_DIR}/*.cpp"
-    "${PARTEEE_SOURCE_DIR}/*.cc"
-    "${PARTEEE_SOURCE_DIR}/*.cxx"
+# Explicit list of all header files (Prevents stale CMake cache issues)
+set(PARTEEE_HEADERS
+    "${PARTEEE_INCLUDE_DIR}/core/Engine.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/entities/ComponentManager.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/entities/ComponentStorage.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/entities/Entity.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/entities/EntityManager.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/events/EventManager.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/events/QuitEvent.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleBase.hpp"
+    "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleManager.hpp"
+    "${PARTEEE_INCLUDE_DIR}/util/OSUtil.hpp"
+
 )
 
-# Exclude main.cpp from library
-list(FILTER PARTEEE_SOURCES EXCLUDE REGEX "main\\.cpp$")
-
-file(GLOB_RECURSE PARTEEE_HEADERS
-    "${PARTEEE_INCLUDE_DIR}/*.hpp"
-    "${PARTEEE_INCLUDE_DIR}/*.h"
+# Explicit list of all library source files
+set(PARTEEE_SOURCES
+    "${PARTEEE_SOURCE_DIR}/core/Engine.cpp"
+    "${PARTEEE_SOURCE_DIR}/core/entities/EntityManager.cpp"
+    "${PARTEEE_SOURCE_DIR}/core/modules/ModuleManager.cpp"
 )
 
 # ============================================================================
