@@ -6,7 +6,7 @@ namespace parteeengine::rendering {
 
 #if defined (PLATFORM_WINDOWS) 
 
-    using NativeWindowHandle = HWMD;
+    using NativeWindowHandle = HWND;
 
 #elif defined (PLATFORM_LINUX)
 
