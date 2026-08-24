@@ -33,7 +33,7 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT uMsg, WPARAM wParam, LPARAM lPa
     case WM_CLOSE:
         // Destroys the window when the user clicks the close 'X' button
         DestroyWindow(windowHandle);
-        // window->emit();
+        window->emit<WindowCloseEvent>({});
         return 0;
 
     case WM_DESTROY:
@@ -47,7 +47,7 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT uMsg, WPARAM wParam, LPARAM lPa
     }
 }
 
-NativeWindowHandle Window::CreateNativeWindow(WindowConfig& config) {
+NativeWindowHandle Window::CreateNativeWindow(const WindowConfig& config) {
     const char* CLASS_NAME = "GlobalWindowClass";
 
     static auto instanceHandle = GetModuleHandle(nullptr);
@@ -73,6 +73,7 @@ NativeWindowHandle Window::CreateNativeWindow(WindowConfig& config) {
                                        CW_USEDEFAULT, config.width, config.height, NULL, NULL, instanceHandle, window);
 
     if (!windowHandle) {
+        delete window;
         throw std::runtime_error("Failed to generate window.");
     }
 
@@ -81,12 +82,18 @@ NativeWindowHandle Window::CreateNativeWindow(WindowConfig& config) {
     return windowHandle;
 }
 
-void Window::poll() {
+bool Window::poll() {
     MSG msg = {};
-    while (GetMessage(&msg, handle, 0, 0) > 0) {
+    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) != 0) {
+        if (msg.message == WM_QUIT) {
+            return true;
+        }
+
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+
+    return false;
 }
 
 } // namespace parteeengine::rendering

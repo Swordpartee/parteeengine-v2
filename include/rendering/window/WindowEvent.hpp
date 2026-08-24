@@ -5,11 +5,15 @@ namespace parteeengine::rendering {
 struct WindowEvent {
 };
 
-struct WindowQuitEvent : public WindowEvent {
+struct WindowCloseEvent : public WindowEvent {
 
 };
 
 struct WindowResizeEvent : public WindowEvent {
+    
+};
+
+struct WindowMoveEvent : public WindowEvent {
     
 };
 

@@ -28,9 +28,9 @@ public:
 
     static Window& Get(NativeWindowHandle handle);
 
-    static NativeWindowHandle CreateNativeWindow(WindowConfig& config);
+    static NativeWindowHandle CreateNativeWindow(const WindowConfig& config);
 
-    void poll();
+    bool poll();
 
     void setHandle(NativeWindowHandle& nativeHandle);
 
