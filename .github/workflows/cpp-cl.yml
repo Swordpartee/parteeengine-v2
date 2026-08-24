@@ -15,10 +15,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+
       - name: Install lint tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-format clang-tidy cmake ninja-build g++ ccache
+          sudo apt-get install -y clang-format clang-tidy g++ ccache
+
+      - name: Show tool versions
+        run: |
+          cmake --version
+          ninja --version
 
       - name: Configure build for compile commands
         run: cmake -S . -B build -G Ninja -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
@@ -41,10 +49,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build g++ ccache
+          sudo apt-get install -y g++ ccache
+
+      - name: Show tool versions
+        run: |
+          cmake --version
+          ninja --version
 
       - name: Cache ccache
         uses: actions/cache@v4
@@ -68,10 +84,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build g++ ccache
+          sudo apt-get install -y g++ ccache
+
+      - name: Show tool versions
+        run: |
+          cmake --version
+          ninja --version
 
       - name: Cache ccache
         uses: actions/cache@v4
