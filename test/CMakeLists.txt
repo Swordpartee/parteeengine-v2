@@ -1,8 +1,14 @@
 # Include GoogleTest module for gtest_discover_tests
 include(GoogleTest)
 
-# Collect test source files
-file(GLOB_RECURSE TEST_SOURCES "*.cpp")
+# Explicit test source list (no file globbing).
+set(TEST_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/core/EngineTest.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/core/entities/ComponentManagerTest.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/core/entities/EntityManagerTest.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/core/events/EventManagerTest.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/core/modules/ModuleManagerTest.cpp"
+)
 
 # Create test executable
 add_executable(parteeeengine_tests ${TEST_SOURCES})
