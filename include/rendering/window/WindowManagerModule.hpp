@@ -13,17 +13,9 @@ class WindowManagerModule : public ModuleBase {
     std::vector<NativeWindowHandle> windows;
 
   public:
-    void update(const ModuleInput&) {
-      std::erase_if(windows, [](NativeWindowHandle handle) {
-        return Window::Get(handle).poll();
-      });
-    };
+    void update(const ModuleInput&);
 
-    Window& generateWindow(const WindowConfig& config) {
-        windows.emplace_back(Window::CreateNativeWindow(config));
-
-        return Window::Get(windows.back());
-    }
+    Window& generateWindow(const WindowConfig& config);
 };
 
 } // namespace parteeengine::rendering
