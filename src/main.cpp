@@ -1,5 +1,7 @@
 #include "core/Engine.hpp"
-#include "rendering/window/WindowManagerModule.hpp"
+#include "rendering/windows/ModuleWindow.hpp"
+#include "rendering/windows/WindowEvent.hpp"
+#include "rendering/windows/WindowManagerModule.hpp"
 
 #include <iostream>
 
@@ -10,7 +12,12 @@ int main() {
 
     engine.addModule<parteeengine::rendering::WindowManagerModule>();
 
-    engine.getModule<parteeengine::rendering::WindowManagerModule>().generateWindow({});
+    auto windowManager = engine.getModule<parteeengine::rendering::WindowManagerModule>();
+    auto window = windowManager.createWindow({.visible = true});
+
+    window.subscribe<parteeengine::rendering::WindowCloseEvent>([](parteeengine::rendering::WindowCloseEvent event, parteeengine::rendering::ModuleWindow* window){
+        window->close();
+    });
 
     engine.run();
 

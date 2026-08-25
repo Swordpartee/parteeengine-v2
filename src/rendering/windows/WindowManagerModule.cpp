@@ -11,19 +11,17 @@ void WindowManagerModule::update(const ModuleInput&) {
   }
 };
 
-ModuleWindow& WindowManagerModule::createWindow(const WindowConfig& config) {
+ModuleWindow& WindowManagerModule::createWindow(const WindowDesc& config) {
 
-    auto native = NativeWindow::Create();
+    auto native = NativeWindow::Create(config);
 
     auto window = ModuleWindow{native};
 
-    window.configure(config);
+    auto it = windows.emplace(window);
 
-    windows.emplace_back(window);
+    native->setEventHandler(&*it);
 
-    native->setEventHandler(&windows.back());
-
-    return windows.back();
+    return *it;
 };
 
 } // namespace parteeengine::rendering

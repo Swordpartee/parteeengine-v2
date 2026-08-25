@@ -3,18 +3,18 @@
 #include "core/modules/ModuleBase.hpp"
 #include "rendering/windows/ModuleWindow.hpp"
 
-#include <vector>
+#include "util/plf_hive.h"
 
 namespace parteeengine::rendering {
 
 class WindowManagerModule : public ModuleBase {
   private:
-    std::vector<ModuleWindow> windows;
+    plf::hive<ModuleWindow> windows;
 
   public:
     void update(const ModuleInput&);
 
-    ModuleWindow& createWindow(const WindowConfig& config);
+    ModuleWindow& createWindow(const WindowDesc& config);
 };
 
 } // namespace parteeengine::rendering
