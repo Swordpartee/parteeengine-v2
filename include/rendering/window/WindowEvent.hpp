@@ -2,7 +2,9 @@
 
 namespace parteeengine::rendering {
 
-struct WindowEvent {};
+struct WindowEvent {
+    virtual ~WindowEvent() = default;
+};
 
 struct WindowDestroyEvent : public WindowEvent {};
 

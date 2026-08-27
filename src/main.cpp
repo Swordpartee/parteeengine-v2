@@ -15,8 +15,9 @@ int main() {
     auto& windowManager = engine.getModule<parteeengine::rendering::WindowManagerModule>();
     auto& window = windowManager.createWindow({.dimensions = {800, 600}, .visible = true});
 
-    window.subscribe<parteeengine::rendering::WindowCloseEvent>([](auto event, auto* window) {
-        // window->close();
+    window.subscribe<parteeengine::rendering::WindowCloseEvent>([](auto event, auto& window) {
+        std::cout << "boop" << std::endl;
+        // window.close();
     });
 
     engine.run();

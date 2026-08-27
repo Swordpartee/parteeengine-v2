@@ -29,13 +29,24 @@ void NativeWindow::poll() {
 };
 
 void NativeWindow::config(const WindowConfig& config) {
-    if (config.dimensions) {
+    if (config.dimensions.has_value()) {
+        SetWindowPos(impl->hwnd, HWND_TOP, 0, 0, config.dimensions->first, config.dimensions->first, SWP_NOMOVE + SWP_NOOWNERZORDER);
     }
 
-    if (config.title) {
+    if (config.location.has_value()) {
     }
 
-    if (config.visible) {
+    if (config.title.has_value()) {
+        SetWindowTextA(impl->hwnd, config.title->data());
+    }
+
+    if (config.visible.has_value()) {
+        if (config.visible) {
+            ShowWindow(impl->hwnd, SW_HIDE);
+
+        } else {
+            ShowWindow(impl->hwnd, SW_SHOW);
+        }
     }
 };
 

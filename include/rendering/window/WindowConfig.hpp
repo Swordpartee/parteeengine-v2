@@ -12,7 +12,7 @@ using Y = int;
 
 struct WindowConfig {
     std::optional<std::pair<Width, Height>> dimensions;
-    std::optional<std::pair<X, Y>> Location;
+    std::optional<std::pair<X, Y>> location;
     std::optional<std::string> title;
     std::optional<bool> visible;
 };
