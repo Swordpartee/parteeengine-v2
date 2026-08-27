@@ -83,12 +83,15 @@ set(PARTEEE_SOURCES
 
 if(WIN32)
     list(APPEND PARTEEE_SOURCES 
-        "${PARTEEE_SOURCE_DIR}/rendering/window/W32NativeWindow.cpp"
+        "${PARTEEE_SOURCE_DIR}/rendering/window/osWindow/W32NativeWindow.cpp"
         )
 elseif(APPLE)
-    set(OS_SOURCES )
+    list(APPEND PARTEEE_SOURCES 
+        )
 elseif(UNIX AND NOT APPLE)
-    set(OS_SOURCES)
+    list(APPEND PARTEEE_SOURCES 
+        "${PARTEEE_SOURCE_DIR}/rendering/window/osWindow/UnixNativeWindow.cpp"
+        )
 endif()
 
 # ============================================================================
