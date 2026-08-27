@@ -16,6 +16,12 @@ class WindowManagerModule : public ModuleBase {
     void update(const ModuleInput&);
 
     Window& generateWindow(const WindowConfig& config);
+
+    ~WindowManagerModule() {
+      for (auto& window : windows) {
+        delete window;
+      }
+    };
 };
 
 } // namespace parteeengine::rendering

@@ -24,4 +24,5 @@ ModuleWindow& WindowManagerModule::createWindow(const WindowDesc& config) {
     return windows.back();
 };
 
+
 } // namespace parteeengine::rendering
