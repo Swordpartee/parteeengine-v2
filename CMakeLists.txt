@@ -77,7 +77,7 @@ set(PARTEEE_SOURCES
     "${PARTEEE_SOURCE_DIR}/core/entities/EntityManager.cpp"
     "${PARTEEE_SOURCE_DIR}/core/modules/ModuleManager.cpp"
     "${PARTEEE_SOURCE_DIR}/rendering/windows/WindowManagerModule.cpp"
-    "${PARTEEE_SOURCE_DIR}/rendering/windows/Window.cpp"
+    "${PARTEEE_SOURCE_DIR}/rendering/windows/ModuleWindow.cpp"
 
 
 

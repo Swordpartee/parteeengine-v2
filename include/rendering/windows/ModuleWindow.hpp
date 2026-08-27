@@ -34,6 +34,8 @@ class ModuleWindow : public WindowEventHandler {
 
     void emit(std::unique_ptr<WindowEvent> event) override;
 
+    bool shouldForward(const WindowEvent& event) const override;
+
     void configure(const WindowConfig& config);
     void close();
     void poll();

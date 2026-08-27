@@ -72,21 +72,49 @@ LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
     switch (uMsg) {
     case WM_CLOSE:
-        // Destroys the window when the user clicks the close 'X' button
         handler->emit(std::make_unique<WindowCloseEvent>());
+        if (handler->shouldForward(WindowCloseEvent{})) {
+            break;
+        }
         return 0;
+    
+    case WM_SIZE:
+        if (wParam == SIZE_MAXSHOW) {
+            handler->emit(std::make_unique<WindowMaximizeEvent>());
+            if (handler->shouldForward(WindowMaximizeEvent{})) {
+                break;
+            }
+
+        } else if (wParam == SIZE_MAXHIDE) {
+            handler->emit(std::make_unique<WindowMinimizeEvent>());
+            if (handler->shouldForward(WindowMinimizeEvent{})) {
+                break;
+            }
+
+        } else if (wParam == SIZE_RESTORED) {
+            int width = LOWORD(lParam);
+            int height = HIWORD(lParam);
+
+            handler->emit(std::make_unique<WindowResizeEvent>(WindowResizeEvent{.width = width, .height = height}));
+            if (handler->shouldForward(WindowResizeEvent{})) {
+                break;
+            }
+
+        }
+        return 0;
+
 
     case WM_DESTROY:
-        // Posts a quit message to the application's message loop
         PostQuitMessage(0);
-        handler->emit(std::make_unique<WindowCloseEvent>());
+        handler->emit(std::make_unique<WindowDestroyEvent>());
         delete window;
         return 0;
-
-    default:
-        // Passes all other messages to Windows for default processing
-        return DefWindowProc(handle, uMsg, wParam, lParam);
+    
     }
+
+    // Passes all other messages to Windows for default processing
+    return DefWindowProc(handle, uMsg, wParam, lParam);
+
 }
 
 NativeWindow* NativeWindow::Create(const WindowDesc& config) {

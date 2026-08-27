@@ -12,6 +12,16 @@ void ModuleWindow::emit(std::unique_ptr<WindowEvent> event) {
     // event destructs automatically here
 }
 
+bool ModuleWindow::shouldForward(const WindowEvent& event) const {
+    auto it = subscribers.find(typeid(event));
+    if (it == subscribers.end()) {
+        return true;
+    }
+
+    return it->second.empty();
+};
+
+
 void ModuleWindow::configure(const WindowConfig& config) { nativeWindow->config(config); }
 
 void ModuleWindow::close() { nativeWindow->close(); }

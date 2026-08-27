@@ -12,8 +12,8 @@ int main() {
 
     engine.addModule<parteeengine::rendering::WindowManagerModule>();
 
-    auto windowManager = engine.getModule<parteeengine::rendering::WindowManagerModule>();
-    auto window = windowManager.createWindow({.visible = true});
+    auto& windowManager = engine.getModule<parteeengine::rendering::WindowManagerModule>();
+    auto& window = windowManager.createWindow({ .dimensions = {800, 600}, .visible = true});
 
     window.subscribe<parteeengine::rendering::WindowCloseEvent>([](parteeengine::rendering::WindowCloseEvent event, parteeengine::rendering::ModuleWindow* window){
         window->close();

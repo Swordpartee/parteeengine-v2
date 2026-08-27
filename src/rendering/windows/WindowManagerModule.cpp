@@ -17,11 +17,11 @@ ModuleWindow& WindowManagerModule::createWindow(const WindowDesc& config) {
 
     auto window = ModuleWindow{native};
 
-    auto it = windows.emplace(window);
+    windows.emplace_back(window);
 
-    native->setEventHandler(&*it);
+    native->setEventHandler(&windows.back());
 
-    return *it;
+    return windows.back();
 };
 
 } // namespace parteeengine::rendering
