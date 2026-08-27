@@ -39,7 +39,7 @@ jobs:
       - name: Run clang-tidy
         run: |
           find src test -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.cxx' \) -print0 \
-            | xargs -0 clang-tidy -p build --quiet
+            | xargs -0 clang-tidy -p build
 
   build:
     name: Build C++ project
