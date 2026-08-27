@@ -29,7 +29,7 @@ class ModuleWindow : public WindowEventHandler {
     NativeWindow* nativeWindow;
 
   public:
-    ModuleWindow(NativeWindow* native) : nativeWindow(native) {};
+    ModuleWindow(NativeWindow* native) : nativeWindow(native) {}
     ModuleWindow() = delete;
 
     template <is_window_event EventType>
