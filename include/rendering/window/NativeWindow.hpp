@@ -1,7 +1,7 @@
 #pragma once
 
 #include "WindowEventHandler.hpp"
-#include "rendering/windows/WindowConfig.hpp"
+#include "rendering/window/WindowConfig.hpp"
 
 #include <memory>
 
@@ -29,7 +29,6 @@ class NativeWindow {
     void close();
 
     static NativeWindow* Create(const WindowDesc& config);
-
 };
 
 } // namespace parteeengine::rendering

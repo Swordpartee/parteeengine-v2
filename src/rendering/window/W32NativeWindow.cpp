@@ -1,12 +1,11 @@
-#include "rendering/windows/WindowConfig.hpp"
-#include "rendering/windows/NativeWindow.hpp"
-#include "rendering/windows/WindowEvent.hpp"
+#include "rendering/window/NativeWindow.hpp"
+#include "rendering/window/WindowConfig.hpp"
+#include "rendering/window/WindowEvent.hpp"
 
 #include <memory>
 #include <stdexcept>
 #include <windows.h>
 #include <winuser.h>
-
 
 namespace parteeengine::rendering {
 // SetMessageHook(HWND, std::function<bool(UINT,WPARAM,LPARAM,LRESULT&)>)
@@ -40,9 +39,7 @@ void NativeWindow::config(const WindowConfig& config) {
     }
 };
 
-void NativeWindow::close() {
-    DestroyWindow(impl->hwnd);
-}
+void NativeWindow::close() { DestroyWindow(impl->hwnd); }
 
 LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     NativeWindow* window;
@@ -83,12 +80,10 @@ LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         handler->emit(std::make_unique<WindowDestroyEvent>());
         delete window;
         return 0;
-    
     }
 
     // Passes all other messages to Windows for default processing
     return DefWindowProc(handle, uMsg, wParam, lParam);
-
 }
 
 NativeWindow* NativeWindow::Create(const WindowDesc& config) {
@@ -114,7 +109,8 @@ NativeWindow* NativeWindow::Create(const WindowDesc& config) {
     auto window = new NativeWindow();
 
     HWND handle = CreateWindowEx(0, CLASS_NAME, config.title.c_str(), WS_OVERLAPPEDWINDOW, config.location.first,
-                                       config.location.second, config.dimensions.first, config.dimensions.second, NULL, NULL, instanceHandle, window);
+                                 config.location.second, config.dimensions.first, config.dimensions.second, NULL, NULL,
+                                 instanceHandle, window);
 
     if (!handle) {
         delete window;
@@ -128,7 +124,6 @@ NativeWindow* NativeWindow::Create(const WindowDesc& config) {
     }
 
     return window;
-
 };
 
 } // namespace parteeengine::rendering

@@ -1,15 +1,16 @@
 // ModuleWindow.hpp
 #pragma once
 
-#include "rendering/windows/WindowEvent.hpp"
-#include "rendering/windows/NativeWindow.hpp"
-#include "rendering/windows/WindowEventHandler.hpp"
+#include "rendering/window/NativeWindow.hpp"
+#include "rendering/window/WindowEvent.hpp"
+#include "rendering/window/WindowEventHandler.hpp"
 
 #include <functional>
 #include <memory>
 #include <typeindex>
-#include <unordered_map>
 #include <vector>
+
+#include <unordered_map>
 
 namespace parteeengine::rendering {
 
@@ -46,8 +47,7 @@ void ModuleWindow::subscribe(TypedWindowSubscriber<EventType> subscriber) {
     subscribers[std::type_index(typeid(EventType))].push_back(
         [subscriber = std::move(subscriber)](WindowEvent& event, ModuleWindow* window) {
             subscriber(static_cast<const EventType&>(event), window);
-        }
-    );
+        });
 }
 
 } // namespace parteeengine::rendering

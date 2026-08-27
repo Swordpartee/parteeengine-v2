@@ -1,4 +1,4 @@
-#include "rendering/windows/ModuleWindow.hpp"
+#include "rendering/window/ModuleWindow.hpp"
 
 namespace parteeengine::rendering {
 

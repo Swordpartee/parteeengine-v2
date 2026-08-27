@@ -62,12 +62,12 @@ set(PARTEEE_HEADERS
     "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleBase.hpp"
     "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleManager.hpp"
     "${PARTEEE_INCLUDE_DIR}/util/OSUtil.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/windows/ModuleWindow.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/windows/NativeWindow.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/windows/WindowConfig.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/windows/WindowEvent.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/windows/WindowEventHandler.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/windows/WindowManagerModule.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/ModuleWindow.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/NativeWindow.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowConfig.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowEvent.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowEventHandler.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowManagerModule.hpp"
 
 )
 
@@ -76,17 +76,14 @@ set(PARTEEE_SOURCES
     "${PARTEEE_SOURCE_DIR}/core/Engine.cpp"
     "${PARTEEE_SOURCE_DIR}/core/entities/EntityManager.cpp"
     "${PARTEEE_SOURCE_DIR}/core/modules/ModuleManager.cpp"
-    "${PARTEEE_SOURCE_DIR}/rendering/windows/WindowManagerModule.cpp"
-    "${PARTEEE_SOURCE_DIR}/rendering/windows/ModuleWindow.cpp"
-
-
-
+    "${PARTEEE_SOURCE_DIR}/rendering/window/WindowManagerModule.cpp"
+    "${PARTEEE_SOURCE_DIR}/rendering/window/ModuleWindow.cpp"
 
 )
 
 if(WIN32)
     list(APPEND PARTEEE_SOURCES 
-        "${PARTEEE_SOURCE_DIR}/rendering/windows/W32NativeWindow.cpp"
+        "${PARTEEE_SOURCE_DIR}/rendering/window/W32NativeWindow.cpp"
         )
 elseif(APPLE)
     set(OS_SOURCES )
