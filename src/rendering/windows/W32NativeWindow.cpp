@@ -77,32 +77,6 @@ LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
             break;
         }
         return 0;
-    
-    case WM_SIZE:
-        if (wParam == SIZE_MAXSHOW) {
-            handler->emit(std::make_unique<WindowMaximizeEvent>());
-            if (handler->shouldForward(WindowMaximizeEvent{})) {
-                break;
-            }
-
-        } else if (wParam == SIZE_MAXHIDE) {
-            handler->emit(std::make_unique<WindowMinimizeEvent>());
-            if (handler->shouldForward(WindowMinimizeEvent{})) {
-                break;
-            }
-
-        } else if (wParam == SIZE_RESTORED) {
-            int width = LOWORD(lParam);
-            int height = HIWORD(lParam);
-
-            handler->emit(std::make_unique<WindowResizeEvent>(WindowResizeEvent{.width = width, .height = height}));
-            if (handler->shouldForward(WindowResizeEvent{})) {
-                break;
-            }
-
-        }
-        return 0;
-
 
     case WM_DESTROY:
         PostQuitMessage(0);

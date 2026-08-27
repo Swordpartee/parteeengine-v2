@@ -13,14 +13,17 @@ void ModuleWindow::emit(std::unique_ptr<WindowEvent> event) {
 }
 
 bool ModuleWindow::shouldForward(const WindowEvent& event) const {
-    auto it = subscribers.find(typeid(event));
-    if (it == subscribers.end()) {
-        return true;
-    }
+    // auto it = subscribers.find(typeid(event));
+    // if (it == subscribers.end()) {
+    //     return true;
+    // }
 
-    return it->second.empty();
+    // return it->second.empty();
+
+    (void)event;
+
+    return false;
 };
-
 
 void ModuleWindow::configure(const WindowConfig& config) { nativeWindow->config(config); }
 

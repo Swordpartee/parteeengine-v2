@@ -8,18 +8,4 @@ struct WindowDestroyEvent : public WindowEvent {};
 
 struct WindowCloseEvent : public WindowEvent {};
 
-struct WindowResizeEvent : public WindowEvent {
-   int width, height;
-};
-
-struct WindowMaximizeEvent : public WindowEvent {
-   
-};
-
-struct WindowMinimizeEvent : public WindowEvent {
-   
-};
-
-struct WindowMoveEvent : public WindowEvent {};
-
 } // namespace parteeengine::rendering
