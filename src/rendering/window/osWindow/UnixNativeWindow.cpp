@@ -4,8 +4,7 @@
 namespace parteeengine::rendering {
 // SetMessageHook(HWND, std::function<bool(UINT,WPARAM,LPARAM,LRESULT&)>)
 
-struct NativeWindow::Impl {
-};
+struct NativeWindow::Impl {};
 
 NativeWindow::NativeWindow() : eventHandler(nullptr) {}
 
@@ -15,11 +14,9 @@ void NativeWindow::poll() {
 
 };
 
-void NativeWindow::config(const WindowConfig& config) {
-    (void)config;
-};
+void NativeWindow::config(const WindowConfig& config) { (void)config; };
 
-void NativeWindow::close() { }
+void NativeWindow::close() {}
 
 NativeWindow* NativeWindow::Create(const WindowDesc& config) {
     (void)config;

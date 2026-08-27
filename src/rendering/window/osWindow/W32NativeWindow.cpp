@@ -30,7 +30,8 @@ void NativeWindow::poll() {
 
 void NativeWindow::config(const WindowConfig& config) {
     if (config.dimensions.has_value()) {
-        SetWindowPos(impl->hwnd, HWND_TOP, 0, 0, config.dimensions->first, config.dimensions->first, SWP_NOMOVE + SWP_NOOWNERZORDER);
+        SetWindowPos(impl->hwnd, HWND_TOP, 0, 0, config.dimensions->first, config.dimensions->first,
+                     SWP_NOMOVE + SWP_NOOWNERZORDER);
     }
 
     if (config.location.has_value()) {
