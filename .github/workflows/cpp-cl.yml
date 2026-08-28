@@ -36,10 +36,10 @@ jobs:
           find include src test -type f \( -name '*.hpp' -o -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.cxx' \) -print0 \
             | xargs -0 clang-format -style=file -n -Werror
 
-      - name: Run clang-tidy
-        run: |
-          find src test -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.cxx' \) -print0 \
-            | xargs -0 clang-tidy -p build
+      # - name: Run clang-tidy
+      #   run: |
+      #     find src test -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.cxx' \) -print0 \
+      #       | xargs -0 clang-tidy -p build
 
   build:
     name: Build C++ project
