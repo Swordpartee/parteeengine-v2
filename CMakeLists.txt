@@ -50,13 +50,7 @@ endif()
 set(PARTEEE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(PARTEEE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-# Explicit source and header lists (no file globbing).
-set(PARTEEE_SOURCES
-    "${PARTEEE_SOURCE_DIR}/core/Engine.cpp"
-    "${PARTEEE_SOURCE_DIR}/core/entities/EntityManager.cpp"
-    "${PARTEEE_SOURCE_DIR}/core/modules/ModuleManager.cpp"
-)
-
+# Explicit list of all header files (Prevents stale CMake cache issues)
 set(PARTEEE_HEADERS
     "${PARTEEE_INCLUDE_DIR}/core/Engine.hpp"
     "${PARTEEE_INCLUDE_DIR}/core/entities/ComponentManager.hpp"
@@ -67,7 +61,38 @@ set(PARTEEE_HEADERS
     "${PARTEEE_INCLUDE_DIR}/core/events/QuitEvent.hpp"
     "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleBase.hpp"
     "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleManager.hpp"
+    "${PARTEEE_INCLUDE_DIR}/util/OSUtil.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/ModuleWindow.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/NativeWindow.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowConfig.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowEvent.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowEventHandler.hpp"
+    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowManagerModule.hpp"
+
 )
+
+# Explicit list of all library source files
+set(PARTEEE_SOURCES
+    "${PARTEEE_SOURCE_DIR}/core/Engine.cpp"
+    "${PARTEEE_SOURCE_DIR}/core/entities/EntityManager.cpp"
+    "${PARTEEE_SOURCE_DIR}/core/modules/ModuleManager.cpp"
+    "${PARTEEE_SOURCE_DIR}/rendering/window/WindowManagerModule.cpp"
+    "${PARTEEE_SOURCE_DIR}/rendering/window/ModuleWindow.cpp"
+
+)
+
+if(WIN32)
+    list(APPEND PARTEEE_SOURCES 
+        "${PARTEEE_SOURCE_DIR}/rendering/window/osWindow/W32NativeWindow.cpp"
+        )
+elseif(APPLE)
+    list(APPEND PARTEEE_SOURCES 
+        )
+elseif(UNIX AND NOT APPLE)
+    list(APPEND PARTEEE_SOURCES 
+        "${PARTEEE_SOURCE_DIR}/rendering/window/osWindow/UnixNativeWindow.cpp"
+        )
+endif()
 
 # ============================================================================
 # Main Library Target
