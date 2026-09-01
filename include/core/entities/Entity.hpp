@@ -21,7 +21,8 @@ namespace std {
 template <>
 struct hash<parteeengine::Entity> {
     size_t operator()(const parteeengine::Entity& entity) const {
-        return hash<unsigned int>()(entity.id) ^ (hash<unsigned int>()(entity.generation) << 1);
+        return hash<unsigned int>()(entity.id) ^ (hash<unsigned int>()(entity.generation) << 1U);
     }
 };
+
 } // namespace std

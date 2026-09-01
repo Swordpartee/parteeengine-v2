@@ -1,5 +1,7 @@
 #include "core/modules/ModuleManager.hpp"
 
+#include "core/modules/ModuleBase.hpp"
+
 namespace parteeengine {
 
 void ModuleManager::init(ModuleInput input) {

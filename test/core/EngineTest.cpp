@@ -16,16 +16,16 @@ class TestModule : public ModuleBase {
     bool initalized = false;
     int updated = 0;
 
-    void init(const ModuleInput&) { initalized = true; }
+    void init(const ModuleInput& /*module*/) override { initalized = true; }
 
-    void update(const ModuleInput&) { updated++; }
+    void update(const ModuleInput& /*module*/) override { updated++; }
 };
 
 class QuitModule : public ModuleBase {
   public:
     int timer = 0;
 
-    void update(const ModuleInput& input) {
+    void update(const ModuleInput& input) override {
         timer++;
 
         if (timer > 4) {
@@ -40,7 +40,7 @@ class SystemModule : public ModuleBase {
     bool componentAddedAndVerified = false;
     bool componentRemovedAndVerified = false;
 
-    void update(const ModuleInput& input) {
+    void update(const ModuleInput& input) override {
         // 1. Test Entity Creation via ModuleInput
         auto entity = input.entityManager.generateEntity();
         if (input.entityManager.isValidEntity(entity)) {
@@ -96,10 +96,10 @@ TEST_F(EngineTest, EngineRoutesEventsAndModules) {
     EXPECT_EQ(received, 7);
 
     engine.addModule<TestModule>();
-    auto& module = engine.getModule<TestModule>();
-    module.value = 11;
+    auto* module = engine.getModule<TestModule>();
+    module->value = 11;
 
-    EXPECT_EQ(module.value, 11);
+    EXPECT_EQ(module->value, 11);
 }
 
 TEST_F(EngineTest, EngineExitAndEventManager) {
@@ -118,10 +118,10 @@ TEST_F(EngineTest, ModuleInitAndUpdate) {
 
     engine.run();
 
-    auto& testModule = engine.getModule<TestModule>();
+    auto* testModule = engine.getModule<TestModule>();
 
-    EXPECT_TRUE(testModule.initalized);
-    EXPECT_TRUE(testModule.updated > 2);
+    EXPECT_TRUE(testModule->initalized);
+    EXPECT_TRUE(testModule->updated > 2);
 }
 
 TEST_F(EngineTest, ModuleManagerAccess) {
@@ -131,12 +131,12 @@ TEST_F(EngineTest, ModuleManagerAccess) {
     // Run the engine loop to trigger SystemModule::update()
     engine.run();
 
-    auto& systemModule = engine.getModule<SystemModule>();
+    auto* systemModule = engine.getModule<SystemModule>();
 
     // Assert that the module successfully used the managers inside its update phase
-    EXPECT_TRUE(systemModule.entityCreatedAndVerified);
-    EXPECT_TRUE(systemModule.componentAddedAndVerified);
-    EXPECT_TRUE(systemModule.componentRemovedAndVerified);
+    EXPECT_TRUE(systemModule->entityCreatedAndVerified);
+    EXPECT_TRUE(systemModule->componentAddedAndVerified);
+    EXPECT_TRUE(systemModule->componentRemovedAndVerified);
 }
 
 } // namespace parteeengine

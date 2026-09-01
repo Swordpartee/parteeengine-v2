@@ -43,7 +43,7 @@ TEST_F(EntityManagerTest, DeleteInvalidEntity) {
 }
 
 TEST_F(EntityManagerTest, DeleteNonExistentEntity) {
-    Entity nonExistentEntity;
+    Entity nonExistentEntity{};
     nonExistentEntity.id = 999;
     nonExistentEntity.generation = 0;
 

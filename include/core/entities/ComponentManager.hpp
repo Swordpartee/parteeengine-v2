@@ -29,39 +29,39 @@ class ComponentManager {
     ComponentView<ComponentTypes...> viewComponents() const;
 
     template <typename ComponentType>
-    void addComponent(const Entity, ComponentType);
+    void addComponent(Entity entity, ComponentType data);
 
     template <typename ComponentType>
-    void addComponent(const Entity);
+    void addComponent(Entity entity);
 
     template <typename ComponentType>
-    void removeComponent(const Entity);
+    void removeComponent(Entity entity);
 
     template <typename ComponentType>
-    ComponentType& getComponent(const Entity);
+    ComponentType& getComponent(Entity entity);
 
     template <typename ComponentType>
-    ComponentType const& getComponent(const Entity) const;
+    ComponentType const& getComponent(Entity entity) const;
 
     template <typename ComponentType>
-    bool hasComponent(const Entity) const;
+    [[nodiscard]] bool hasComponent(Entity entity) const;
 };
 
 template <typename ComponentType>
 ComponentStorage<ComponentType>& ComponentManager::getOrCreateStorage() {
-    auto [it, inserted] = storages.try_emplace(std::type_index(typeid(ComponentType)),
-                                               std::make_unique<ComponentStorage<ComponentType>>());
-    return static_cast<ComponentStorage<ComponentType>&>(*it->second);
+    auto [iter, inserted] = storages.try_emplace(std::type_index(typeid(ComponentType)),
+                                                 std::make_unique<ComponentStorage<ComponentType>>());
+    return static_cast<ComponentStorage<ComponentType>&>(*iter->second);
 }
 
 template <typename ComponentType>
 const ComponentStorage<ComponentType>* ComponentManager::findStorage() const {
-    auto it = storages.find(std::type_index(typeid(ComponentType)));
-    if (it == storages.end()) {
+    auto iter = storages.find(std::type_index(typeid(ComponentType)));
+    if (iter == storages.end()) {
         return nullptr;
     }
 
-    return static_cast<const ComponentStorage<ComponentType>*>(it->second.get());
+    return static_cast<const ComponentStorage<ComponentType>*>(iter->second.get());
 }
 
 template <typename... ComponentTypes>
@@ -109,12 +109,12 @@ template <typename ComponentType>
 void ComponentManager::removeComponent(const Entity entity) {
     auto& storage = getOrCreateStorage<ComponentType>();
 
-    auto it = storage.sparseMap.find(entity);
-    if (it == storage.sparseMap.end()) {
+    auto iter = storage.sparseMap.find(entity);
+    if (iter == storage.sparseMap.end()) {
         throw std::runtime_error("Entity does not have component");
     }
 
-    size_t index = it->second;
+    size_t index = iter->second;
     storage.sparseMap[storage.entityMap.back()] = index;
     storage.sparseMap.erase(entity);
     std::swap(storage.data[index], storage.data.back());
@@ -127,11 +127,11 @@ template <typename ComponentType>
 ComponentType& ComponentManager::getComponent(const Entity entity) {
     auto& storage = getOrCreateStorage<ComponentType>();
 
-    auto it = storage.sparseMap.find(entity);
-    if (it == storage.sparseMap.end()) {
+    auto iter = storage.sparseMap.find(entity);
+    if (iter == storage.sparseMap.end()) {
         throw std::runtime_error("Entity does not have component");
     }
-    return storage.data[it->second];
+    return storage.data[iter->second];
 }
 
 template <typename ComponentType>
@@ -142,11 +142,11 @@ ComponentType const& ComponentManager::getComponent(const Entity entity) const {
         throw std::runtime_error("Entity does not have component");
     }
 
-    auto it = storage->sparseMap.find(entity);
-    if (it == storage->sparseMap.end()) {
+    auto iter = storage->sparseMap.find(entity);
+    if (iter == storage->sparseMap.end()) {
         throw std::runtime_error("Entity does not have component");
     }
-    return storage->data[it->second];
+    return storage->data[iter->second];
 }
 
 template <typename ComponentType>
@@ -156,11 +156,8 @@ bool ComponentManager::hasComponent(const Entity entity) const {
         return false;
     }
 
-    auto it = storage->sparseMap.find(entity);
-    if (it == storage->sparseMap.end()) {
-        return false;
-    }
-    return true;
+    auto iter = storage->sparseMap.find(entity);
+    return static_cast<bool>(iter != storage->sparseMap.end());
 }
 
 } // namespace parteeengine

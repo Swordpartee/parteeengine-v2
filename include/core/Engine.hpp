@@ -61,7 +61,7 @@ class Engine {
     void removeModule();
 
     template <typename ModuleType>
-    ModuleType& getModule();
+    ModuleType* getModule();
 };
 
 template <typename ComponentType>
@@ -120,7 +120,7 @@ void Engine::removeModule() {
 }
 
 template <typename ModuleType>
-ModuleType& Engine::getModule() {
+ModuleType* Engine::getModule() {
     return moduleManager.getModule<ModuleType>();
 }
 

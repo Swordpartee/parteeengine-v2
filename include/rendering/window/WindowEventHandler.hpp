@@ -15,7 +15,7 @@ class WindowEventHandler {
     virtual ~WindowEventHandler() = default;
     virtual void emit(std::unique_ptr<WindowEvent> event) = 0;
 
-    virtual bool shouldForward(const WindowEvent& event) const = 0;
+    [[nodiscard]] virtual bool shouldForward(const WindowEvent& event) const = 0;
 };
 
 } // namespace parteeengine::rendering

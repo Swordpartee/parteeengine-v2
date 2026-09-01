@@ -1,6 +1,8 @@
 #include "rendering/window/NativeWindow.hpp"
 #include "rendering/window/WindowConfig.hpp"
 
+// NOLINTBEGIN
+
 namespace parteeengine::rendering {
 // SetMessageHook(HWND, std::function<bool(UINT,WPARAM,LPARAM,LRESULT&)>)
 
@@ -14,7 +16,7 @@ void NativeWindow::poll() {
 
 };
 
-void NativeWindow::config(const WindowConfig& config) { (void)config; };
+void NativeWindow::config(const WindowConfig& /*config*/) { };
 
 void NativeWindow::close() {}
 
@@ -25,3 +27,5 @@ NativeWindow* NativeWindow::Create(const WindowDesc& config) {
 };
 
 } // namespace parteeengine::rendering
+
+// NOLINTEND
