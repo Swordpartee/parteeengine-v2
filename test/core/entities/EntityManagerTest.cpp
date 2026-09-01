@@ -38,7 +38,7 @@ TEST_F(EntityManagerTest, DeleteInvalidEntity) {
     manager.deleteEntity(entity);
     EXPECT_FALSE(manager.isValidEntity(entity));
 
-    EXPECT_ANY_THROW(manager.deleteEntity(entity));
+    EXPECT_FALSE(manager.deleteEntity(entity));
     EXPECT_FALSE(manager.isValidEntity(entity));
 }
 
@@ -47,7 +47,7 @@ TEST_F(EntityManagerTest, DeleteNonExistentEntity) {
     nonExistentEntity.id = 999;
     nonExistentEntity.generation = 0;
 
-    EXPECT_ANY_THROW(manager.deleteEntity(nonExistentEntity));
+    EXPECT_FALSE(manager.deleteEntity(nonExistentEntity));
     EXPECT_FALSE(manager.isValidEntity(nonExistentEntity));
 }
 

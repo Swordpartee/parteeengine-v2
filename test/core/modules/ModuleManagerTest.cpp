@@ -3,7 +3,6 @@
 #include "core/modules/ModuleBase.hpp"
 
 #include <gtest/gtest.h>
-#include <stdexcept>
 #include <string>
 
 namespace parteeengine {
@@ -71,7 +70,7 @@ TEST_F(ModuleManagerTest, RemoveModuleRemovesExisting) {
     moduleManager.addModule<TestModuleA>(TestModuleA{5});
     moduleManager.removeModule<TestModuleA>();
 
-    EXPECT_THROW((void)moduleManager.getModule<TestModuleA>(), std::runtime_error);
+    EXPECT_EQ(moduleManager.getModule<TestModuleA>(), nullptr);
 }
 
 TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) {
@@ -79,7 +78,7 @@ TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) {
 }
 
 TEST_F(ModuleManagerTest, GetModuleWhenMissingThrowsRuntimeError) {
-    EXPECT_THROW((void)moduleManager.getModule<TestModuleA>(), std::runtime_error);
+    EXPECT_EQ(moduleManager.getModule<TestModuleA>(), nullptr);
 }
 
 TEST_F(ModuleManagerTest, GetModuleReturnsReferenceToStoredInstance) {
