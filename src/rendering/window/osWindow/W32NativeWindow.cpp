@@ -128,8 +128,8 @@ NativeWindow* NativeWindow::Create(const WindowDesc& config) {
     auto* window = new NativeWindow();
 
     HWND handle = CreateWindowEx(0, CLASS_NAME, config.title.c_str(), WS_OVERLAPPEDWINDOW, config.location.first,
-                                 config.location.second, config.dimensions.first, config.dimensions.second, nullptr, nullptr,
-                                 instanceHandle, window);
+                                 config.location.second, config.dimensions.first, config.dimensions.second, nullptr,
+                                 nullptr, instanceHandle, window);
 
     if (handle == nullptr) {
         delete window;

@@ -17,7 +17,9 @@ void Engine::run() {
     }
 };
 
-ModuleInput Engine::buildModuleInput() { return {.entityManager = entityManager, .componentManager = componentManager, .eventManager = eventManager}; }
+ModuleInput Engine::buildModuleInput() {
+    return {.entityManager = entityManager, .componentManager = componentManager, .eventManager = eventManager};
+}
 
 Entity Engine::createEntity() { return entityManager.generateEntity(); }
 

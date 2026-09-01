@@ -16,7 +16,7 @@ void NativeWindow::poll() {
 
 };
 
-void NativeWindow::config(const WindowConfig& /*config*/) { };
+void NativeWindow::config(const WindowConfig& /*config*/) {};
 
 void NativeWindow::close() {}
 
