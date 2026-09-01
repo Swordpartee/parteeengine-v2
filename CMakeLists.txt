@@ -133,6 +133,11 @@ else()
 
 endif()
 
+# Enable clang-tidy
+set_target_properties(parteeeengine_lib parteeeengine PROPERTIES
+    CXX_CLANG_TIDY "clang-tidy"
+)
+
 # ============================================================================
 # Testing
 # ============================================================================

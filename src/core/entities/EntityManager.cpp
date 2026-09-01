@@ -18,7 +18,7 @@ Entity EntityManager::generateEntity() {
         auto id = availableIDs.back();
         availableIDs.pop_back();
 
-        return {.id = id, .generation = currentGenerations[id]};
+        return {.id = id, .generation = currentGenerations.at(id)};
     }
 }
 
@@ -26,9 +26,9 @@ bool EntityManager::deleteEntity(const Entity entity) {
     if (!isValidEntity(entity)) {
         return false;
     }
-    currentGenerations[entity.id]++;
+    currentGenerations.at(entity.id)++;
 
-    if (currentGenerations[entity.id] == std::numeric_limits<EntityGeneration>::max()) {
+    if (currentGenerations.at(entity.id) == std::numeric_limits<EntityGeneration>::max()) {
         return false;
     }
 
@@ -38,7 +38,7 @@ bool EntityManager::deleteEntity(const Entity entity) {
 }
 
 bool EntityManager::isValidEntity(const Entity entity) const {
-    return entity.id < nextID && entity.generation == currentGenerations[entity.id];
+    return entity.id < nextID && entity.generation == currentGenerations.at(entity.id);
 }
 
 } // namespace parteeengine
