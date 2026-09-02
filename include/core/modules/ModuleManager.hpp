@@ -7,6 +7,7 @@
 #include <typeindex>
 
 #include <unordered_map>
+#include <cassert>
 
 namespace parteeengine {
 
@@ -23,13 +24,10 @@ class ModuleManager {
     void update(ModuleInput input);
 
     template <is_module ModuleType>
-    void addModule();
+    ModuleType& addModule();
 
     template <is_module ModuleType>
-    void addModule(const ModuleType& module);
-
-    template <is_module ModuleType>
-    void replaceModule(const ModuleType& module);
+    ModuleType& addModule(const ModuleType& module);
 
     template <is_module ModuleType>
     void removeModule();
@@ -39,18 +37,17 @@ class ModuleManager {
 };
 
 template <is_module ModuleType>
-void ModuleManager::addModule() {
-    modules.try_emplace(typeid(ModuleType), std::make_unique<ModuleType>());
+ModuleType& ModuleManager::addModule() {
+    return addModule<ModuleType>({});
 }
 
 template <is_module ModuleType>
-void ModuleManager::addModule(const ModuleType& module) {
+ModuleType& ModuleManager::addModule(const ModuleType& module) {
     modules.try_emplace(typeid(ModuleType), std::make_unique<ModuleType>(module));
-}
 
-template <is_module ModuleType>
-void ModuleManager::replaceModule(const ModuleType& module) {
-    modules.insert_or_assign(typeid(ModuleType), std::make_unique<ModuleType>(module));
+    auto* modulePtr = getModule<ModuleType>();
+    assert(modulePtr != nullptr);
+    return *modulePtr;
 }
 
 template <is_module ModuleType>
@@ -64,7 +61,7 @@ ModuleType* ModuleManager::getModule() {
     if (it == modules.end()) {
         return nullptr;
     }
-    return static_cast<ModuleType*>(it->second.get()); // ✅ .get() unwraps to ModuleBase*, then cast
+    return static_cast<ModuleType*>(it->second.get());
 }
 
 } // namespace parteeengine
