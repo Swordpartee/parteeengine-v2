@@ -4,7 +4,6 @@
 
 #include <concepts>
 #include <memory>
-#include <stdexcept>
 #include <typeindex>
 
 #include <unordered_map>
@@ -19,9 +18,9 @@ class ModuleManager {
     std::unordered_map<std::type_index, std::unique_ptr<ModuleBase>> modules;
 
   public:
-    void init(ModuleInput);
+    void init(ModuleInput input);
 
-    void update(ModuleInput);
+    void update(ModuleInput input);
 
     template <is_module ModuleType>
     void addModule();
@@ -36,7 +35,7 @@ class ModuleManager {
     void removeModule();
 
     template <is_module ModuleType>
-    ModuleType& getModule();
+    ModuleType* getModule();
 };
 
 template <is_module ModuleType>
@@ -60,13 +59,12 @@ void ModuleManager::removeModule() {
 }
 
 template <is_module ModuleType>
-ModuleType& ModuleManager::getModule() {
+ModuleType* ModuleManager::getModule() {
     auto it = modules.find(typeid(ModuleType));
     if (it == modules.end()) {
-        throw std::runtime_error("Module does not exist.");
+        return nullptr;
     }
-
-    return static_cast<ModuleType&>(*it->second);
+    return static_cast<ModuleType*>(it->second.get()); // ✅ .get() unwraps to ModuleBase*, then cast
 }
 
 } // namespace parteeengine

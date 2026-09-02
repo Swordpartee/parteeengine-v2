@@ -10,9 +10,9 @@ class WindowManagerModule : public ModuleBase {
     std::vector<ModuleWindow> windows;
 
   public:
-    void update(const ModuleInput&);
+    void update(const ModuleInput& input) override;
 
-    ModuleWindow& createWindow(const WindowDesc& config);
+    ModuleWindow* createWindow(const WindowDesc& config);
 };
 
 } // namespace parteeengine::rendering

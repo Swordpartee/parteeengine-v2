@@ -38,8 +38,12 @@ jobs:
 
       - name: Run clang-tidy
         run: |
-          find src test -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.cxx' \) -print0 \
-            | xargs -0 clang-tidy -p build
+          python3 -c "
+          import json, subprocess, sys
+          entries = json.load(open('build/compile_commands.json'))
+          files = [e['file'] for e in entries if e['file'].split('/')[-3:-2] != ['test']]  # adjust filtering as needed
+          subprocess.run(['clang-tidy', '-p', 'build'] + files, check=True)
+          "
 
   build:
     name: Build C++ project

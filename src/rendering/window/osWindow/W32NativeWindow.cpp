@@ -3,9 +3,10 @@
 #include "rendering/window/WindowEvent.hpp"
 
 #include <memory>
-#include <stdexcept>
+
+// NOLINTBEGIN(misc-include-cleaner, cppcoreguidelines-owning-memory)
+
 #include <windows.h>
-#include <winuser.h>
 
 namespace parteeengine::rendering {
 // SetMessageHook(HWND, std::function<bool(UINT,WPARAM,LPARAM,LRESULT&)>)
@@ -22,7 +23,7 @@ void NativeWindow::poll() {
 
     MSG msg = {};
 
-    while (GetMessage(&msg, nullptr, 0, 0) > 0) {
+    while (GetMessage(&msg, this->impl->hwnd, 0, 0) > 0) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
@@ -53,29 +54,32 @@ void NativeWindow::config(const WindowConfig& config) {
 
 void NativeWindow::close() { DestroyWindow(impl->hwnd); }
 
+namespace {
 LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    NativeWindow* window;
+    NativeWindow* window = nullptr;
 
     if (uMsg == WM_NCCREATE) {
         // Grab the void* tucked inside lParam and cast to the window
-        CREATESTRUCT* pCreate = (CREATESTRUCT*)lParam;
-        window = (NativeWindow*)pCreate->lpCreateParams;
-
-        // Assign the native window's user data to it's window instance
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast, performance-no-int-to-ptr)
+        auto* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
+        window = static_cast<NativeWindow*>(pCreate->lpCreateParams);
+        // Assign the native window's user data to iter's window instance
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         SetWindowLongPtr(handle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
         window->getImpl().hwnd = handle;
 
     } else {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast, performance-no-int-to-ptr)
         window = reinterpret_cast<NativeWindow*>(GetWindowLongPtr(handle, GWLP_USERDATA));
     }
 
-    if (!window) {
+    if (window == nullptr) {
         return DefWindowProc(handle, uMsg, wParam, lParam);
     }
 
-    auto handler = window->getEventHandler();
+    auto* handler = window->getEventHandler();
 
-    if (!handler) {
+    if (handler == nullptr) {
         return DefWindowProc(handle, uMsg, wParam, lParam);
     }
 
@@ -92,19 +96,22 @@ LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         handler->emit(std::make_unique<WindowDestroyEvent>());
         delete window;
         return 0;
+    default:
+        break;
     }
 
     // Passes all other messages to Windows for default processing
     return DefWindowProc(handle, uMsg, wParam, lParam);
 }
+} // namespace
 
 NativeWindow* NativeWindow::Create(const WindowDesc& config) {
     const char* CLASS_NAME = "GlobalWindowClass";
 
-    static auto instanceHandle = GetModuleHandle("Parteeengine");
+    static auto* instanceHandle = GetModuleHandle("Parteeengine");
 
     // This block executes exactly once across all method calls
-    static bool isClassRegistered = [&]() {
+    const static bool isClassRegistered = [&]() {
         WNDCLASSEX wc = {};
         wc.cbSize = sizeof(WNDCLASSEX);
         wc.lpfnWndProc = WndProc;
@@ -115,18 +122,18 @@ NativeWindow* NativeWindow::Create(const WindowDesc& config) {
     }();
 
     if (!isClassRegistered) {
-        throw std::runtime_error("Failed to register window class.");
+        return nullptr;
     }
 
-    auto window = new NativeWindow();
+    auto* window = new NativeWindow();
 
     HWND handle = CreateWindowEx(0, CLASS_NAME, config.title.c_str(), WS_OVERLAPPEDWINDOW, config.location.first,
-                                 config.location.second, config.dimensions.first, config.dimensions.second, NULL, NULL,
-                                 instanceHandle, window);
+                                 config.location.second, config.dimensions.first, config.dimensions.second, nullptr,
+                                 nullptr, instanceHandle, window);
 
-    if (!handle) {
+    if (handle == nullptr) {
         delete window;
-        throw std::runtime_error("Failed to generate window.");
+        return nullptr;
     }
 
     window->impl->hwnd = handle;
@@ -137,5 +144,7 @@ NativeWindow* NativeWindow::Create(const WindowDesc& config) {
 
     return window;
 };
+
+// NOLINTEND(misc-include-cleaner, cppcoreguidelines-owning-memory)
 
 } // namespace parteeengine::rendering

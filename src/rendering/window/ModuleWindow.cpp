@@ -3,26 +3,27 @@
 #include "rendering/window/WindowConfig.hpp"
 #include "rendering/window/WindowEvent.hpp"
 
+#include <memory>
+
 namespace parteeengine::rendering {
 
 void ModuleWindow::emit(std::unique_ptr<WindowEvent> event) {
-    WindowEvent& eventRef = *event;
-    auto it = subscriberMap.find(typeid(eventRef));
-    if (it != subscriberMap.end()) {
-        for (auto& subscriber : it->second) {
+    auto& eventRef = *event;
+    auto iter = subscriberMap.find(typeid(eventRef));
+    if (iter != subscriberMap.end()) {
+        for (auto& subscriber : iter->second) {
             subscriber(*event, *this);
         }
     }
-    // event destructs automatically here
 }
 
 bool ModuleWindow::shouldForward(const WindowEvent& event) const {
-    auto it = subscriberMap.find(typeid(event));
-    if (it == subscriberMap.end()) {
+    auto iter = subscriberMap.find(typeid(event));
+    if (iter == subscriberMap.end()) {
         return true;
     }
 
-    return it->second.empty();
+    return iter->second.empty();
 };
 
 void ModuleWindow::configure(const WindowConfig& config) { nativeWindow->config(config); }

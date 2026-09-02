@@ -1,5 +1,6 @@
 #include "core/Engine.hpp"
 
+#include "core/entities/Entity.hpp"
 #include "core/events/QuitEvent.hpp"
 #include "core/modules/ModuleBase.hpp"
 
@@ -16,7 +17,9 @@ void Engine::run() {
     }
 };
 
-ModuleInput Engine::buildModuleInput() { return {entityManager, componentManager, eventManager}; }
+ModuleInput Engine::buildModuleInput() {
+    return {.entityManager = entityManager, .componentManager = componentManager, .eventManager = eventManager};
+}
 
 Entity Engine::createEntity() { return entityManager.generateEntity(); }
 

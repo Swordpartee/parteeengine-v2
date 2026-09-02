@@ -29,7 +29,7 @@ class ModuleWindow : public WindowEventHandler {
     NativeWindow* nativeWindow;
 
   public:
-    ModuleWindow(NativeWindow* native) : nativeWindow(native) {}
+    explicit ModuleWindow(NativeWindow* native) : nativeWindow(native) {}
     ModuleWindow() = delete;
 
     template <is_window_event EventType>
@@ -38,11 +38,11 @@ class ModuleWindow : public WindowEventHandler {
     }
 
     template <is_window_event EventType>
-    void subscribe(TypedWindowSubscriber<EventType> subscriber);
+    void subscribe(const TypedWindowSubscriber<EventType>& subscriber);
 
     void emit(std::unique_ptr<WindowEvent> event) override;
 
-    bool shouldForward(const WindowEvent& event) const override;
+    [[nodiscard]] bool shouldForward(const WindowEvent& event) const override;
 
     void configure(const WindowConfig& config);
     void close();
@@ -51,7 +51,7 @@ class ModuleWindow : public WindowEventHandler {
 };
 
 template <is_window_event EventType>
-void ModuleWindow::subscribe(TypedWindowSubscriber<EventType> subscriber) {
+void ModuleWindow::subscribe(const TypedWindowSubscriber<EventType>& subscriber) {
     getSubscribers<EventType>().emplace_back([subscriber](WindowEvent& event, ModuleWindow& window) {
         subscriber(static_cast<const EventType&>(event), window);
     });

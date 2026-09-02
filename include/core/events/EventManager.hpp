@@ -10,7 +10,7 @@
 namespace parteeengine {
 
 namespace detail {
-using Subscriber = std::function<void(const std::any)>;
+using Subscriber = std::function<void(const std::any&)>;
 template <typename EventType>
 using TypedSubscriber = std::function<void(const EventType&)>;
 } // namespace detail
@@ -24,10 +24,10 @@ class EventManager {
 
   public:
     template <typename EventType>
-    void subscribe(const detail::TypedSubscriber<EventType>);
+    void subscribe(const detail::TypedSubscriber<EventType>& subscriber);
 
     template <typename EventType>
-    void emit(const EventType) const;
+    void emit(const EventType event) const;
 };
 
 template <typename EventType>
@@ -36,8 +36,8 @@ std::vector<detail::Subscriber>& EventManager::getSubscribers() const {
 }
 
 template <typename EventType>
-void EventManager::subscribe(const detail::TypedSubscriber<EventType> subscriber) {
-    getSubscribers<EventType>().emplace_back([subscriber](const std::any e) {
+void EventManager::subscribe(const detail::TypedSubscriber<EventType>& subscriber) {
+    getSubscribers<EventType>().emplace_back([subscriber](const std::any& e) {
         auto event = std::any_cast<EventType>(e);
 
         subscriber(event);

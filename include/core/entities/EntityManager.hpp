@@ -2,7 +2,6 @@
 
 #include "core/entities/Entity.hpp"
 
-#include <tuple>
 #include <vector>
 
 namespace parteeengine {
@@ -17,10 +16,10 @@ class EntityManager {
   public:
     Entity generateEntity();
 
-    bool isValidEntity(const Entity) const;
+    [[nodiscard]] bool isValidEntity(const Entity entity) const;
 
     // Invalidates an entity;
-    void deleteEntity(const Entity);
+    bool deleteEntity(const Entity entity);
 };
 
 } // namespace parteeengine
