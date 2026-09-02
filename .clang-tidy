@@ -20,4 +20,4 @@ Checks: "*,
         -readability-avoid-const-params-in-decls
 "
 FormatStyle: clang-format
-HeaderFilterRegex: '.*[/\\]parteeengine-v2[/\\].*'
+HeaderFilterRegex: '.*[/\\]parteeengine-v2[/\\](include|src)[/\\].*'
