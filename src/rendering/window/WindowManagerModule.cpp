@@ -29,8 +29,8 @@ ModuleWindow* WindowManagerModule::createWindow(const WindowDesc& config) {
     windows.emplace_back();
     ModuleWindow& window = windows.back();
 
-    native->setEventHandler(&window); 
-    window.setNative(std::move(native)); 
+    native->setEventHandler(&window);
+    window.setNative(std::move(native));
 
     return &window;
 };

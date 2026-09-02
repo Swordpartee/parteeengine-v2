@@ -1,5 +1,6 @@
 #include "rendering/window/NativeWindow.hpp"
 #include "rendering/window/WindowConfig.hpp"
+
 #include <memory>
 
 // NOLINTBEGIN
