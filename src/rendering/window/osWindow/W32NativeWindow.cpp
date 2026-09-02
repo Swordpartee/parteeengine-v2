@@ -93,8 +93,7 @@ LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
     case WM_DESTROY:
         PostQuitMessage(0);
-        handler->emit(std::make_unique<WindowDestroyEvent>());
-        delete window;
+        handler->windowDestroyed();
         return 0;
     default:
         break;
@@ -105,7 +104,7 @@ LRESULT CALLBACK WndProc(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 }
 } // namespace
 
-NativeWindow* NativeWindow::Create(const WindowDesc& config) {
+std::unique_ptr<NativeWindow> NativeWindow::Create(const WindowDesc& config) {
     const char* CLASS_NAME = "GlobalWindowClass";
 
     static auto* instanceHandle = GetModuleHandle("Parteeengine");
@@ -125,14 +124,13 @@ NativeWindow* NativeWindow::Create(const WindowDesc& config) {
         return nullptr;
     }
 
-    auto* window = new NativeWindow();
+    auto window = std::make_unique<NativeWindow>();
 
     HWND handle = CreateWindowEx(0, CLASS_NAME, config.title.c_str(), WS_OVERLAPPEDWINDOW, config.location.first,
                                  config.location.second, config.dimensions.first, config.dimensions.second, nullptr,
-                                 nullptr, instanceHandle, window);
+                                 nullptr, instanceHandle, window.get());
 
     if (handle == nullptr) {
-        delete window;
         return nullptr;
     }
 

@@ -5,29 +5,34 @@
 #include "rendering/window/NativeWindow.hpp"
 #include "rendering/window/WindowConfig.hpp"
 
+#include <utility>
+
 namespace parteeengine::rendering {
 
 void WindowManagerModule::update(const ModuleInput& /*input*/) {
-    for (auto window : windows) {
-        window.poll();
+    std::erase_if(windows, [](const auto& window) { return window.isDestroyed(); });
+
+    for (auto& window : windows) {
+        if (!window.isDestroyed()) {
+            window.poll();
+        }
     }
-};
+}
 
 ModuleWindow* WindowManagerModule::createWindow(const WindowDesc& config) {
-
-    auto* native = NativeWindow::Create(config);
+    auto native = NativeWindow::Create(config);
 
     if (native == nullptr) {
         return nullptr;
     }
 
-    auto window = ModuleWindow{native};
+    windows.emplace_back();
+    ModuleWindow& window = windows.back();
 
-    windows.emplace_back(window);
+    native->setEventHandler(&window);
+    window.setNative(std::move(native));
 
-    native->setEventHandler(&windows.back());
-
-    return &windows.back();
+    return &window;
 };
 
 } // namespace parteeengine::rendering

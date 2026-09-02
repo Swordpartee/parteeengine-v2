@@ -26,16 +26,19 @@ class ModuleWindow : public WindowEventHandler {
 
   private:
     std::unordered_map<std::type_index, std::vector<WindowSubscriber>> subscriberMap;
-    NativeWindow* nativeWindow;
+    std::unique_ptr<NativeWindow> nativeWindow;
+
+    bool destroyed = false;
 
   public:
-    explicit ModuleWindow(NativeWindow* native) : nativeWindow(native) {}
-    ModuleWindow() = delete;
-
     template <is_window_event EventType>
     std::vector<WindowSubscriber>& getSubscribers() {
         return subscriberMap[typeid(EventType)];
     }
+
+    void setNative(std::unique_ptr<NativeWindow> window) { nativeWindow = std::move(window); }
+
+    explicit ModuleWindow() = default;
 
     template <is_window_event EventType>
     void subscribe(const TypedWindowSubscriber<EventType>& subscriber);
@@ -44,10 +47,13 @@ class ModuleWindow : public WindowEventHandler {
 
     [[nodiscard]] bool shouldForward(const WindowEvent& event) const override;
 
+    void windowDestroyed() override;
+
     void configure(const WindowConfig& config);
     void close();
     void poll();
     void config(const WindowConfig& config);
+    [[nodiscard]] bool isDestroyed() const;
 };
 
 template <is_window_event EventType>
