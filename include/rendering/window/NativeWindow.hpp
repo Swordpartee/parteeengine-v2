@@ -28,7 +28,7 @@ class NativeWindow {
     void config(const WindowConfig& config);
     void close();
 
-    static NativeWindow* Create(const WindowDesc& config);
+    static std::unique_ptr<NativeWindow> Create(const WindowDesc& config);
 };
 
 } // namespace parteeengine::rendering

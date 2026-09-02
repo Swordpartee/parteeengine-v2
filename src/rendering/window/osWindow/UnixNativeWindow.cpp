@@ -1,5 +1,6 @@
 #include "rendering/window/NativeWindow.hpp"
 #include "rendering/window/WindowConfig.hpp"
+#include <memory>
 
 // NOLINTBEGIN
 
@@ -20,10 +21,9 @@ void NativeWindow::config(const WindowConfig& /*config*/) {};
 
 void NativeWindow::close() {}
 
-NativeWindow* NativeWindow::Create(const WindowDesc& config) {
-    (void)config;
+std::unique_ptr<NativeWindow> NativeWindow::Create(const WindowDesc& /*config*/) {
 
-    return new NativeWindow;
+    return std::make_unique<NativeWindow>();
 };
 
 } // namespace parteeengine::rendering

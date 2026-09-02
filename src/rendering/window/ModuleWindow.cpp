@@ -24,7 +24,11 @@ bool ModuleWindow::shouldForward(const WindowEvent& event) const {
     }
 
     return iter->second.empty();
-};
+}
+
+void ModuleWindow::windowDestroyed() { destroyed = true; }
+
+bool ModuleWindow::isDestroyed() const { return destroyed; };
 
 void ModuleWindow::configure(const WindowConfig& config) { nativeWindow->config(config); }
 
