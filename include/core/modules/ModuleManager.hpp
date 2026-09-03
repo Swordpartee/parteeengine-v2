@@ -2,12 +2,12 @@
 
 #include "core/modules/ModuleBase.hpp"
 
+#include <cassert>
 #include <concepts>
 #include <memory>
 #include <typeindex>
 
 #include <unordered_map>
-#include <cassert>
 
 namespace parteeengine {
 

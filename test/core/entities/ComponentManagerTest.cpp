@@ -162,7 +162,6 @@ TEST_F(ComponentManagerTest, ThreeComponentTypes) {
     EXPECT_TRUE(componentManager.hasComponent<PositionComponent>(entity));
     EXPECT_TRUE(componentManager.hasComponent<VelocityComponent>(entity));
 
-
     EXPECT_EQ(dataComponent.value, 42);
     EXPECT_FLOAT_EQ(posComponent.x, 1.0F);
     EXPECT_FLOAT_EQ(velComponent.vx, 0.1F);
