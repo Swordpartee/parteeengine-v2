@@ -11,7 +11,7 @@ class NativeWindow {
   private:
     struct Impl;
 
-    WindowEventHandler* eventHandler;
+    WindowEventHandler* eventHandler = nullptr;
     std::unique_ptr<Impl> impl;
 
   public:

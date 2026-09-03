@@ -80,7 +80,7 @@ ComponentView<ComponentTypes...> ComponentManager::viewComponents() const {
 
     for (const auto& entity : firstStorage->entityMap) {
         if ((hasComponent<ComponentTypes>(entity) && ...)) {
-            result.emplace_back(entity, getComponent<ComponentTypes>(entity)...);
+            result.emplace_back(entity, *getComponent<ComponentTypes>(entity)...);
         }
     }
 

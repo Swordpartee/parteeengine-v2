@@ -15,7 +15,7 @@ struct NativeWindow::Impl {
     HWND hwnd = nullptr;
 };
 
-NativeWindow::NativeWindow() : eventHandler(nullptr), impl(std::make_unique<Impl>()) {}
+NativeWindow::NativeWindow() : impl(std::make_unique<Impl>()) {}
 
 NativeWindow::~NativeWindow() = default;
 

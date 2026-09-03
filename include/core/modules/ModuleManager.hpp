@@ -38,7 +38,11 @@ class ModuleManager {
 
 template <is_module ModuleType>
 ModuleType& ModuleManager::addModule() {
-    return addModule<ModuleType>({});
+    modules.try_emplace(typeid(ModuleType), std::make_unique<ModuleType>());
+
+    auto* modulePtr = getModule<ModuleType>();
+    assert(modulePtr != nullptr);
+    return *modulePtr;
 }
 
 template <is_module ModuleType>
