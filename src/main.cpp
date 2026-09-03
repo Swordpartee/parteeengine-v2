@@ -10,7 +10,7 @@ int main() {
     parteeengine::Engine engine;
 
     auto& windowManager = engine.addModule<parteeengine::rendering::WindowManagerModule>();
-   
+
     auto* window = windowManager.createWindow({.dimensions = {800, 600}, .visible = true});
     if (window == nullptr) {
         return 1;
