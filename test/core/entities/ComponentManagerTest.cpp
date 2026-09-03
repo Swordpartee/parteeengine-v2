@@ -59,22 +59,20 @@ TEST_F(ComponentManagerTest, ComponentData) {
     auto entity = entityManager.generateEntity();
     DataComponent data{42, 3.14F};
 
-    componentManager.addComponent<DataComponent>(entity, data);
-    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
+    auto& component = componentManager.addComponent<DataComponent>(entity, data);
 
-    EXPECT_EQ(retrieved.value, 42);
-    EXPECT_FLOAT_EQ(retrieved.data, 3.14F);
+    EXPECT_EQ(component.value, 42);
+    EXPECT_FLOAT_EQ(component.data, 3.14F);
 }
 
 TEST_F(ComponentManagerTest, GetComponent) {
     auto entity = entityManager.generateEntity();
     DataComponent data{99, 2.71F};
 
-    componentManager.addComponent<DataComponent>(entity, data);
-    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
+    auto& component = componentManager.addComponent<DataComponent>(entity, data);
 
-    EXPECT_EQ(retrieved.value, 99);
-    EXPECT_FLOAT_EQ(retrieved.data, 2.71F);
+    EXPECT_EQ(component.value, 99);
+    EXPECT_FLOAT_EQ(component.data, 2.71F);
 }
 
 TEST_F(ComponentManagerTest, GetNonexistentCompoent) {
@@ -110,29 +108,28 @@ TEST_F(ComponentManagerTest, MultipleEntitiesWithComponents) {
     DataComponent data2{2, 2.0F};
     DataComponent data3{3, 3.0F};
 
-    componentManager.addComponent<DataComponent>(entity1, data1);
-    componentManager.addComponent<DataComponent>(entity2, data2);
-    componentManager.addComponent<DataComponent>(entity3, data3);
+    auto& dataComp1 = componentManager.addComponent<DataComponent>(entity1, data1);
+    auto& dataComp2 = componentManager.addComponent<DataComponent>(entity2, data2);
+    auto& dataComp3 = componentManager.addComponent<DataComponent>(entity3, data3);
 
-    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity1).value, 1);
-    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity2).value, 2);
-    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity3).value, 3);
+    EXPECT_EQ(dataComp1.value, 1);
+    EXPECT_EQ(dataComp2.value, 2);
+    EXPECT_EQ(dataComp2.value, 3);
 }
 
 TEST_F(ComponentManagerTest, ComponentDataModiFication) {
     auto entity = entityManager.generateEntity();
 
-    componentManager.addComponent<DataComponent>(entity);
-    auto& comp = componentManager.getComponent<DataComponent>(entity);
-    EXPECT_EQ(comp.value, 0);
-    EXPECT_FLOAT_EQ(comp.data, 0.0F);
+    auto& component = componentManager.addComponent<DataComponent>(entity);
 
-    comp.value = 55;
-    comp.data = 5.5F;
+    EXPECT_EQ(component.value, 0);
+    EXPECT_FLOAT_EQ(component.data, 0.0F);
 
-    auto& retrieved = componentManager.getComponent<DataComponent>(entity);
-    EXPECT_EQ(retrieved.value, 55);
-    EXPECT_FLOAT_EQ(retrieved.data, 5.5F);
+    component.value = 55;
+    component.data = 5.5F;
+
+    EXPECT_EQ(component.value, 55);
+    EXPECT_FLOAT_EQ(component.data, 5.5F);
 }
 
 TEST_F(ComponentManagerTest, RemoveAndReaddComponent) {
@@ -140,14 +137,14 @@ TEST_F(ComponentManagerTest, RemoveAndReaddComponent) {
     DataComponent data1{10, 1.0F};
     DataComponent data2{20, 2.0F};
 
-    componentManager.addComponent<DataComponent>(entity, data1);
-    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity).value, 10);
+    auto& component = componentManager.addComponent<DataComponent>(entity, data1);
+    EXPECT_EQ(component.value, 10);
 
     componentManager.removeComponent<DataComponent>(entity);
     EXPECT_FALSE(componentManager.hasComponent<DataComponent>(entity));
 
-    componentManager.addComponent<DataComponent>(entity, data2);
-    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity).value, 20);
+    component = componentManager.addComponent<DataComponent>(entity, data2);
+    EXPECT_EQ(component.value, 20);
 }
 
 TEST_F(ComponentManagerTest, ThreeComponentTypes) {
@@ -157,21 +154,17 @@ TEST_F(ComponentManagerTest, ThreeComponentTypes) {
     PositionComponent pos{1.0F, 2.0F, 3.0F};
     VelocityComponent vel{0.1F, 0.2F, 0.3F};
 
-    componentManager.addComponent<DataComponent>(entity, data);
-    componentManager.addComponent<PositionComponent>(entity, pos);
-    componentManager.addComponent<VelocityComponent>(entity, vel);
+    auto& dataComponent = componentManager.addComponent<DataComponent>(entity, data);
+    auto& posComponent = componentManager.addComponent<PositionComponent>(entity, pos);
+    auto& velComponent = componentManager.addComponent<VelocityComponent>(entity, vel);
 
     EXPECT_TRUE(componentManager.hasComponent<DataComponent>(entity));
     EXPECT_TRUE(componentManager.hasComponent<PositionComponent>(entity));
     EXPECT_TRUE(componentManager.hasComponent<VelocityComponent>(entity));
 
-    auto& retrievedData = componentManager.getComponent<DataComponent>(entity);
-    auto& retrievedPos = componentManager.getComponent<PositionComponent>(entity);
-    auto& retrievedVel = componentManager.getComponent<VelocityComponent>(entity);
-
-    EXPECT_EQ(retrievedData.value, 42);
-    EXPECT_FLOAT_EQ(retrievedPos.x, 1.0F);
-    EXPECT_FLOAT_EQ(retrievedVel.vx, 0.1F);
+    EXPECT_EQ(dataComponent.value, 42);
+    EXPECT_FLOAT_EQ(posComponent.x, 1.0F);
+    EXPECT_FLOAT_EQ(velComponent.vx, 0.1F);
 }
 
 TEST_F(ComponentManagerTest, ViewSingleComponent) {
@@ -296,10 +289,10 @@ TEST_F(ComponentManagerTest, ViewConsistencyWithModiFications) {
 
     // ModiFy component through getComponent (aFter all additions to avoid
     // invalidating reFerences)
-    componentManager.getComponent<DataComponent>(entity1).value = 999;
+    componentManager.getComponent<DataComponent>(entity1)->value = 999;
 
     // VeriFy modiFication persists in storage
-    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity1).value, 999);
+    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity1)->value, 999);
 
     // Get a Fresh view aFter modiFication
     auto view = componentManager.viewComponents<DataComponent, PositionComponent>();

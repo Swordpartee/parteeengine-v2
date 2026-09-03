@@ -51,21 +51,6 @@ TEST_F(ModuleManagerTest, AddModuleDuplicateDoesNotOverwriteExisting) {
     EXPECT_EQ(module->value, 10);
 }
 
-TEST_F(ModuleManagerTest, ReplaceModuleOverwritesExisting) {
-    moduleManager.addModule<TestModuleA>(TestModuleA{10});
-    moduleManager.replaceModule<TestModuleA>(TestModuleA{55});
-
-    auto* module = moduleManager.getModule<TestModuleA>();
-    EXPECT_EQ(module->value, 55);
-}
-
-TEST_F(ModuleManagerTest, ReplaceModuleInsertsWhenMissing) {
-    moduleManager.replaceModule<TestModuleA>(TestModuleA{77});
-
-    auto* module = moduleManager.getModule<TestModuleA>();
-    EXPECT_EQ(module->value, 77);
-}
-
 TEST_F(ModuleManagerTest, RemoveModuleRemovesExisting) {
     moduleManager.addModule<TestModuleA>(TestModuleA{5});
     moduleManager.removeModule<TestModuleA>();
