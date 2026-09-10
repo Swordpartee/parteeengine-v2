@@ -6,6 +6,7 @@
 
 #include <future>
 #include <gtest/gtest.h>
+#include <chrono>
 
 namespace parteeengine {
 namespace {

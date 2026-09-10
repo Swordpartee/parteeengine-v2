@@ -137,14 +137,12 @@ endif()
 # Clang Tidy
 # ============================================================================
 
-set_target_properties(parteeeengine_lib parteeeengine PROPERTIES
-    CXX_CLANG_TIDY "clang-tidy"
-)
-
-add_custom_target(tidy
-    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target parteeeengine_lib --clean-first
-    COMMENT "Running full clang-tidy pass over all library sources"
-)
+find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+if(CLANG_TIDY_EXE)
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
+else()
+    message(WARNING "clang-tidy not found!")
+endif()
 
 # ============================================================================
 # Testing

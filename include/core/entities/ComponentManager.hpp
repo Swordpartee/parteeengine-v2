@@ -4,7 +4,6 @@
 #include "core/entities/Entity.hpp"
 
 #include <memory>
-#include <stdexcept>
 #include <typeindex>
 
 #include <unordered_map>
@@ -35,13 +34,13 @@ class ComponentManager {
     ComponentType& addComponent(Entity entity);
 
     template <typename ComponentType>
-    void removeComponent(Entity entity);
+    bool removeComponent(Entity entity);
 
     template <typename ComponentType>
     ComponentType* getComponent(Entity entity);
 
     template <typename ComponentType>
-    const ComponentType* getComponent(Entity entity) const;
+    [[nodiscard]] const ComponentType* getComponent(Entity entity) const;
 
     template <typename ComponentType>
     [[nodiscard]] bool hasComponent(Entity entity) const;
@@ -110,21 +109,23 @@ ComponentType& ComponentManager::addComponent(const Entity entity) {
 }
 
 template <typename ComponentType>
-void ComponentManager::removeComponent(const Entity entity) {
+bool ComponentManager::removeComponent(const Entity entity) {
     auto& storage = getOrCreateStorage<ComponentType>();
 
     auto iter = storage.sparseMap.find(entity);
     if (iter == storage.sparseMap.end()) {
-        throw std::runtime_error("Entity does not have component");
+        return false;
     }
 
-    size_t index = iter->second;
+    auto index = iter->second;
     storage.sparseMap[storage.entityMap.back()] = index;
     storage.sparseMap.erase(entity);
-    std::swap(storage.data[index], storage.data.back());
+    std::swap(storage.data.at(index), storage.data.back());
     storage.data.pop_back();
-    std::swap(storage.entityMap[index], storage.entityMap.back());
+    std::swap(storage.entityMap.at(index), storage.entityMap.back());
     storage.entityMap.pop_back();
+
+    return true;
 }
 
 template <typename ComponentType>
@@ -135,7 +136,7 @@ ComponentType* ComponentManager::getComponent(const Entity entity) {
     if (iter == storage.sparseMap.end()) {
         return nullptr;
     }
-    return &storage.data[iter->second];
+    return &storage.data.at(iter->second);
 }
 
 template <typename ComponentType>
@@ -150,7 +151,7 @@ const ComponentType* ComponentManager::getComponent(const Entity entity) const {
     if (iter == storage->sparseMap.end()) {
         return nullptr;
     }
-    return &storage->data[iter->second];
+    return &storage->data.at(iter->second);
 }
 
 template <typename ComponentType>

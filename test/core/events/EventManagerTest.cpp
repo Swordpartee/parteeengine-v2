@@ -1,6 +1,8 @@
 #include "core/events/EventManager.hpp"
 
 #include <gtest/gtest.h>
+#include <numbers>
+#include <string>
 
 namespace parteeengine {
 
@@ -62,12 +64,12 @@ TEST_F(EventManagerTest, DifferentEventTypes) {
 
 // Events with data are properly transmitted
 TEST_F(EventManagerTest, EventWithData) {
-    TestEventWithData receivedEvent = {0, ""};
+    TestEventWithData receivedEvent = {.value = 0, .message = ""};
 
     eventManager.subscribe<TestEventWithData>(
-        [&receivedEvent](const TestEventWithData event) { receivedEvent = event; });
+        [&receivedEvent](const TestEventWithData& event) { receivedEvent = event; });
 
-    TestEventWithData emittedEvent = {42, "test message"};
+    const TestEventWithData emittedEvent = {.value = 42, .message = "test message"};
     eventManager.emit<TestEventWithData>(emittedEvent);
 
     EXPECT_EQ(receivedEvent.value, 42);
@@ -102,16 +104,16 @@ TEST_F(EventManagerTest, SubscribeAfterEmit) {
 
 // Multiple different event types with different data
 TEST_F(EventManagerTest, MultipleEventTypesWithData) {
-    TestEventWithData receivedTestEvent = {0, ""};
+    TestEventWithData receivedTestEvent = {.value = 0, .message = ""};
     AnotherEvent receivedAnotherEvent = {0.0};
 
     eventManager.subscribe<TestEventWithData>(
-        [&receivedTestEvent](const TestEventWithData event) { receivedTestEvent = event; });
+        [&receivedTestEvent](const TestEventWithData& event) { receivedTestEvent = event; });
     eventManager.subscribe<AnotherEvent>(
         [&receivedAnotherEvent](const AnotherEvent event) { receivedAnotherEvent = event; });
 
-    TestEventWithData testEvent = {99, "multi-event test"};
-    AnotherEvent anotherEvent = {3.14159};
+    const TestEventWithData testEvent = {.value = 99, .message = "multi-event test"};
+    const AnotherEvent anotherEvent = {std::numbers::pi};
 
     eventManager.emit<TestEventWithData>(testEvent);
     eventManager.emit<AnotherEvent>(anotherEvent);
@@ -123,20 +125,22 @@ TEST_F(EventManagerTest, MultipleEventTypesWithData) {
 
 // Emitting with no subscribers doesn't cause issues
 TEST_F(EventManagerTest, EmitWithNoSubscribers) {
-    // Should not throw or crash
-    EXPECT_NO_THROW(eventManager.emit<TestEvent>({}));
-    EXPECT_NO_THROW(eventManager.emit<TestEventWithData>({0, ""}));
+    // Should not crash. EXPECT_NO_THROW requires exception support.
+    eventManager.emit<TestEvent>({});
+    eventManager.emit<TestEventWithData>({.value=0, .message=""});
 }
 
 // Multiple subscribers receive the same event data
 TEST_F(EventManagerTest, MultipleSubscribersReceiveSameData) {
-    int value1 = 0, value2 = 0, value3 = 0;
+    int value1 = 0;
+    int value2 = 0;
+    int value3 = 0;
 
-    eventManager.subscribe<TestEventWithData>([&value1](const TestEventWithData event) { value1 = event.value; });
-    eventManager.subscribe<TestEventWithData>([&value2](const TestEventWithData event) { value2 = event.value; });
-    eventManager.subscribe<TestEventWithData>([&value3](const TestEventWithData event) { value3 = event.value; });
+    eventManager.subscribe<TestEventWithData>([&value1](const TestEventWithData& event) { value1 = event.value; });
+    eventManager.subscribe<TestEventWithData>([&value2](const TestEventWithData& event) { value2 = event.value; });
+    eventManager.subscribe<TestEventWithData>([&value3](const TestEventWithData& event) { value3 = event.value; });
 
-    eventManager.emit<TestEventWithData>({123, "shared data"});
+    eventManager.emit<TestEventWithData>({.value = 123, .message = "shared data"});
 
     EXPECT_EQ(value1, 123);
     EXPECT_EQ(value2, 123);
