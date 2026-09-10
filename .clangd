@@ -1,8 +1,9 @@
 CompileFlags:
-  Add:
-    - --driver-mode=cl
-    - /std:c++latest
-    - -I../include
-    - -I../src
-    - -isystem
   CompilationDatabase: build
+  Add:
+    - -std=c++23
+    - -Iinclude
+    - -Isrc
+    - -Isystem
+    - --driver-mode=cl
+    - -DPARTEEENGINE_WINDOWS

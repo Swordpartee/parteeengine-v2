@@ -28,16 +28,16 @@ class Engine {
     void deleteEntity(const Entity entity);
 
     template <typename ComponentType>
-    void addComponent(const Entity entity);
+    ComponentType& addComponent(const Entity entity);
 
     template <typename ComponentType>
-    void addComponent(const Entity entity, ComponentType data);
+    ComponentType& addComponent(const Entity entity, ComponentType data);
 
     template <typename ComponentType>
     void removeComponent(const Entity entity);
 
     template <typename ComponentType>
-    ComponentType& getComponent(const Entity entity);
+    ComponentType* getComponent(const Entity entity);
 
     template <typename ComponentType>
     bool hasComponent(const Entity entity) const;
@@ -49,13 +49,10 @@ class Engine {
     void emit(const EventType event) const;
 
     template <typename ModuleType>
-    void addModule();
+    ModuleType& addModule();
 
     template <typename ModuleType>
-    void addModule(const ModuleType& module);
-
-    template <typename ModuleType>
-    void replaceModule(const ModuleType& module);
+    ModuleType& addModule(const ModuleType& module);
 
     template <typename ModuleType>
     void removeModule();
@@ -65,13 +62,13 @@ class Engine {
 };
 
 template <typename ComponentType>
-void Engine::addComponent(const Entity entity) {
-    componentManager.addComponent<ComponentType>(entity);
+ComponentType& Engine::addComponent(const Entity entity) {
+    return componentManager.addComponent<ComponentType>(entity);
 }
 
 template <typename ComponentType>
-void Engine::addComponent(const Entity entity, ComponentType data) {
-    componentManager.addComponent<ComponentType>(entity, data);
+ComponentType& Engine::addComponent(const Entity entity, ComponentType data) {
+    return componentManager.addComponent<ComponentType>(entity, data);
 }
 
 template <typename ComponentType>
@@ -80,7 +77,7 @@ void Engine::removeComponent(const Entity entity) {
 }
 
 template <typename ComponentType>
-ComponentType& Engine::getComponent(const Entity entity) {
+ComponentType* Engine::getComponent(const Entity entity) {
     return componentManager.getComponent<ComponentType>(entity);
 }
 
@@ -100,18 +97,13 @@ void Engine::emit(const EventType event) const {
 }
 
 template <typename ModuleType>
-void Engine::addModule() {
-    moduleManager.addModule<ModuleType>();
+ModuleType& Engine::addModule() {
+    return moduleManager.addModule<ModuleType>();
 }
 
 template <typename ModuleType>
-void Engine::addModule(const ModuleType& module) {
-    moduleManager.addModule<ModuleType>(module);
-}
-
-template <typename ModuleType>
-void Engine::replaceModule(const ModuleType& module) {
-    moduleManager.replaceModule<ModuleType>(module);
+ModuleType& Engine::addModule(const ModuleType& module) {
+    return moduleManager.addModule<ModuleType>(module);
 }
 
 template <typename ModuleType>

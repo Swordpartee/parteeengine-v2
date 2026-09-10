@@ -50,7 +50,7 @@ class SystemModule : public ModuleBase {
         // 2. Test Component Addition and Access via ModuleInput
         input.componentManager.addComponent(entity, 100);
         if (input.componentManager.hasComponent<int>(entity) &&
-            input.componentManager.getComponent<int>(entity) == 100) {
+            *input.componentManager.getComponent<int>(entity) == 100) {
             componentAddedAndVerified = true;
         }
 
@@ -75,7 +75,7 @@ TEST_F(EngineTest, EngineRoutesEntityAndComponentOperations) {
 
     engine.addComponent(entity, 42);
     EXPECT_TRUE(engine.hasComponent<int>(entity));
-    EXPECT_EQ(engine.getComponent<int>(entity), 42);
+    EXPECT_EQ(*engine.getComponent<int>(entity), 42);
 
     engine.removeComponent<int>(entity);
     EXPECT_FALSE(engine.hasComponent<int>(entity));

@@ -9,13 +9,9 @@ int main() {
 
     parteeengine::Engine engine;
 
-    engine.addModule<parteeengine::rendering::WindowManagerModule>();
+    auto& windowManager = engine.addModule<parteeengine::rendering::WindowManagerModule>();
 
-    auto* windowManager = engine.getModule<parteeengine::rendering::WindowManagerModule>();
-    if (windowManager == nullptr) {
-        return 1;
-    }
-    auto* window = windowManager->createWindow({.dimensions = {800, 600}, .visible = true});
+    auto* window = windowManager.createWindow({.dimensions = {800, 600}, .visible = true});
     if (window == nullptr) {
         return 1;
     }
