@@ -78,7 +78,7 @@ TEST_F(ComponentManagerTest, GetComponent) {
 TEST_F(ComponentManagerTest, GetNonexistentCompoent) {
     auto entity = entityManager.generateEntity();
 
-    EXPECT_THROW(componentManager.getComponent<DataComponent>(entity), std::runtime_error);
+    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity), nullptr);
 }
 
 TEST_F(ComponentManagerTest, RemoveNonexistentCompoent) {
@@ -108,13 +108,13 @@ TEST_F(ComponentManagerTest, MultipleEntitiesWithComponents) {
     DataComponent data2{2, 2.0F};
     DataComponent data3{3, 3.0F};
 
-    auto& dataComp1 = componentManager.addComponent<DataComponent>(entity1, data1);
-    auto& dataComp2 = componentManager.addComponent<DataComponent>(entity2, data2);
-    auto& dataComp3 = componentManager.addComponent<DataComponent>(entity3, data3);
+    componentManager.addComponent<DataComponent>(entity1, data1);
+    componentManager.addComponent<DataComponent>(entity2, data2);
+    componentManager.addComponent<DataComponent>(entity3, data3);
 
-    EXPECT_EQ(dataComp1.value, 1);
-    EXPECT_EQ(dataComp2.value, 2);
-    EXPECT_EQ(dataComp2.value, 3);
+    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity1)->value, 1);
+    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity2)->value, 2);
+    EXPECT_EQ(componentManager.getComponent<DataComponent>(entity3)->value, 3);
 }
 
 TEST_F(ComponentManagerTest, ComponentDataModiFication) {
