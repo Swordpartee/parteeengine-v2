@@ -28,8 +28,5 @@ target_include_directories(parteeeengine_tests
         ${PARTEEE_INCLUDE_DIR}
 )
 
-# Set C++ standard
-target_compile_features(parteeeengine_tests PRIVATE cxx_std_23)
-
 # Discover and register individual tests
 gtest_discover_tests(parteeeengine_tests)
