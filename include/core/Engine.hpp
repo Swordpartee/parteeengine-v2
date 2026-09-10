@@ -43,7 +43,7 @@ class Engine {
     bool hasComponent(const Entity entity) const;
 
     template <typename EventType>
-    void subscribe(const detail::TypedSubscriber<EventType> subscriber);
+    void subscribe(const detail::TypedSubscriber<EventType>& subscriber);
 
     template <typename EventType>
     void emit(const EventType event) const;
@@ -87,7 +87,7 @@ bool Engine::hasComponent(const Entity entity) const {
 }
 
 template <typename EventType>
-void Engine::subscribe(const detail::TypedSubscriber<EventType> subscriber) {
+void Engine::subscribe(const detail::TypedSubscriber<EventType>& subscriber) {
     eventManager.subscribe<EventType>(subscriber);
 }
 

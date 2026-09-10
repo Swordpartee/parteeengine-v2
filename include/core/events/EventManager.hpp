@@ -27,7 +27,7 @@ class EventManager {
     void subscribe(const detail::TypedSubscriber<EventType>& subscriber);
 
     template <typename EventType>
-    void emit(const EventType event) const;
+    void emit(const EventType& event) const;
 };
 
 template <typename EventType>
@@ -45,8 +45,8 @@ void EventManager::subscribe(const detail::TypedSubscriber<EventType>& subscribe
 }
 
 template <typename EventType>
-void EventManager::emit(const EventType event) const {
-    for (auto subscriber : getSubscribers<EventType>()) {
+void EventManager::emit(const EventType& event) const {
+    for (auto& subscriber : getSubscribers<EventType>()) {
         subscriber(event);
     }
 }
