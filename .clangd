@@ -4,6 +4,4 @@ CompileFlags:
     - -std=c++23
     - -Iinclude
     - -Isrc
-    - -Isystem
-    - --driver-mode=cl
     - -DPARTEEENGINE_WINDOWS
