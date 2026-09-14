@@ -36,7 +36,7 @@ parteeengine-v2/
 
 ### Prerequisites
 
-- CMake 3.21 or higher
+- CMake 4.4 or higher
 - C++23 compatible compiler (MSVC, GCC, or Clang)
 - Google Test (automatically downloaded via CMake)
 
