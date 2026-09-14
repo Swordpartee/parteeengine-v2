@@ -120,7 +120,7 @@ TEST_F(EventManagerTest, MultipleEventTypesWithData) {
 
     EXPECT_EQ(receivedTestEvent.value, 99);
     EXPECT_EQ(receivedTestEvent.message, "multi-event test");
-    EXPECT_DOUBLE_EQ(receivedAnotherEvent.data, 3.14159);
+    EXPECT_DOUBLE_EQ(receivedAnotherEvent.data, std::numbers::pi);
 }
 
 // Emitting with no subscribers doesn't cause issues
