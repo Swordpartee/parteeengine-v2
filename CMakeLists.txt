@@ -2,19 +2,15 @@ cmake_minimum_required(VERSION 3.21)
 
 # Project declaration
 project(
-    parteeeengine
+    parteeengine
     VERSION 2.0.0
     DESCRIPTION "N/A"
     LANGUAGES CXX C
 )
 
 # ============================================================================
-# CMake Configuration
+# CMake Compile Commands
 # ============================================================================
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -22,17 +18,17 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Project Options
 # ============================================================================
 
-option(PARTEEE_BUILD_TESTS "Build unit tests" ON)
-option(PARTEEE_BUILD_DOCS "Build documentation" OFF)
-option(PARTEEE_ENABLE_LTO "Enable Link Time Optimization" OFF)
-option(PARTEEE_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
+option(PARTEEENGINE_BUILD_TESTS "Build unit tests" ON)
+option(PARTEEENGINE_BUILD_DOCS "Build documentation" OFF)
+option(PARTEEENGINE_ENABLE_LTO "Enable Link Time Optimization" OFF)
+option(PARTEEENGINE_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 
 # ============================================================================
 # Compiler Flags and Warnings
 # ============================================================================
 
 # Link-time optimization
-if(PARTEEE_ENABLE_LTO)
+if(PARTEEENGINE_ENABLE_LTO)
     include(CheckIPOSupported)
     check_ipo_supported(RESULT LTO_SUPPORTED OUTPUT LTO_NOT_SUPPORTED)
     if(LTO_SUPPORTED)
@@ -47,50 +43,50 @@ endif()
 # Source Files and Directories
 # ============================================================================
 
-set(PARTEEE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-set(PARTEEE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(PARTEEENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(PARTEEENGINE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 # Explicit list of all header files (Prevents stale CMake cache issues)
-set(PARTEEE_HEADERS
-    "${PARTEEE_INCLUDE_DIR}/core/Engine.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/entities/ComponentManager.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/entities/ComponentStorage.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/entities/Entity.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/entities/EntityManager.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/events/EventManager.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/events/QuitEvent.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleBase.hpp"
-    "${PARTEEE_INCLUDE_DIR}/core/modules/ModuleManager.hpp"
-    "${PARTEEE_INCLUDE_DIR}/util/OSUtil.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/window/ModuleWindow.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/window/NativeWindow.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowConfig.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowEvent.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowEventHandler.hpp"
-    "${PARTEEE_INCLUDE_DIR}/rendering/window/WindowManagerModule.hpp"
+set(PARTEEENGINE_HEADERS
+    "${PARTEEENGINE_INCLUDE_DIR}/core/Engine.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/entities/ComponentManager.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/entities/ComponentStorage.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/entities/Entity.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/entities/EntityManager.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/events/EventManager.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/events/QuitEvent.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/modules/ModuleBase.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/core/modules/ModuleManager.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/util/OSUtil.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/rendering/window/ModuleWindow.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/rendering/window/NativeWindow.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/rendering/window/WindowConfig.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/rendering/window/WindowEvent.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/rendering/window/WindowEventHandler.hpp"
+    "${PARTEEENGINE_INCLUDE_DIR}/rendering/window/WindowManagerModule.hpp"
 
 )
 
 # Explicit list of all library source files
-set(PARTEEE_SOURCES
-    "${PARTEEE_SOURCE_DIR}/core/Engine.cpp"
-    "${PARTEEE_SOURCE_DIR}/core/entities/EntityManager.cpp"
-    "${PARTEEE_SOURCE_DIR}/core/modules/ModuleManager.cpp"
-    "${PARTEEE_SOURCE_DIR}/rendering/window/WindowManagerModule.cpp"
-    "${PARTEEE_SOURCE_DIR}/rendering/window/ModuleWindow.cpp"
+set(PARTEEENGINE_SOURCES
+    "${PARTEEENGINE_SOURCE_DIR}/core/Engine.cpp"
+    "${PARTEEENGINE_SOURCE_DIR}/core/entities/EntityManager.cpp"
+    "${PARTEEENGINE_SOURCE_DIR}/core/modules/ModuleManager.cpp"
+    "${PARTEEENGINE_SOURCE_DIR}/rendering/window/WindowManagerModule.cpp"
+    "${PARTEEENGINE_SOURCE_DIR}/rendering/window/ModuleWindow.cpp"
 
 )
 
 if(WIN32)
-    list(APPEND PARTEEE_SOURCES 
-        "${PARTEEE_SOURCE_DIR}/rendering/window/osWindow/W32NativeWindow.cpp"
+    list(APPEND PARTEEENGINE_SOURCES
+        "${PARTEEENGINE_SOURCE_DIR}/rendering/window/osWindow/W32NativeWindow.cpp"
         )
 elseif(APPLE)
-    list(APPEND PARTEEE_SOURCES 
+    list(APPEND PARTEEENGINE_SOURCES
         )
 elseif(UNIX AND NOT APPLE)
-    list(APPEND PARTEEE_SOURCES 
-        "${PARTEEE_SOURCE_DIR}/rendering/window/osWindow/UnixNativeWindow.cpp"
+    list(APPEND PARTEEENGINE_SOURCES
+        "${PARTEEENGINE_SOURCE_DIR}/rendering/window/osWindow/UnixNativeWindow.cpp"
         )
 endif()
 
@@ -98,12 +94,18 @@ endif()
 # Main Library Target
 # ============================================================================
 
-add_library(parteeeengine_lib STATIC ${PARTEEE_SOURCES} ${PARTEEE_HEADERS})
+add_library(parteeengine_lib STATIC)
+
+target_sources(parteeengine_lib PRIVATE ${PARTEEENGINE_SOURCES})
+set_target_properties(parteeengine_lib PROPERTIES
+    PUBLIC_HEADER "${PARTEEENGINE_HEADERS}"
+)
+target_compile_features(parteeengine_lib PUBLIC cxx_std_23)
 
 # Specify include directories
-target_include_directories(parteeeengine_lib
+target_include_directories(parteeengine_lib
     PUBLIC
-        $<BUILD_INTERFACE:${PARTEEE_INCLUDE_DIR}>
+        $<BUILD_INTERFACE:${PARTEEENGINE_INCLUDE_DIR}>
         $<INSTALL_INTERFACE:include>
 )
 
@@ -111,24 +113,27 @@ target_include_directories(parteeeengine_lib
 # Main Executable
 # ============================================================================
 
-add_executable( parteeeengine "${PARTEEE_SOURCE_DIR}/main.cpp" )
+add_executable(parteeengine "${PARTEEENGINE_SOURCE_DIR}/main.cpp")
 
-target_link_libraries(parteeeengine PRIVATE parteeeengine_lib)
-target_include_directories(parteeeengine PRIVATE ${PARTEEE_INCLUDE_DIR})
+target_link_libraries(parteeengine PRIVATE parteeengine_lib)
+target_include_directories(parteeengine PRIVATE ${PARTEEENGINE_INCLUDE_DIR})
 
-# Warning Flags
+# ============================================================================
+# Warnings
+# ============================================================================
+
 if(MSVC)
-    target_compile_options(parteeeengine_lib PRIVATE /W4)
+    target_compile_options(parteeengine_lib PRIVATE /W4)
 
-    if(PARTEEE_WARNINGS_AS_ERRORS)
-        target_compile_options(parteeeengine_lib PRIVATE /WX)
+    if(PARTEEENGINE_WARNINGS_AS_ERRORS)
+        target_compile_options(parteeengine_lib PRIVATE /WX)
     endif()
 
 else()
-    target_compile_options(parteeeengine_lib PRIVATE -Wall -Wextra -Wpedantic)
+    target_compile_options(parteeengine_lib PRIVATE -Wall -Wextra -Wpedantic)
 
-    if(PARTEEE_WARNINGS_AS_ERRORS)
-        target_compile_options(parteeeengine_lib PRIVATE -Werror)
+    if(PARTEEENGINE_WARNINGS_AS_ERRORS)
+        target_compile_options(parteeengine_lib PRIVATE -Werror)
     endif()
 
 endif()
@@ -137,7 +142,7 @@ endif()
 # Testing
 # ============================================================================
 
-if(PARTEEE_BUILD_TESTS)
+if(PARTEEENGINE_BUILD_TESTS)
     enable_testing()
     message(STATUS "Building tests enabled")
     
@@ -164,11 +169,11 @@ find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
 if(CLANG_TIDY_EXE)
     set(CLANG_TIDY_COMMAND "clang-tidy")
 
-    set_target_properties(parteeeengine_lib PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
-    set_target_properties(parteeeengine PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    set_target_properties(parteeengine_lib PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    set_target_properties(parteeengine PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
 
-    if (PARTEEE_BUILD_TESTS)
-        set_target_properties(parteeeengine_tests PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    if(PARTEEENGINE_BUILD_TESTS)
+        set_target_properties(parteeengine_tests PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
     endif()
 else()
     message(WARNING "clang-tidy not found!")
@@ -179,7 +184,7 @@ endif()
 # Documentation
 # ============================================================================
 
-if(PARTEEE_BUILD_DOCS)
+if(PARTEEENGINE_BUILD_DOCS)
     find_package(Doxygen)
     if(Doxygen_FOUND)
         message(STATUS "Building documentation enabled")
@@ -196,16 +201,16 @@ endif()
 include(GNUInstallDirs)
 
 # Install targets
-install(TARGETS parteeeengine parteeeengine_lib
+install(TARGETS parteeengine parteeengine_lib
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/parteeeengine
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/parteeengine
 )
 
 # Install header files
-install(DIRECTORY "${PARTEEE_INCLUDE_DIR}/"
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/parteeeengine
+install(DIRECTORY "${PARTEEENGINE_INCLUDE_DIR}/"
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/parteeengine
     FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h"
 )
 
@@ -215,10 +220,10 @@ install(DIRECTORY "${PARTEEE_INCLUDE_DIR}/"
 
 message(STATUS "========== Partee Engine Configuration ==========")
 message(STATUS "Build Type:            ${CMAKE_BUILD_TYPE}")
-message(STATUS "C++ Standard:          ${CMAKE_CXX_STANDARD}")
+message(STATUS "C++ Requirement:       cxx_std_23")
 message(STATUS "Compiler:              ${CMAKE_CXX_COMPILER_ID}")
-message(STATUS "Build Tests:           ${PARTEEE_BUILD_TESTS}")
-message(STATUS "Build Documentation:   ${PARTEEE_BUILD_DOCS}")
-message(STATUS "Link Time Optimization: ${PARTEEE_ENABLE_LTO}")
-message(STATUS "Warnings as Errors:    ${PARTEEE_WARNINGS_AS_ERRORS}")
+message(STATUS "Build Tests:           ${PARTEEENGINE_BUILD_TESTS}")
+message(STATUS "Build Documentation:   ${PARTEEENGINE_BUILD_DOCS}")
+message(STATUS "Link Time Optimization: ${PARTEEENGINE_ENABLE_LTO}")
+message(STATUS "Warnings as Errors:    ${PARTEEENGINE_WARNINGS_AS_ERRORS}")
 message(STATUS "================================================")

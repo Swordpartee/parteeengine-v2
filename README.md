@@ -8,7 +8,7 @@ A customizable, high-performance C++ game engine built from scratch with a moder
 - **Component Manager**: Efficient component storage and retrieval
 - **Event Bus**: Decoupled event handling for game systems
 - **Entity Manager**: Centralized entity lifecycle management
-- **Modern C++17**: Clean, type-safe code with minimal dependencies
+- **Modern C++23**: Clean, type-safe code with minimal dependencies
 - **CMake Build System**: Cross-platform compilation support
 - **Comprehensive Tests**: Unit tests using Google Test framework
 
@@ -37,7 +37,7 @@ parteeengine-v2/
 ### Prerequisites
 
 - CMake 3.21 or higher
-- C++17 compatible compiler (MSVC, GCC, or Clang)
+- C++23 compatible compiler (MSVC, GCC, or Clang)
 - Google Test (automatically downloaded via CMake)
 
 ### Build Steps
@@ -109,11 +109,11 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DPARTEEE_BUILD_TESTS=ON
 
 ## Compiler Support
 
-- **MSVC**: Visual Studio 2017 or later
+- **MSVC**: Visual Studio 2023 or later
 - **GCC**: 7.0 or later
 - **Clang**: 5.0 or later
 
-C++ Standard: **C++17** (required)
+C++ Standard: **C++23** (required)
 
 ## CI/CD
 
