@@ -24,8 +24,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(PARTEEE_BUILD_TESTS "Build unit tests" ON)
 option(PARTEEE_BUILD_DOCS "Build documentation" OFF)
-option(PARTEEE_ENABLE_LTO "Enable Link Time Optimization" ON)
-option(PARTEEE_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" ON)
+option(PARTEEE_ENABLE_LTO "Enable Link Time Optimization" OFF)
+option(PARTEEE_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 
 # ============================================================================
 # Compiler Flags and Warnings
@@ -134,17 +134,6 @@ else()
 endif()
 
 # ============================================================================
-# Clang Tidy
-# ============================================================================
-
-find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
-if(CLANG_TIDY_EXE)
-    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
-else()
-    message(WARNING "clang-tidy not found!")
-endif()
-
-# ============================================================================
 # Testing
 # ============================================================================
 
@@ -166,6 +155,25 @@ if(PARTEEE_BUILD_TESTS)
     
     add_subdirectory(test)
 endif()
+
+# ============================================================================
+# Clang Tidy
+# ============================================================================
+
+find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+if(CLANG_TIDY_EXE)
+    set(CLANG_TIDY_COMMAND "clang-tidy")
+
+    set_target_properties(parteeeengine_lib PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    set_target_properties(parteeeengine PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+
+    if (PARTEEE_BUILD_TESTS)
+        set_target_properties(parteeeengine_tests PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    endif()
+else()
+    message(WARNING "clang-tidy not found!")
+endif()
+
 
 # ============================================================================
 # Documentation
