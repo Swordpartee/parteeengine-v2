@@ -11,22 +11,22 @@ set(TEST_SOURCES
 )
 
 # Create test executable
-add_executable(parteeeengine_tests ${TEST_SOURCES})
+add_executable(parteeengine_tests ${TEST_SOURCES})
 
 # Link against the library and GTest
-target_link_libraries(parteeeengine_tests 
+target_link_libraries(parteeengine_tests
     PRIVATE 
-        parteeeengine_lib
+        parteeengine_lib
         GTest::gtest_main
         GTest::gtest
 )
 
 # Include directories
-target_include_directories(parteeeengine_tests 
+target_include_directories(parteeengine_tests
     PRIVATE 
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${PARTEEE_INCLUDE_DIR}
+        ${PARTEEENGINE_INCLUDE_DIR}
 )
 
 # Discover and register individual tests
-gtest_discover_tests(parteeeengine_tests)
+gtest_discover_tests(parteeengine_tests)

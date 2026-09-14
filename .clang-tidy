@@ -1,23 +1,41 @@
 ---
-Checks: "*,
-        -abseil-*,
-        -altera-*,
-        -android-*,
-        -fuchsia-*,
-        -google-*,
-        -llvm*,
-        -modernize-use-trailing-return-type,
-        -zircon-*,
-        -readability-else-after-return,
-        -readability-static-accessed-through-instance,
-        -misc-non-private-member-variables-in-classes,
-        -readability-identifier-length,
-        -cppcoreguidelines-special-member-functions,
-        -portability-avoid-pragma-once,
-        -hicpp-special-member-functions,
-        -cppcoreguidelines-avoid-magic-numbers,
-        -readability-magic-numbers,
-        -readability-avoid-const-params-in-decls
-"
-FormatStyle: clang-format
+Checks: >
+  clang-diagnostic-*,
+  clang-analyzer-*,
+
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+
+  performance-*,
+
+  cppcoreguidelines-init-variables,
+  cppcoreguidelines-slicing,
+  cppcoreguidelines-pro-type-member-init,
+  cppcoreguidelines-pro-type-static-cast-downcast,
+  cppcoreguidelines-narrowing-conversions,
+
+  modernize-use-override,
+  modernize-use-nullptr,
+  modernize-use-default-member-init,
+  modernize-use-emplace,
+  modernize-loop-convert,
+  modernize-use-equals-default,
+  modernize-use-equals-delete,
+
+  readability-braces-around-statements,
+  readability-container-size-empty,
+  readability-redundant-*,
+  readability-simplify-boolean-expr,
+  readability-inconsistent-declaration-parameter-name,
+  readability-named-parameter,
+
+  misc-unused-parameters,
+  misc-unused-using-decls,
+  misc-redundant-expression,
+
+  portability-*,
+  -portability-avoid-pragma-once
+
+WarningsAsErrors: ''
+FormatStyle: file
 HeaderFilterRegex: '.*[/\\]parteeengine-v2[/\\](include|src)[/\\].*'
