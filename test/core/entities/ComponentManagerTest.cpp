@@ -57,7 +57,7 @@ TEST_F(ComponentManagerTest, ComponentDeletion) {
 
 TEST_F(ComponentManagerTest, ComponentData) {
     auto entity = entityManager.generateEntity();
-    const DataComponent data{.value=42, .data=3.14F};
+    const DataComponent data{.value = 42, .data = 3.14F};
 
     auto& component = componentManager.addComponent<DataComponent>(entity, data);
 
@@ -67,7 +67,7 @@ TEST_F(ComponentManagerTest, ComponentData) {
 
 TEST_F(ComponentManagerTest, GetComponent) {
     auto entity = entityManager.generateEntity();
-    const DataComponent data{.value=99, .data=2.71F};
+    const DataComponent data{.value = 99, .data = 2.71F};
 
     auto& component = componentManager.addComponent<DataComponent>(entity, data);
 
@@ -104,9 +104,9 @@ TEST_F(ComponentManagerTest, MultipleEntitiesWithComponents) {
     auto entity2 = entityManager.generateEntity();
     auto entity3 = entityManager.generateEntity();
 
-    const DataComponent data1{.value=1, .data=1.0F};
-    const DataComponent data2{.value=2, .data=2.0F};
-    const DataComponent data3{.value=3, .data=3.0F};
+    const DataComponent data1{.value = 1, .data = 1.0F};
+    const DataComponent data2{.value = 2, .data = 2.0F};
+    const DataComponent data3{.value = 3, .data = 3.0F};
 
     componentManager.addComponent<DataComponent>(entity1, data1);
     componentManager.addComponent<DataComponent>(entity2, data2);
@@ -134,8 +134,8 @@ TEST_F(ComponentManagerTest, ComponentDataModiFication) {
 
 TEST_F(ComponentManagerTest, RemoveAndReaddComponent) {
     auto entity = entityManager.generateEntity();
-    const DataComponent data1{.value=10, .data=1.0F};
-    const DataComponent data2{.value=20, .data=2.0F};
+    const DataComponent data1{.value = 10, .data = 1.0F};
+    const DataComponent data2{.value = 20, .data = 2.0F};
 
     auto& component = componentManager.addComponent<DataComponent>(entity, data1);
     EXPECT_EQ(component.value, 10);
@@ -150,9 +150,9 @@ TEST_F(ComponentManagerTest, RemoveAndReaddComponent) {
 TEST_F(ComponentManagerTest, ThreeComponentTypes) {
     auto entity = entityManager.generateEntity();
 
-    const DataComponent data{.value=42, .data=4.2F};
-    const PositionComponent pos{.x=1.0F, .y=2.0F, .z=3.0F};
-    const VelocityComponent vel{.vx=0.1F, .vy=0.2F, .vz=0.3F};
+    const DataComponent data{.value = 42, .data = 4.2F};
+    const PositionComponent pos{.x = 1.0F, .y = 2.0F, .z = 3.0F};
+    const VelocityComponent vel{.vx = 0.1F, .vy = 0.2F, .vz = 0.3F};
 
     auto& dataComponent = componentManager.addComponent<DataComponent>(entity, data);
     auto& posComponent = componentManager.addComponent<PositionComponent>(entity, pos);
@@ -172,13 +172,13 @@ TEST_F(ComponentManagerTest, ViewSingleComponent) {
     auto entity2 = entityManager.generateEntity();
     auto entity3 = entityManager.generateEntity();
 
-    componentManager.addComponent<DataComponent>(entity1, {.value=1, .data=1.0F});
-    componentManager.addComponent<DataComponent>(entity2, {.value=2, .data=2.0F});
-    componentManager.addComponent<DataComponent>(entity3, {.value=3, .data=3.0F});
+    componentManager.addComponent<DataComponent>(entity1, {.value = 1, .data = 1.0F});
+    componentManager.addComponent<DataComponent>(entity2, {.value = 2, .data = 2.0F});
+    componentManager.addComponent<DataComponent>(entity3, {.value = 3, .data = 3.0F});
 
     auto view = componentManager.viewComponents<DataComponent>();
 
-    //NOLINTBEIng
+    // NOLINTBEIng
 
     EXPECT_EQ(view.size(), 3);
     EXPECT_EQ(std::get<0>(view.at(0)), entity1);
@@ -191,11 +191,11 @@ TEST_F(ComponentManagerTest, ViewMultipleComponents) {
     auto entity1 = entityManager.generateEntity();
     auto entity2 = entityManager.generateEntity();
 
-    componentManager.addComponent<DataComponent>(entity1, {.value=10, .data=1.0F});
-    componentManager.addComponent<PositionComponent>(entity1, {.x=1.0F, .y=2.0F, .z=3.0F});
+    componentManager.addComponent<DataComponent>(entity1, {.value = 10, .data = 1.0F});
+    componentManager.addComponent<PositionComponent>(entity1, {.x = 1.0F, .y = 2.0F, .z = 3.0F});
 
-    componentManager.addComponent<DataComponent>(entity2, {.value=20, .data=2.0F});
-    componentManager.addComponent<PositionComponent>(entity2, {.x=4.0F, .y=5.0F, .z=6.0F});
+    componentManager.addComponent<DataComponent>(entity2, {.value = 20, .data = 2.0F});
+    componentManager.addComponent<PositionComponent>(entity2, {.x = 4.0F, .y = 5.0F, .z = 6.0F});
 
     auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
 
@@ -212,15 +212,15 @@ TEST_F(ComponentManagerTest, ViewFiltersEntitiesWithoutAllComponents) {
     auto entity3 = entityManager.generateEntity();
 
     // entity1 has both components
-    componentManager.addComponent<DataComponent>(entity1, {.value=1, .data=1.0F});
-    componentManager.addComponent<PositionComponent>(entity1, {.x=1.0F, .y=2.0F, .z=3.0F});
+    componentManager.addComponent<DataComponent>(entity1, {.value = 1, .data = 1.0F});
+    componentManager.addComponent<PositionComponent>(entity1, {.x = 1.0F, .y = 2.0F, .z = 3.0F});
 
     // entity2 has only DataComponent
-    componentManager.addComponent<DataComponent>(entity2, {.value=2, .data=2.0F});
+    componentManager.addComponent<DataComponent>(entity2, {.value = 2, .data = 2.0F});
 
     // entity3 has both components
-    componentManager.addComponent<DataComponent>(entity3, {.value=3, .data=3.0F});
-    componentManager.addComponent<PositionComponent>(entity3, {.x=4.0F, .y=5.0F, .z=6.0F});
+    componentManager.addComponent<DataComponent>(entity3, {.value = 3, .data = 3.0F});
+    componentManager.addComponent<PositionComponent>(entity3, {.x = 4.0F, .y = 5.0F, .z = 6.0F});
 
     auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
 
@@ -232,7 +232,7 @@ TEST_F(ComponentManagerTest, ViewFiltersEntitiesWithoutAllComponents) {
 TEST_F(ComponentManagerTest, ViewEmptyWhenNoEntitiesMatch) {
     auto entity1 = entityManager.generateEntity();
 
-    componentManager.addComponent<DataComponent>(entity1, {.value=1, .data=1.0F});
+    componentManager.addComponent<DataComponent>(entity1, {.value = 1, .data = 1.0F});
 
     auto view = componentManager.viewComponents<DataComponent, PositionComponent>();
 
@@ -243,13 +243,13 @@ TEST_F(ComponentManagerTest, ViewThreeComponentTypes) {
     auto entity1 = entityManager.generateEntity();
     auto entity2 = entityManager.generateEntity();
 
-    componentManager.addComponent<DataComponent>(entity1, {.value=100, .data=1.0F});
-    componentManager.addComponent<PositionComponent>(entity1, {.x=1.0F, .y=2.0F, .z=3.0F});
-    componentManager.addComponent<VelocityComponent>(entity1, {.vx=0.1F, .vy=0.2F, .vz=0.3F});
+    componentManager.addComponent<DataComponent>(entity1, {.value = 100, .data = 1.0F});
+    componentManager.addComponent<PositionComponent>(entity1, {.x = 1.0F, .y = 2.0F, .z = 3.0F});
+    componentManager.addComponent<VelocityComponent>(entity1, {.vx = 0.1F, .vy = 0.2F, .vz = 0.3F});
 
-    componentManager.addComponent<DataComponent>(entity2, {.value=200, .data=2.0F});
-    componentManager.addComponent<PositionComponent>(entity2, {.x=4.0F, .y=5.0F, .z=6.0F});
-    componentManager.addComponent<VelocityComponent>(entity2, {.vx=0.4F, .vy=0.5F, .vz=0.6F});
+    componentManager.addComponent<DataComponent>(entity2, {.value = 200, .data = 2.0F});
+    componentManager.addComponent<PositionComponent>(entity2, {.x = 4.0F, .y = 5.0F, .z = 6.0F});
+    componentManager.addComponent<VelocityComponent>(entity2, {.vx = 0.4F, .vy = 0.5F, .vz = 0.6F});
 
     auto view = componentManager.viewComponents<DataComponent, PositionComponent, VelocityComponent>();
 
@@ -263,11 +263,11 @@ TEST_F(ComponentManagerTest, ViewAFterRemovingComponent) {
     auto entity1 = entityManager.generateEntity();
     auto entity2 = entityManager.generateEntity();
 
-    componentManager.addComponent<DataComponent>(entity1, {.value=1, .data=1.0F});
-    componentManager.addComponent<PositionComponent>(entity1, {.x=1.0F, .y=2.0F, .z=3.0F});
+    componentManager.addComponent<DataComponent>(entity1, {.value = 1, .data = 1.0F});
+    componentManager.addComponent<PositionComponent>(entity1, {.x = 1.0F, .y = 2.0F, .z = 3.0F});
 
-    componentManager.addComponent<DataComponent>(entity2, {.value=2, .data=2.0F});
-    componentManager.addComponent<PositionComponent>(entity2, {.x=4.0F, .y=5.0F, .z=6.0F});
+    componentManager.addComponent<DataComponent>(entity2, {.value = 2, .data = 2.0F});
+    componentManager.addComponent<PositionComponent>(entity2, {.x = 4.0F, .y = 5.0F, .z = 6.0F});
 
     auto view1 = componentManager.viewComponents<DataComponent, PositionComponent>();
     EXPECT_EQ(view1.size(), 2);
@@ -283,11 +283,11 @@ TEST_F(ComponentManagerTest, ViewConsistencyWithModiFications) {
     auto entity1 = entityManager.generateEntity();
     auto entity2 = entityManager.generateEntity();
 
-    componentManager.addComponent<DataComponent>(entity1, {.value=1, .data=1.0F});
-    componentManager.addComponent<PositionComponent>(entity1, {.x=1.0F, .y=2.0F, .z=3.0F});
+    componentManager.addComponent<DataComponent>(entity1, {.value = 1, .data = 1.0F});
+    componentManager.addComponent<PositionComponent>(entity1, {.x = 1.0F, .y = 2.0F, .z = 3.0F});
 
-    componentManager.addComponent<DataComponent>(entity2, {.value=2, .data=2.0F});
-    componentManager.addComponent<PositionComponent>(entity2, {.x=4.0F, .y=5.0F, .z=6.0F});
+    componentManager.addComponent<DataComponent>(entity2, {.value = 2, .data = 2.0F});
+    componentManager.addComponent<PositionComponent>(entity2, {.x = 4.0F, .y = 5.0F, .z = 6.0F});
 
     // ModiFy component through getComponent (aFter all additions to avoid
     // invalidating reFerences)

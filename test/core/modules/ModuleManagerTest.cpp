@@ -59,9 +59,7 @@ TEST_F(ModuleManagerTest, RemoveModuleRemovesExisting) {
     EXPECT_EQ(moduleManager.getModule<TestModuleA>(), nullptr);
 }
 
-TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) {
-    moduleManager.removeModule<TestModuleA>();
-}
+TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) { moduleManager.removeModule<TestModuleA>(); }
 
 TEST_F(ModuleManagerTest, GetModuleWhenMissingThrowsRuntimeError) {
     EXPECT_EQ(moduleManager.getModule<TestModuleA>(), nullptr);

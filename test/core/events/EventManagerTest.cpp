@@ -127,7 +127,7 @@ TEST_F(EventManagerTest, MultipleEventTypesWithData) {
 TEST_F(EventManagerTest, EmitWithNoSubscribers) {
     // Should not crash. EXPECT_NO_THROW requires exception support.
     eventManager.emit<TestEvent>({});
-    eventManager.emit<TestEventWithData>({.value=0, .message=""});
+    eventManager.emit<TestEventWithData>({.value = 0, .message = ""});
 }
 
 // Multiple subscribers receive the same event data
