@@ -4,6 +4,7 @@
 #include "core/events/QuitEvent.hpp"
 #include "core/modules/ModuleBase.hpp"
 
+#include <chrono>
 #include <future>
 #include <gtest/gtest.h>
 

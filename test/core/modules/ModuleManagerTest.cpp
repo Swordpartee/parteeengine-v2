@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <string>
+#include <utility>
 
 namespace parteeengine {
 namespace {
@@ -36,7 +37,7 @@ TEST_F(ModuleManagerTest, AddModuleDefaultConstructsModule) {
 }
 
 TEST_F(ModuleManagerTest, AddModuleWithValueStoresCopy) {
-    TestModuleA input{42};
+    const TestModuleA input{42};
     moduleManager.addModule<TestModuleA>(input);
 
     auto* module = moduleManager.getModule<TestModuleA>();
@@ -58,9 +59,7 @@ TEST_F(ModuleManagerTest, RemoveModuleRemovesExisting) {
     EXPECT_EQ(moduleManager.getModule<TestModuleA>(), nullptr);
 }
 
-TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) {
-    EXPECT_NO_THROW(moduleManager.removeModule<TestModuleA>());
-}
+TEST_F(ModuleManagerTest, RemoveModuleWhenMissingDoesNotThrow) { moduleManager.removeModule<TestModuleA>(); }
 
 TEST_F(ModuleManagerTest, GetModuleWhenMissingThrowsRuntimeError) {
     EXPECT_EQ(moduleManager.getModule<TestModuleA>(), nullptr);
